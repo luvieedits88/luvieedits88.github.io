@@ -8,416 +8,252 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-  html{scroll-behavior:smooth;}
+  /* Global Fixes */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
-  body{
-    margin:0;
-    font-family:'Montserrat',sans-serif;
-    color:#fff;
-    text-align:center;
-    background-image:
-      linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
-      url("Background.jpg");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
+  body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    text-align: center;
+    background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("Background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #000;
   }
 
-  /* HERO */
-  .hero{
-    position:relative;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    overflow:hidden;
+  /* HERO SECTION */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
   }
 
-  .title{
-    font-size:clamp(50px,7vw,110px);
-    font-weight:800;
-    letter-spacing:6px;
-    margin:0;
-    text-transform:uppercase;
-    text-shadow:0 15px 40px rgba(0,0,0,0.8);
-    z-index:2;
+  .title {
+    font-size: clamp(40px, 8vw, 110px);
+    font-weight: 800;
+    letter-spacing: 6px;
+    margin: 0;
+    text-transform: uppercase;
+    text-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    z-index: 2;
   }
 
-  .subtitle{
-    margin-top:20px;
-    font-size:20px;
-    color:rgba(255,255,255,0.85);
-    max-width:900px;
-    z-index:2;
+  .subtitle {
+    margin-top: 20px;
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    max-width: 900px;
+    z-index: 2;
   }
 
-  .button{
-    margin-top:40px;
-    padding:16px 45px;
-    background:#ff003c;
-    color:#fff;
-    text-decoration:none;
-    border-radius:12px;
-    font-weight:700;
-    transition:0.3s ease;
-    box-shadow:0 0 30px rgba(255,0,60,0.5);
-    display:inline-block;
-    z-index:2;
+  .button {
+    margin-top: 40px;
+    padding: 16px 45px;
+    background: #ff003c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: 0.3s ease;
+    box-shadow: 0 0 30px rgba(255,0,60,0.5);
+    display: inline-block;
+    z-index: 2;
   }
 
-  .button:hover{
-    transform:scale(1.07);
-    box-shadow:0 0 45px rgba(255,0,60,0.8);
-    background:#ff2a5c;
+  .button:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 45px rgba(255,0,60,0.8);
+    background: #ff2a5c;
   }
 
-  /* CHARACTERS */
-  .character{
-    position:absolute;
-    bottom:0;
-    max-height:95vh;
-    z-index:1;
-    pointer-events:none;
+  .character {
+    position: absolute;
+    bottom: 0;
+    max-height: 90vh;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .joker { left: -60px; transform: scaleX(-1); opacity: 0.8; }
+  .sumire { right: -40px; opacity: 0.8; }
+
+  /* PORTFOLIO GRID */
+  .portfolio {
+    padding: 80px 15px;
+    background: rgba(0,0,0,0.92);
   }
 
-  .joker{
-    left:-60px;
-    transform:scaleX(-1) rotate(-6deg);
-    filter:
-      drop-shadow(0 0 30px rgba(0,140,255,0.6))
-      drop-shadow(0 0 70px rgba(0,140,255,0.3));
+  .section-title {
+    font-size: clamp(30px, 5vw, 56px);
+    font-weight: 800;
+    margin-bottom: 50px;
   }
 
-  .sumire{
-    right:-40px;
-    transform:rotate(6deg);
-    filter:
-      drop-shadow(0 0 30px rgba(255,0,60,0.6))
-      drop-shadow(0 0 70px rgba(255,0,60,0.3));
+  .video-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
   }
 
-  /* PORTFOLIO */
-  .portfolio{
-    padding:110px 20px 80px;
-    background:rgba(0,0,0,0.90);
+  .video-card {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s ease;
   }
 
-  .section-title{
-    font-size:clamp(32px,4vw,56px);
-    font-weight:800;
-    margin-bottom:40px;
-  }
+  .video-card:hover { transform: translateY(-5px); }
 
-  .video-grid{
-    max-width:1200px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:28px;
-  }
-
-  .video-card{
-    border-radius:18px;
-    overflow:hidden;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));
-    border: 1px solid rgba(255,255,255,0.10);
-    box-shadow: 0 18px 50px rgba(0,0,0,0.65);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    position:relative;
-  }
-
-  .video-card:hover{
-    transform: translateY(-8px);
-    border-color: rgba(255,0,60,0.35);
-    box-shadow: 0 24px 70px rgba(0,0,0,0.75);
-  }
-
-  /* ===== Persona 5 Custom Player (UPDATED: perfect fit on desktop + mobile) ===== */
-  .p5-player{
-    position:relative;
-    width:100%;
+  /* PERSONA PLAYER */
+  .p5-player {
+    position: relative;
+    width: 100%;
     aspect-ratio: 16 / 9;
-    background:#000;
-    overflow:hidden;
+    background: #000;
+    overflow: hidden; /* Keep UI contained */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .p5-video{
-    width:100%;
-    height:100%;
-    object-fit: contain;   /* switch to cover if you want crop-to-fill */
-    display:block;
-    background:#000;
-    max-height:none;       /* IMPORTANT: removes old max-height issue */
+  /* Target player container for fullscreen to keep UI */
+  .p5-player:fullscreen { width: 100vw; height: 100vh; }
+  .p5-player:-webkit-full-screen { width: 100vw; height: 100vh; }
+
+  .p5-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
   }
 
-  /* Mobile gesture overlay */
-  .p5-gestures{
-    position:absolute;
-    inset:0;
-    display:flex;
-    z-index:4;
-    pointer-events:auto;
-  }
-  .p5-zone{
-    flex:1;
-    background:transparent;
-    border:none;
-    padding:0;
-    margin:0;
-    cursor:pointer;
-    -webkit-tap-highlight-color: transparent;
+  /* Overlay Controls */
+  .p5-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    z-index: 10;
   }
 
-  .p5-hint{
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    padding:10px 14px;
-    border-radius:14px;
-    background:rgba(0,0,0,0.55);
-    border:1px solid rgba(255,255,255,0.14);
-    font-weight:800;
-    font-size:14px;
-    letter-spacing:0.6px;
-    opacity:0;
-    pointer-events:none;
-    transition: opacity .15s ease, transform .15s ease;
-    z-index:5;
-  }
-  .p5-hint.show{
-    opacity:1;
-    transform:translate(-50%,-55%);
+  .p5-btn {
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 8px;
+    min-width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
-  .p5-bigplay{
-    position:absolute;
-    inset:0;
-    margin:auto;
-    width:86px;
-    height:86px;
-    border-radius:18px;
-    border:2px solid rgba(255,255,255,0.25);
-    background:rgba(0,0,0,0.45);
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-    box-shadow:0 0 40px rgba(255,0,60,0.35);
-    transition:0.2s ease;
-    z-index:6; /* above gestures */
-  }
-  .p5-bigplay:hover{ transform:scale(1.05); }
+  .p5-btn:hover { border-color: #ff003c; }
 
-  .p5-bigplay img{
-    width:34px;
-    height:34px;
-    display:block;
+  .p5-icon { width: 16px; height: 16px; pointer-events: none; }
+
+  .p5-time {
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 40px;
+    flex-shrink: 0;
   }
 
-  .p5-controls{
-    position:absolute;
-    left:0; right:0; bottom:0;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 10px;
-    background:linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0.20));
-    z-index:7; /* top layer */
+  .p5-progress {
+    flex-grow: 1;
+    height: 6px;
+    accent-color: #ff003c;
+    cursor: pointer;
   }
 
-  .p5-btn{
-    background:#0b0b0b;
-    border:1px solid rgba(255,255,255,0.12);
-    color:#fff;
-    border-radius:10px;
-    padding:8px 10px;
-    cursor:pointer;
-    font-weight:700;
-    display:grid;
-    place-items:center;
+  /* Volume slider handling */
+  .p5-vol {
+    width: 60px;
+    accent-color: #ff003c;
+    flex-shrink: 0;
   }
 
-  .p5-btn:hover{
-    border-color: rgba(255,0,60,0.55);
-    box-shadow:0 0 22px rgba(255,0,60,0.25);
+  .p5-bigplay {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: rgba(0,0,0,0.6);
+    border: 2px solid #ff003c;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: 0.2s;
+  }
+  .p5-bigplay:hover { transform: scale(1.1); background: rgba(255,0,60,0.2); }
+
+  .video-label {
+    padding: 15px;
+    text-align: left;
+    background: #0a0a0a;
+  }
+  .video-label b { display: block; font-size: 16px; margin-bottom: 4px; }
+  .video-label span { font-size: 12px; color: #888; }
+
+  /* GLOBAL MUSIC UI */
+  .music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.85);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+    border: 1px solid #ff003c;
+    backdrop-filter: blur(10px);
   }
 
-  .p5-icon{
-    width:18px;
-    height:18px;
-    display:block;
+  /* Hiding volume on mobile to prevent overflow */
+  @media (max-width: 600px) {
+    .p5-vol { display: none; }
+    .joker, .sumire { display: none; }
+    .hero { height: 70vh; }
+    .video-grid { grid-template-columns: 1fr; }
+    .p5-controls { gap: 5px; padding: 8px 5px; }
+    .p5-time { min-width: 35px; font-size: 10px; }
   }
 
-  .p5-time{
-    min-width:54px;
-    font-size:12px;
-    opacity:0.9;
+  /* Custom styling for inputs */
+  input[type="range"] {
+    -webkit-appearance: none;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
   }
-
-  /* Progress (red) */
-  .p5-progress{
-    flex:1;
-    height:6px;
-    -webkit-appearance:none;
-    appearance:none;
-    background:rgba(255,0,60,0.22);
-    border-radius:999px;
-    outline:none;
-  }
-
-  .p5-progress::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:14px;
-    height:14px;
-    border-radius:999px;
-    background:#ff003c;
-    box-shadow:0 0 20px rgba(255,0,60,0.7);
-    cursor:pointer;
-  }
-
-  /* Volume (red) */
-  .p5-vol{
-    width:90px;
-    height:6px;
-    -webkit-appearance:none;
-    appearance:none;
-    background:rgba(255,0,60,0.25);
-    border-radius:999px;
-    outline:none;
-  }
-
-  .p5-vol::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:14px;
-    height:14px;
-    border-radius:999px;
-    background:#ff003c;
-    box-shadow:0 0 20px rgba(255,0,60,0.7);
-    cursor:pointer;
-  }
-
-  .video-label{
-    padding: 12px 14px;
-    text-align:left;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    color: rgba(255,255,255,0.88);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    background: rgba(0,0,0,0.35);
-  }
-  .video-label span{
-    color: rgba(255,255,255,0.65);
-    font-size: 12px;
-    display:block;
-    margin-top:4px;
-  }
-
-  /* FOOTER */
-  footer{
-    padding:50px 20px;
-    font-size:14px;
-    background:rgba(0,0,0,0.92);
-    opacity:0.9;
-  }
-
-  /* MUSIC PLAYER (icon + red slider) */
-  .music-player{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:rgba(0,0,0,0.75);
-    padding:10px 14px;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    z-index:9999;
-    backdrop-filter:blur(6px);
-    border:1px solid rgba(255,0,60,0.25);
-    box-shadow:0 0 25px rgba(255,0,60,0.25);
-  }
-
-  .music-btn{
-    background:#0b0b0b;
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:10px;
-    padding:8px;
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-  }
-
-  .music-btn:hover{
-    border-color:rgba(255,0,60,0.6);
-    box-shadow:0 0 20px rgba(255,0,60,0.4);
-  }
-
-  .music-icon{
-    width:18px;
-    height:18px;
-    display:block;
-  }
-
-  #volumeSlider{
-    width:100px;
-    height:6px;
-    -webkit-appearance:none;
-    appearance:none;
-    background:rgba(255,0,60,0.25);
-    border-radius:999px;
-    outline:none;
-  }
-
-  #volumeSlider::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:14px;
-    height:14px;
-    border-radius:999px;
-    background:#ff003c;
-    box-shadow:0 0 20px rgba(255,0,60,0.7);
-    cursor:pointer;
-  }
-
-  /* MOBILE */
-  @media (max-width:768px){
-    .hero{height:92vh;}
-    .title{font-size:38px;letter-spacing:3px;}
-    .subtitle{font-size:15px;max-width:320px;}
-    .button{padding:14px 28px;}
-    .joker{display:none;}
-    .sumire{right:-120px;max-height:85vh;}
-    .p5-vol{width:70px;}
-    .p5-btn{padding:7px 9px;}
-  }
-  /* =====================================================
-   FIX: Controls not clickable (gesture overlay blocking)
-   ===================================================== */
-
-/* Gesture layer should NEVER block controls */
-.p5-gestures{
-  pointer-events: none;
-}
-
-/* Controls must always receive input */
-.p5-controls,
-.p5-controls *{
-  pointer-events: auto;
-}
 </style>
 </head>
-
 <body oncontextmenu="return false;">
 
 <section class="hero">
   <img src="joker.png" class="character joker" alt="Joker">
   <img src="sumire.png" class="character sumire" alt="Sumire">
-
   <h1 class="title">LUVIE EDITS</h1>
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
   <a href="#portfolio" class="button">Watch My Work</a>
@@ -425,487 +261,143 @@
 
 <section id="portfolio" class="portfolio">
   <h2 class="section-title">Portfolio</h2>
-
   <div class="video-grid">
-
-    <!-- ===== CARD 1 ===== -->
     <div class="video-card">
       <div class="p5-player">
-        <video class="p5-video" preload="metadata" playsinline>
+        <video class="p5-video" playsinline preload="metadata">
           <source src="video1.mp4" type="video/mp4">
         </video>
-
-        <!-- Mobile gesture overlay -->
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-
-        <button class="p5-bigplay" type="button" aria-label="Play">
-          <img src="start.png" alt="Play">
-        </button>
+        
+        <button class="p5-bigplay"><img src="start.png" class="p5-icon" style="width:30px; height:30px;"></button>
 
         <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
-            <img src="start.png" class="p5-icon" alt="Play">
-          </button>
-
-          <div class="p5-time">
-            <span class="p5-current">0:00</span>
-          </div>
-
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
-
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
+          <button class="p5-btn p5-play"><img src="start.png" class="p5-icon"></button>
+          <div class="p5-time">0:00</div>
+          <input type="range" class="p5-progress" value="0" step="0.1">
+          <button class="p5-btn p5-mute">🔊</button>
+          <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
+          <button class="p5-btn p5-full">⛶</button>
         </div>
       </div>
-      <div class="video-label">Edit 1 <span>Persona-style player</span></div>
+      <div class="video-label">
+        <b>Edit 1</b>
+        <span>Persona-style player</span>
+      </div>
     </div>
-
-    <!-- ===== CARD 2 ===== -->
+    
     <div class="video-card">
-      <div class="p5-player">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video2.mp4" type="video/mp4">
-        </video>
-
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-
-        <button class="p5-bigplay" type="button" aria-label="Play">
-          <img src="start.png" alt="Play">
-        </button>
-
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
-            <img src="start.png" class="p5-icon" alt="Play">
-          </button>
-
-          <div class="p5-time">
-            <span class="p5-current">0:00</span>
+        <div class="p5-player">
+          <video class="p5-video" playsinline preload="metadata">
+            <source src="video2.mp4" type="video/mp4">
+          </video>
+          <button class="p5-bigplay"><img src="start.png" class="p5-icon" style="width:30px; height:30px;"></button>
+          <div class="p5-controls">
+            <button class="p5-btn p5-play"><img src="start.png" class="p5-icon"></button>
+            <div class="p5-time">0:00</div>
+            <input type="range" class="p5-progress" value="0" step="0.1">
+            <button class="p5-btn p5-mute">🔊</button>
+            <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
+            <button class="p5-btn p5-full">⛶</button>
           </div>
-
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
-
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
         </div>
+        <div class="video-label"><b>Edit 2</b><span>Persona-style player</span></div>
       </div>
-      <div class="video-label">Edit 2 <span>Persona-style player</span></div>
-    </div>
-
-    <!-- ===== CARD 3 ===== -->
-    <div class="video-card">
-      <div class="p5-player">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video3.mp4" type="video/mp4">
-        </video>
-
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-
-        <button class="p5-bigplay" type="button" aria-label="Play">
-          <img src="start.png" alt="Play">
-        </button>
-
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
-            <img src="start.png" class="p5-icon" alt="Play">
-          </button>
-
-          <div class="p5-time">
-            <span class="p5-current">0:00</span>
-          </div>
-
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
-
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
-        </div>
-      </div>
-      <div class="video-label">Edit 3 <span>Persona-style player</span></div>
-    </div>
-
-    <!-- ===== CARD 4 ===== -->
-    <div class="video-card">
-      <div class="p5-player">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video4.mp4" type="video/mp4">
-        </video>
-
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-
-        <button class="p5-bigplay" type="button" aria-label="Play">
-          <img src="start.png" alt="Play">
-        </button>
-
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
-            <img src="start.png" class="p5-icon" alt="Play">
-          </button>
-
-          <div class="p5-time">
-            <span class="p5-current">0:00</span>
-          </div>
-
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
-
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
-        </div>
-      </div>
-      <div class="video-label">Edit 4 <span>Persona-style player</span></div>
-    </div>
 
   </div>
 </section>
 
-<!-- MUSIC UI -->
 <div class="music-player">
-  <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music">
-    <img src="pause.png" id="musicIcon" class="music-icon" alt="Pause">
-  </button>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume">
+  <button id="musicToggle" class="p5-btn"><img src="pause.png" id="musicIcon" class="p5-icon"></button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" style="width:80px">
 </div>
 
-<audio id="bgMusic"></audio>
-
-<footer>
-© 2026 Luvie Edits
-</footer>
+<audio id="bgMusic" loop src="music1.mp3"></audio>
 
 <script>
-  // ===== Background Music (icon + respects user pause) =====
-  const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
-  const music = document.getElementById("bgMusic");
-  const toggle = document.getElementById("musicToggle");
-  const musicIcon = document.getElementById("musicIcon");
-  const volume = document.getElementById("volumeSlider");
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  const musicIcon = document.getElementById('musicIcon');
+  const musicVol = document.getElementById('volumeSlider');
 
-  let current = 0;
-  music.volume = Number(volume.value);
-
-  // if user pauses music manually, don't auto-resume
-  let userWantsMusic = true;
-
-  function setMusicIcon(isPlaying){
-    musicIcon.src = isPlaying ? "pause.png" : "start.png";
-    musicIcon.alt = isPlaying ? "Pause" : "Play";
-  }
-
-  function playTrack(i){
-    current = i;
-    music.src = tracks[current];
-
-    if(userWantsMusic){
-      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
-    }else{
-      setMusicIcon(false);
+  // Background Music Logic
+  musicToggle.onclick = () => {
+    if(bgMusic.paused) {
+        bgMusic.play();
+        musicIcon.src = "pause.png";
+    } else {
+        bgMusic.pause();
+        musicIcon.src = "start.png";
     }
-  }
+  };
+  musicVol.oninput = (e) => bgMusic.volume = e.target.value;
 
-  function nextTrack(){
-    current = (current + 1) % tracks.length;
-    playTrack(current);
-  }
+  // Video Player Logic
+  document.querySelectorAll('.video-card').forEach(card => {
+    const video = card.querySelector('video');
+    const playBtn = card.querySelector('.p5-play');
+    const bigPlay = card.querySelector('.p5-bigplay');
+    const timeDisplay = card.querySelector('.p5-time');
+    const progress = card.querySelector('.p5-progress');
+    const muteBtn = card.querySelector('.p5-mute');
+    const volSlider = card.querySelector('.p5-vol');
+    const fullBtn = card.querySelector('.p5-full');
+    const playerContainer = card.querySelector('.p5-player');
 
-  music.addEventListener("ended", nextTrack);
-
-  window.addEventListener("load", () => {
-    playTrack(0);
-  });
-
-  toggle.addEventListener("click", () => {
-    if(music.paused){
-      userWantsMusic = true;
-      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
-    }else{
-      userWantsMusic = false;
-      music.pause();
-      setMusicIcon(false);
-    }
-  });
-
-  volume.addEventListener("input", () => {
-    music.volume = Number(volume.value);
-  });
-
-  // ===== Persona Player Controls + Music pause/resume =====
-  function fmtTime(s){
-    if(!isFinite(s)) return "0:00";
-    const m = Math.floor(s/60);
-    const sec = Math.floor(s%60).toString().padStart(2,"0");
-    return `${m}:${sec}`;
-  }
-
-  function isTouchDevice(){
-    return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
-  }
-
-  function showHint(player, text){
-    const hint = player.querySelector(".p5-hint");
-    if(!hint) return;
-    hint.textContent = text;
-    hint.classList.add("show");
-    clearTimeout(hint._t);
-    hint._t = setTimeout(()=> hint.classList.remove("show"), 450);
-  }
-
-  // Active video tracking (for keyboard)
-  let activePlayer = null;
-  let activeVideo = null;
-
-  function setActive(player){
-    activePlayer = player;
-    activeVideo = player ? player.querySelector(".p5-video") : null;
-  }
-
-  function toggleFullscreen(el){
-    if(!document.fullscreenElement){
-      (el.requestFullscreen ? el.requestFullscreen() : el.querySelector("video")?.requestFullscreen?.());
-    }else{
-      document.exitFullscreen?.();
-    }
-  }
-
-  document.querySelectorAll(".p5-player").forEach(player=>{
-    const video = player.querySelector(".p5-video");
-    const bigPlay = player.querySelector(".p5-bigplay");
-    const playBtn = player.querySelector(".p5-play");
-    const muteBtn = player.querySelector(".p5-mute");
-    const fullBtn = player.querySelector(".p5-full");
-    const prog = player.querySelector(".p5-progress");
-    const vol = player.querySelector(".p5-vol");
-    const cur = player.querySelector(".p5-current");
-
-    const gestures = player.querySelector(".p5-gestures");
-    const left = player.querySelector(".p5-left");
-    const mid = player.querySelector(".p5-mid");
-    const right = player.querySelector(".p5-right");
-
-    // init volume for video
-    video.volume = Number(vol.value);
-
-    // Set active on interaction
-    player.addEventListener("pointerdown", ()=> setActive(player));
-    player.addEventListener("mouseenter", ()=> setActive(player));
-
-    function setPlayUI(){
-      const playing = !video.paused && !video.ended;
-      bigPlay.style.display = playing ? "none" : "grid";
-
-      if(playing){
-        playBtn.innerHTML = '<img src="pause.png" class="p5-icon" alt="Pause">';
-      }else{
-        playBtn.innerHTML = '<img src="start.png" class="p5-icon" alt="Play">';
+    const togglePlay = () => {
+      if(video.paused) {
+        video.play();
+        bgMusic.pause();
+        musicIcon.src = "start.png";
+      } else {
+        video.pause();
       }
-    }
+    };
 
-    // play/pause
-    bigPlay.addEventListener("click", ()=> { setActive(player); video.play(); });
-    playBtn.addEventListener("click", ()=> { setActive(player); video.paused ? video.play() : video.pause(); });
+    playBtn.onclick = togglePlay;
+    bigPlay.onclick = togglePlay;
 
-    // time updates
-    video.addEventListener("timeupdate", ()=>{
-      cur.textContent = fmtTime(video.currentTime);
-      if(video.duration){
-        prog.value = (video.currentTime / video.duration) * 100;
-      }
-    });
+    video.onplay = () => {
+      bigPlay.style.display = 'none';
+      playBtn.querySelector('img').src = "pause.png";
+    };
 
-    // seek
-    prog.addEventListener("input", ()=>{
-      if(video.duration){
-        video.currentTime = (Number(prog.value)/100) * video.duration;
-      }
-    });
+    video.onpause = () => {
+      bigPlay.style.display = 'flex';
+      playBtn.querySelector('img').src = "start.png";
+    };
 
-    // volume
-    vol.addEventListener("input", ()=>{
-      video.volume = Number(vol.value);
-      video.muted = (video.volume === 0);
-      muteBtn.textContent = video.muted ? "🔇" : "🔊";
-    });
+    video.ontimeupdate = () => {
+      const mins = Math.floor(video.currentTime / 60);
+      const secs = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
+      timeDisplay.textContent = `${mins}:${secs}`;
+      progress.value = (video.currentTime / video.duration) * 100 || 0;
+    };
 
-    // mute
-    muteBtn.addEventListener("click", ()=>{
+    progress.oninput = () => {
+      video.currentTime = (progress.value / 100) * video.duration;
+    };
+
+    muteBtn.onclick = () => {
       video.muted = !video.muted;
       muteBtn.textContent = video.muted ? "🔇" : "🔊";
-    });
+    };
 
-    // fullscreen button
-    fullBtn.addEventListener("click", ()=>{
-      setActive(player);
-      if(player.requestFullscreen) player.requestFullscreen();
-      else if(video.requestFullscreen) video.requestFullscreen();
-    });
+    volSlider.oninput = (e) => video.volume = e.target.value;
 
-    // UI events
-    video.addEventListener("play", ()=>{
-      setActive(player);
-
-      music.pause();
-      setMusicIcon(false);
-
-      setPlayUI();
-    });
-
-    video.addEventListener("pause", ()=>{
-      if(userWantsMusic){
-        music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+    // Fixed Fullscreen Logic for Mobile & Desktop
+    fullBtn.onclick = () => {
+      if (!document.fullscreenElement) {
+        if (playerContainer.requestFullscreen) {
+            playerContainer.requestFullscreen();
+        } else if (playerContainer.webkitRequestFullscreen) { /* Safari */
+            playerContainer.webkitRequestFullscreen();
+        } else if (video.webkitEnterFullscreen) { /* iOS specific */
+            video.webkitEnterFullscreen();
+        }
+      } else {
+        document.exitFullscreen();
       }
-      setPlayUI();
-    });
-
-    video.addEventListener("ended", ()=>{
-      if(userWantsMusic){
-        music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
-      }
-      setPlayUI();
-    });
-
-    // ===== Mobile gestures =====
-    if(gestures){
-      if(!isTouchDevice()){
-        gestures.style.display = "none";
-      }else{
-        // Tap middle = play/pause
-        mid?.addEventListener("click", ()=>{
-          setActive(player);
-          if(video.paused) video.play();
-          else video.pause();
-          showHint(player, video.paused ? "Paused" : "Play");
-        });
-
-        // Double tap left/right = -10 / +10
-        let lastTapL = 0;
-        let lastTapR = 0;
-        const dbl = 320;
-
-        left?.addEventListener("click", ()=>{
-          setActive(player);
-          const now = Date.now();
-          if(now - lastTapL < dbl){
-            video.currentTime = Math.max(0, video.currentTime - 10);
-            showHint(player, "⏪ -10s");
-          }
-          lastTapL = now;
-        });
-
-        right?.addEventListener("click", ()=>{
-          setActive(player);
-          const now = Date.now();
-          if(now - lastTapR < dbl){
-            video.currentTime = Math.min(video.duration || Infinity, video.currentTime + 10);
-            showHint(player, "⏩ +10s");
-          }
-          lastTapR = now;
-        });
-
-        // Long press middle = fullscreen (nice on mobile)
-        let pressTimer = null;
-        mid?.addEventListener("touchstart", ()=>{
-          pressTimer = setTimeout(()=>{
-            try{
-              (video.requestFullscreen ? video.requestFullscreen() : player.requestFullscreen?.());
-              showHint(player, "Fullscreen");
-            }catch(e){}
-          }, 520);
-        }, {passive:true});
-
-        mid?.addEventListener("touchend", ()=> clearTimeout(pressTimer), {passive:true});
-        mid?.addEventListener("touchmove", ()=> clearTimeout(pressTimer), {passive:true});
-      }
-    }
-
-    // initial
-    setPlayUI();
-  });
-
-  // Fallback active
-  if(!activePlayer){
-    const first = document.querySelector(".p5-player");
-    if(first) setActive(first);
-  }
-
-  // ===== Keyboard shortcuts =====
-  document.addEventListener("keydown", (e) => {
-    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
-    if(tag === "input" || tag === "textarea") return;
-    if(!activeVideo) return;
-
-    // Space = play/pause
-    if(e.code === "Space"){
-      e.preventDefault();
-      activeVideo.paused ? activeVideo.play() : activeVideo.pause();
-      return;
-    }
-
-    const k = e.key;
-
-    // F = fullscreen
-    if(k === "f" || k === "F"){
-      e.preventDefault();
-      toggleFullscreen(activePlayer || activeVideo);
-      return;
-    }
-
-    // Left/Right = seek
-    if(k === "ArrowLeft"){
-      e.preventDefault();
-      activeVideo.currentTime = Math.max(0, activeVideo.currentTime - 5);
-      return;
-    }
-    if(k === "ArrowRight"){
-      e.preventDefault();
-      activeVideo.currentTime = Math.min(activeVideo.duration || Infinity, activeVideo.currentTime + 5);
-      return;
-    }
-
-    // Up/Down = volume
-    if(k === "ArrowUp"){
-      e.preventDefault();
-      activeVideo.volume = Math.min(1, (activeVideo.volume ?? 1) + 0.05);
-      activeVideo.muted = false;
-      return;
-    }
-    if(k === "ArrowDown"){
-      e.preventDefault();
-      activeVideo.volume = Math.max(0, (activeVideo.volume ?? 1) - 0.05);
-      if(activeVideo.volume === 0) activeVideo.muted = true;
-      return;
-    }
-
-    // M = mute
-    if(k === "m" || k === "M"){
-      e.preventDefault();
-      activeVideo.muted = !activeVideo.muted;
-      return;
-    }
+    };
   });
 </script>
 
