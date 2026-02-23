@@ -218,17 +218,25 @@
   }
 
   .p5-controls{
-   position:relative;         /* ✅ KEY FIX */
-   display:flex;
-   align-items:center;
-   gap:10px;
-   padding:10px 14px;
+  position:absolute;
+  left:12px;          /* ✅ pull controls inward */
+  right:12px;         /* ✅ pull controls inward */
+  bottom:10px;
 
-   background:linear-gradient(
-     to top,
-     rgba(0,0,0,0.88),
-     rgba(0,0,0,0.20)
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.88),
+    rgba(0,0,0,0.20)
   );
+
+  z-index:7;
+  box-sizing:border-box;
+}
 }
 
   .p5-btn{
@@ -399,12 +407,12 @@
     .p5-btn{padding:7px 9px;}
   }
 
-  /* ===== Mobile safety: keep controls clickable ===== */
   @media (max-width:768px){
-    .p5-player{
-      padding-bottom: 64px;
-    }
+  .p5-controls{
+    left:14px;
+    right:14px;
   }
+}
 </style>
 </head>
 
