@@ -87,14 +87,18 @@ body{
 
 /* Joker (LEFT SIDE) */
 .joker{
-  left:-60px;        /* MOVE LEFT/RIGHT HERE */
+  left:-60px;                 /* MOVE LEFT/RIGHT HERE */
   transform:scaleX(-1) rotate(-6deg);  /* flip + rotate */
+  filter: drop-shadow(0 0 30px rgba(0,140,255,0.55))
+          drop-shadow(0 0 70px rgba(0,140,255,0.25));
 }
 
 /* Sumire (RIGHT SIDE) */
 .sumire{
-  right:-40px;       /* MOVE LEFT/RIGHT HERE */
+  right:-40px;                /* MOVE LEFT/RIGHT HERE */
   transform:rotate(6deg);
+  filter: drop-shadow(0 0 30px rgba(255,0,60,0.55))
+          drop-shadow(0 0 70px rgba(255,0,60,0.25));
 }
 
 /* PORTFOLIO */
