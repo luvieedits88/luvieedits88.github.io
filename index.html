@@ -8,222 +8,296 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-html { scroll-behavior: smooth; }
+html{scroll-behavior:smooth;}
 
 body{
-  margin:0;
-  font-family:'Montserrat', sans-serif;
-  color:#fff;
-  text-align:center;
+margin:0;
+font-family:'Montserrat',sans-serif;
+color:#fff;
+text-align:center;
 
-  background-image:
-    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-    url("Background.jpg");
+background-image:
+linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+url("Background.jpg");
 
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+background-attachment:fixed;
 }
 
-/* HERO SECTION */
+/* HERO */
 .hero{
-  position:relative;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-  overflow:hidden;
+position:relative;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:20px;
+overflow:hidden;
 }
 
 .title{
-  font-size:clamp(50px, 7vw, 110px);
-  font-weight:800;
-  letter-spacing:6px;
-  margin:0;
-  text-transform:uppercase;
-  text-shadow:0 15px 40px rgba(0,0,0,0.8);
-  z-index:2;
+font-size:clamp(50px,7vw,110px);
+font-weight:800;
+letter-spacing:6px;
+margin:0;
+text-transform:uppercase;
+text-shadow:0 15px 40px rgba(0,0,0,0.8);
+z-index:2;
 }
 
 .subtitle{
-  margin-top:20px;
-  font-size:20px;
-  color:rgba(255,255,255,0.85);
-  max-width:900px;
-  z-index:2;
+margin-top:20px;
+font-size:20px;
+color:rgba(255,255,255,0.85);
+max-width:900px;
+z-index:2;
 }
 
 .button{
-  margin-top:40px;
-  padding:16px 45px;
-  background:#ff003c;
-  color:#fff;
-  text-decoration:none;
-  border-radius:12px;
-  font-weight:700;
-  transition:0.3s ease;
-  box-shadow:0 0 30px rgba(255,0,60,0.5);
-  display:inline-block;
-  z-index:2;
+margin-top:40px;
+padding:16px 45px;
+background:#ff003c;
+color:#fff;
+text-decoration:none;
+border-radius:12px;
+font-weight:700;
+transition:0.3s ease;
+box-shadow:0 0 30px rgba(255,0,60,0.5);
+display:inline-block;
+z-index:2;
 }
 
 .button:hover{
-  transform:scale(1.07);
-  box-shadow:0 0 45px rgba(255,0,60,0.8);
-  background:#ff2a5c;
+transform:scale(1.07);
+box-shadow:0 0 45px rgba(255,0,60,0.8);
+background:#ff2a5c;
 }
 
-/* CHARACTER IMAGES */
+/* CHARACTERS */
 .character{
-  position:absolute;
-  bottom:0;
-  max-height:95vh;
-  z-index:1;
-  pointer-events:none;
+position:absolute;
+bottom:0;
+max-height:95vh;
+z-index:1;
+pointer-events:none;
 }
 
-/* Joker (LEFT SIDE) */
 .joker{
-  left:-60px;                 /* MOVE LEFT/RIGHT HERE */
-  transform:scaleX(-1) rotate(-6deg);  /* flip + rotate */
-  filter: drop-shadow(0 0 30px rgba(0,140,255,0.55))
-          drop-shadow(0 0 70px rgba(0,140,255,0.25));
+left:-60px;
+transform:scaleX(-1) rotate(-6deg);
+filter:
+drop-shadow(0 0 30px rgba(0,140,255,0.6))
+drop-shadow(0 0 70px rgba(0,140,255,0.3));
 }
 
-/* Sumire (RIGHT SIDE) */
 .sumire{
-  right:-40px;                /* MOVE LEFT/RIGHT HERE */
-  transform:rotate(6deg);
-  filter: drop-shadow(0 0 30px rgba(255,0,60,0.55))
-          drop-shadow(0 0 70px rgba(255,0,60,0.25));
+right:-40px;
+transform:rotate(6deg);
+filter:
+drop-shadow(0 0 30px rgba(255,0,60,0.6))
+drop-shadow(0 0 70px rgba(255,0,60,0.3));
 }
 
 /* PORTFOLIO */
 .portfolio{
-  padding:110px 20px 80px;
-  background:rgba(0,0,0,0.90);
+padding:110px 20px 80px;
+background:rgba(0,0,0,0.90);
 }
 
 .section-title{
-  font-size:clamp(32px, 4vw, 56px);
-  font-weight:800;
-  margin-bottom:40px;
+font-size:clamp(32px,4vw,56px);
+font-weight:800;
+margin-bottom:40px;
 }
 
 .video-grid{
-  max-width:1200px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  gap:28px;
+max-width:1200px;
+margin:0 auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:28px;
 }
 
 .video-card{
-  background:rgba(0,0,0,0.55);
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.55);
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
 }
 
 video{
-  width:100%;
-  height:auto;
-  max-height:500px;
-  background:#000;
+width:100%;
+height:auto;
+max-height:500px;
+background:#000;
+}
+
+/* Hide download button */
+video::-webkit-media-controls-download-button{
+display:none;
 }
 
 /* FOOTER */
 footer{
-  padding:50px 20px;
-  font-size:14px;
-  background:rgba(0,0,0,0.92);
-  opacity:0.9;
+padding:50px 20px;
+font-size:14px;
+background:rgba(0,0,0,0.92);
+opacity:0.9;
 }
 
-/* ===== MOBILE CLEAN VERSION ===== */
-@media (max-width: 768px){
-
-  .hero{
-    height:92vh;
-  }
-
-  .title{
-    font-size:38px;
-    letter-spacing:3px;
-  }
-
-  .subtitle{
-    font-size:15px;
-    max-width:320px;
-  }
-
-  .button{
-    padding:14px 28px;
-  }
-
-  /* Hide Joker on phone for clean look */
-  .joker{
-    display:none;
-  }
-
-  /* Move Sumire slightly */
-  .sumire{
-    right:-120px;
-    max-height:85vh;
-    transform:rotate(8deg);
-  }
+/* MUSIC PLAYER */
+.music-player{
+position:fixed;
+bottom:20px;
+right:20px;
+background:rgba(0,0,0,0.7);
+padding:10px 15px;
+border-radius:12px;
+display:flex;
+align-items:center;
+gap:10px;
+z-index:9999;
+backdrop-filter:blur(6px);
 }
 
+.music-player button{
+background:#ff003c;
+border:none;
+color:#fff;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+}
+
+.music-player input{
+width:90px;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+.hero{height:92vh;}
+.title{font-size:38px;letter-spacing:3px;}
+.subtitle{font-size:15px;max-width:320px;}
+.button{padding:14px 28px;}
+
+.joker{display:none;}
+.sumire{right:-120px;max-height:85vh;}
+}
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 
 <section class="hero">
-  <img src="joker.png" class="character joker">
-  <img src="sumire.png" class="character sumire">
+<img src="joker.png" class="character joker">
+<img src="sumire.png" class="character sumire">
 
-  <h1 class="title">LUVIE EDITS</h1>
-  <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
-  <a href="#portfolio" class="button">Watch My Work</a>
+<h1 class="title">LUVIE EDITS</h1>
+<p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
+<a href="#portfolio" class="button">Watch My Work</a>
 </section>
 
 <section id="portfolio" class="portfolio">
-  <h2 class="section-title">Portfolio</h2>
+<h2 class="section-title">Portfolio</h2>
 
-  <div class="video-grid">
-    <div class="video-card">
+<div class="video-grid">
+<div class="video-card">
 <video controls controlsList="nodownload noremoteplayback" disablePictureInPicture preload="metadata">
-        <source src="video1.mp4" type="video/mp4">
-      </video>
-    </div>
+<source src="video1.mp4" type="video/mp4">
+</video>
+</div>
 
-    <div class="video-card">
+<div class="video-card">
 <video controls controlsList="nodownload noremoteplayback" disablePictureInPicture preload="metadata">
-          <source src="video2.mp4" type="video/mp4">
-      </video>
-    </div>
+<source src="video2.mp4" type="video/mp4">
+</video>
+</div>
 
-    <div class="video-card">
+<div class="video-card">
 <video controls controlsList="nodownload noremoteplayback" disablePictureInPicture preload="metadata">
-          <source src="video3.mp4" type="video/mp4">
-      </video>
-    </div>
+<source src="video3.mp4" type="video/mp4">
+</video>
+</div>
 
-    <div class="video-card">
+<div class="video-card">
 <video controls controlsList="nodownload noremoteplayback" disablePictureInPicture preload="metadata">
-          <source src="video4.mp4" type="video/mp4">
-      </video>
-    </div>
-  </div>
+<source src="video4.mp4" type="video/mp4">
+</video>
+</div>
+</div>
 </section>
 
+<!-- MUSIC UI -->
+<div class="music-player">
+<button id="musicToggle">Pause</button>
+<input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+</div>
+
+<audio id="bgMusic"></audio>
+
 <footer>
-  © 2026 Luvie Edits
+© 2026 Luvie Edits
 </footer>
+
+<script>
+const tracks=["music1.mp3","music2.mp3","music3.mp3"];
+const music=document.getElementById("bgMusic");
+const toggle=document.getElementById("musicToggle");
+const volume=document.getElementById("volumeSlider");
+const videos=document.querySelectorAll("video");
+
+let current=0;
+music.volume=0.5;
+
+function playTrack(i){
+current=i;
+music.src=tracks[current];
+music.play().catch(()=>{});
+}
+
+function nextTrack(){
+current=(current+1)%tracks.length;
+playTrack(current);
+}
+
+music.addEventListener("ended",nextTrack);
+
+window.addEventListener("load",()=>{
+playTrack(0);
+});
+
+toggle.addEventListener("click",()=>{
+if(music.paused){
+music.play();
+toggle.textContent="Pause";
+}else{
+music.pause();
+toggle.textContent="Play";
+}
+});
+
+volume.addEventListener("input",()=>{
+music.volume=volume.value;
+});
+
+videos.forEach(v=>{
+v.addEventListener("play",()=>{
+music.pause();
+});
+
+v.addEventListener("ended",()=>{
+music.play().catch(()=>{});
+});
+
+v.addEventListener("pause",()=>{
+if(!v.ended) music.play().catch(()=>{});
+});
+});
+</script>
 
 </body>
 </html>
