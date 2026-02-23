@@ -279,33 +279,63 @@
     opacity:0.9;
   }
 
-  /* MUSIC PLAYER */
+  /* MUSIC PLAYER (UPDATED: icon button + red slider) */
   .music-player{
     position:fixed;
     bottom:20px;
     right:20px;
-    background:rgba(0,0,0,0.7);
-    padding:10px 15px;
-    border-radius:12px;
+    background:rgba(0,0,0,0.75);
+    padding:10px 14px;
+    border-radius:14px;
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:12px;
     z-index:9999;
     backdrop-filter:blur(6px);
+    border:1px solid rgba(255,0,60,0.25);
+    box-shadow:0 0 25px rgba(255,0,60,0.25);
   }
 
-  .music-player button{
-    background:#ff003c;
-    border:none;
-    color:#fff;
-    padding:6px 12px;
-    border-radius:8px;
+  .music-btn{
+    background:#0b0b0b;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:10px;
+    padding:8px;
     cursor:pointer;
-    font-weight:600;
+    display:grid;
+    place-items:center;
   }
 
-  .music-player input{
-    width:90px;
+  .music-btn:hover{
+    border-color:rgba(255,0,60,0.6);
+    box-shadow:0 0 20px rgba(255,0,60,0.4);
+  }
+
+  .music-icon{
+    width:18px;
+    height:18px;
+    display:block;
+  }
+
+  #volumeSlider{
+    width:100px;
+    height:6px;
+    -webkit-appearance:none;
+    appearance:none;
+    background:rgba(255,0,60,0.25);
+    border-radius:999px;
+    outline:none;
+  }
+
+  #volumeSlider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:14px;
+    height:14px;
+    border-radius:999px;
+    background:#ff003c;
+    box-shadow:0 0 20px rgba(255,0,60,0.7);
+    cursor:pointer;
   }
 
   /* MOBILE */
@@ -461,10 +491,12 @@
   </div>
 </section>
 
-<!-- MUSIC UI -->
+<!-- MUSIC UI (UPDATED) -->
 <div class="music-player">
-  <button id="musicToggle">Pause</button>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+  <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music">
+    <img src="pause.png" id="musicIcon" class="music-icon" alt="Pause">
+  </button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume">
 </div>
 
 <audio id="bgMusic"></audio>
@@ -474,24 +506,40 @@
 </footer>
 
 <script>
-  // ===== Background Music =====
+  // ===== Background Music (UPDATED: icon + respects user pause) =====
   const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
   const toggle = document.getElementById("musicToggle");
+  const musicIcon = document.getElementById("musicIcon");
   const volume = document.getElementById("volumeSlider");
 
   let current = 0;
-  music.volume = 0.5;
+  music.volume = Number(volume.value);
+
+  // if user pauses music manually, don't auto-resume
+  let userWantsMusic = true;
+
+  function setMusicIcon(isPlaying){
+    musicIcon.src = isPlaying ? "pause.png" : "start.png";
+    musicIcon.alt = isPlaying ? "Pause" : "Play";
+  }
 
   function playTrack(i){
     current = i;
     music.src = tracks[current];
-    music.play().catch(()=>{});
+
+    if(userWantsMusic){
+      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+    }else{
+      setMusicIcon(false);
+    }
   }
+
   function nextTrack(){
     current = (current + 1) % tracks.length;
     playTrack(current);
   }
+
   music.addEventListener("ended", nextTrack);
 
   window.addEventListener("load", () => {
@@ -500,11 +548,12 @@
 
   toggle.addEventListener("click", () => {
     if(music.paused){
-      music.play().catch(()=>{});
-      toggle.textContent = "Pause";
+      userWantsMusic = true;
+      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
     }else{
+      userWantsMusic = false;
       music.pause();
-      toggle.textContent = "Play";
+      setMusicIcon(false);
     }
   });
 
@@ -585,17 +634,21 @@
     // UI events
     video.addEventListener("play", ()=>{
       music.pause();
+      setMusicIcon(false);
       setPlayUI();
     });
 
     video.addEventListener("pause", ()=>{
-      // resume music only if user didn't pause music manually
-      music.play().catch(()=>{});
+      if(userWantsMusic){
+        music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+      }
       setPlayUI();
     });
 
     video.addEventListener("ended", ()=>{
-      music.play().catch(()=>{});
+      if(userWantsMusic){
+        music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+      }
       setPlayUI();
     });
 
