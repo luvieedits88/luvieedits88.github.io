@@ -136,25 +136,22 @@
   }
 
   /* ===== Persona 5 Custom Player (UPDATED: perfect fit on desktop + mobile) ===== */
-  .p5-player{
-    position:relative;
-    width:100%;
-    aspect-ratio: 16 / 10;
-    background:#000;
-  
-    overflow: visible;        /* ✅ FIX: allow controls to be clickable */
-    padding-bottom: 56px;     /* ✅ FIX: reserve space for controls */
-    box-sizing: border-box;
+.p5-player{
+  position:relative;
+  width:100%;
+  background:#000;
+
+  display:flex;              /* ✅ layout fix */
+  flex-direction:column;     /* video + controls stack */
 }
 
   .p5-video{
-    width:100%;
-    height:100%;
-    object-fit: contain;   /* switch to cover if you want crop-to-fill */
-    display:block;
-    background:#000;
-    max-height:none;       /* IMPORTANT: removes old max-height issue */
-  }
+   width:100%;
+   flex:1;                    /* ✅ fills player */
+   object-fit: contain;
+   display:block;
+   background:#000;
+}
 
   /* Mobile gesture overlay */
   .p5-gestures{
@@ -221,15 +218,18 @@
   }
 
   .p5-controls{
-    position:absolute;
-    left:0; right:0; bottom:0;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 10px;
-    background:linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0.20));
-    z-index:7; /* top layer */
-  }
+   position:relative;         /* ✅ KEY FIX */
+   display:flex;
+   align-items:center;
+   gap:10px;
+   padding:10px 14px;
+
+   background:linear-gradient(
+     to top,
+     rgba(0,0,0,0.88),
+     rgba(0,0,0,0.20)
+  );
+}
 
   .p5-btn{
     background:#0b0b0b;
