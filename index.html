@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. GLOBAL RESET & BASE STYLES --- */
+        /* --- 1. GLOBAL RESET --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         
@@ -47,8 +47,8 @@
             z-index: 1;
             pointer-events: none;
         }
-        .joker { left: -50px; transform: scaleX(-1); filter: drop-shadow(0 0 20px rgba(0,100,255,0.5)); }
-        .sumire { right: -50px; filter: drop-shadow(0 0 20px rgba(255,0,60,0.5)); }
+        .joker { left: -50px; transform: scaleX(-1); }
+        .sumire { right: -50px; }
 
         .button {
             margin-top: 30px;
@@ -60,7 +60,6 @@
             font-weight: 700;
             z-index: 2;
             transition: 0.3s ease;
-            box-shadow: 0 0 20px rgba(255,0,60,0.4);
         }
 
         /* --- 3. PORTFOLIO GRID --- */
@@ -82,10 +81,9 @@
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
-            transition: transform 0.3s ease;
         }
 
-        /* --- 4. PERSONA PLAYER UI (THE FIX) --- */
+        /* --- 4. PERSONA PLAYER UI (FIXED) --- */
         .p5-player {
             position: relative;
             width: 100%;
@@ -108,19 +106,18 @@
             border-radius: 15px;
             cursor: pointer;
             z-index: 5;
-            display: grid;
-            place-items: center;
+            display: grid; place-items: center;
         }
 
         .p5-controls {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
             height: 50px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            background: linear-gradient(transparent, rgba(0,0,0,0.92));
             display: flex;
             align-items: center;
             padding: 0 12px;
-            gap: 10px;
+            gap: 8px; /* Slightly tighter gap for mobile */
             z-index: 10;
         }
 
@@ -128,56 +125,45 @@
             background: #151515;
             border: 1px solid #333;
             color: #fff;
-            width: 34px; height: 34px;
+            width: 32px; height: 32px;
             border-radius: 8px;
             cursor: pointer;
-            flex-shrink: 0; /* Ensures buttons never disappear */
+            flex-shrink: 0; /* STOP BUTTON FROM DISAPPEARING */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .p5-btn img { width: 14px; height: 14px; }
+        .p5-time { font-size: 11px; font-weight: 700; min-width: 35px; flex-shrink: 0; }
 
-        .p5-time { font-size: 11px; font-weight: 700; min-width: 40px; flex-shrink: 0; }
-
-        /* THE MAGIC PIECE: flex: 1 makes the bar absorb all extra/less space */
+        /* THE FIX: Progress bar absorbs the space so buttons don't move */
         .p5-progress {
             flex: 1; 
             height: 6px;
             cursor: pointer;
             accent-color: #ff003c;
+            min-width: 40px; 
         }
 
-        .p5-vol { width: 60px; height: 5px; accent-color: #ff003c; }
+        .p5-vol { 
+            width: 60px; 
+            height: 5px; 
+            accent-color: #ff003c; 
+            flex-shrink: 1; /* Allow slider to shrink if needed */
+        }
 
         .video-label {
             padding: 15px;
             text-align: left;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
-        .video-label h3 { font-size: 16px; margin-bottom: 4px; }
-        .video-label p { font-size: 12px; color: #777; }
 
-        /* --- 5. MUSIC PLAYER --- */
-        .music-bar {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            background: rgba(10,10,10,0.9);
-            padding: 10px 15px;
-            border-radius: 12px;
-            border: 1px solid #ff003c;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        /* --- 6. MOBILE RESPONSIVENESS --- */
-        @media (max-width: 768px) {
+        /* --- 5. MOBILE OVERRIDE --- */
+        @media (max-width: 600px) {
+            .p5-vol { display: none; } /* Hide volume on mobile to save the Fullscreen button */
             .character { display: none; }
-            .p5-vol { display: none; } /* Hide volume on mobile to save space */
-            .p5-controls { gap: 6px; padding: 0 8px; }
+            .p5-controls { gap: 6px; }
         }
     </style>
 </head>
@@ -193,54 +179,75 @@
     <section id="portfolio" class="portfolio">
         <div class="video-grid">
             
-            <script>
-                for(let i=1; i<=4; i++) {
-                    document.write(`
-                    <div class="video-card">
-                        <div class="p5-player">
-                            <video class="p5-video" playsinline src="video${i}.mp4"></video>
-                            <button class="p5-bigplay"><img src="start.png"></button>
-                            <div class="p5-controls">
-                                <button class="p5-btn p5-play"><img src="start.png"></button>
-                                <div class="p5-time">0:00</div>
-                                <input type="range" class="p5-progress" value="0" min="0" max="100" step="0.1">
-                                <button class="p5-btn p5-mute">🔊</button>
-                                <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
-                                <button class="p5-btn p5-full">⛶</button>
-                            </div>
-                        </div>
-                        <div class="video-label">
-                            <h3>Edit ${i}</h3>
-                            <p>Persona-style player</p>
-                        </div>
+            <div class="video-card">
+                <div class="p5-player">
+                    <video class="p5-video" playsinline src="video1.mp4"></video>
+                    <button class="p5-bigplay"><img src="start.png"></button>
+                    <div class="p5-controls">
+                        <button class="p5-btn p5-play"><img src="start.png"></button>
+                        <div class="p5-time">0:00</div>
+                        <input type="range" class="p5-progress" value="0">
+                        <button class="p5-btn p5-mute">🔊</button>
+                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
+                        <button class="p5-btn p5-full">⛶</button>
                     </div>
-                    `);
-                }
-            </script>
+                </div>
+                <div class="video-label"><h3>Edit 1</h3><p>Persona-style player</p></div>
+            </div>
+
+            <div class="video-card">
+                <div class="p5-player">
+                    <video class="p5-video" playsinline src="video2.mp4"></video>
+                    <button class="p5-bigplay"><img src="start.png"></button>
+                    <div class="p5-controls">
+                        <button class="p5-btn p5-play"><img src="start.png"></button>
+                        <div class="p5-time">0:00</div>
+                        <input type="range" class="p5-progress" value="0">
+                        <button class="p5-btn p5-mute">🔊</button>
+                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
+                        <button class="p5-btn p5-full">⛶</button>
+                    </div>
+                </div>
+                <div class="video-label"><h3>Edit 2</h3><p>Persona-style player</p></div>
+            </div>
+
+            <div class="video-card">
+                <div class="p5-player">
+                    <video class="p5-video" playsinline src="video3.mp4"></video>
+                    <button class="p5-bigplay"><img src="start.png"></button>
+                    <div class="p5-controls">
+                        <button class="p5-btn p5-play"><img src="start.png"></button>
+                        <div class="p5-time">0:00</div>
+                        <input type="range" class="p5-progress" value="0">
+                        <button class="p5-btn p5-mute">🔊</button>
+                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
+                        <button class="p5-btn p5-full">⛶</button>
+                    </div>
+                </div>
+                <div class="video-label"><h3>Edit 3</h3><p>Persona-style player</p></div>
+            </div>
+
+            <div class="video-card">
+                <div class="p5-player">
+                    <video class="p5-video" playsinline src="video4.mp4"></video>
+                    <button class="p5-bigplay"><img src="start.png"></button>
+                    <div class="p5-controls">
+                        <button class="p5-btn p5-play"><img src="start.png"></button>
+                        <div class="p5-time">0:00</div>
+                        <input type="range" class="p5-progress" value="0">
+                        <button class="p5-btn p5-mute">🔊</button>
+                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
+                        <button class="p5-btn p5-full">⛶</button>
+                    </div>
+                </div>
+                <div class="video-label"><h3>Edit 4</h3><p>Persona-style player</p></div>
+            </div>
 
         </div>
     </section>
 
-    <div class="music-bar">
-        <button id="mToggle" class="p5-btn"><img src="pause.png" id="mIcon"></button>
-        <input type="range" id="mVol" min="0" max="1" step="0.1" value="0.5" style="width:60px">
-    </div>
-    <audio id="bgMusic" loop src="music1.mp3"></audio>
-
     <script>
-        const bgMusic = document.getElementById('bgMusic');
-        const mToggle = document.getElementById('mToggle');
-        const mIcon = document.getElementById('mIcon');
-        const mVol = document.getElementById('mVol');
-
-        // Music Controls
-        mToggle.onclick = () => {
-            if(bgMusic.paused) { bgMusic.play(); mIcon.src="pause.png"; }
-            else { bgMusic.pause(); mIcon.src="start.png"; }
-        };
-        mVol.oninput = () => bgMusic.volume = mVol.value;
-
-        // Video Player Logic
+        // Apply logic to all 4 video players
         document.querySelectorAll('.video-card').forEach(card => {
             const video = card.querySelector('video');
             const playBtn = card.querySelector('.p5-play');
@@ -252,20 +259,17 @@
             const full = card.querySelector('.p5-full');
             const player = card.querySelector('.p5-player');
 
-            const toggle = () => {
-                if(video.paused) { 
-                    video.play(); 
-                    bgMusic.pause(); 
-                    mIcon.src="start.png"; 
-                } else { 
-                    video.pause(); 
-                }
-            };
-
+            const toggle = () => { video.paused ? video.play() : video.pause(); };
             playBtn.onclick = bigBtn.onclick = toggle;
 
-            video.onplay = () => { bigBtn.style.display="none"; playBtn.querySelector('img').src="pause.png"; };
-            video.onpause = () => { bigBtn.style.display="grid"; playBtn.querySelector('img').src="start.png"; };
+            video.onplay = () => { 
+                bigBtn.style.display="none"; 
+                playBtn.querySelector('img').src="pause.png"; 
+            };
+            video.onpause = () => { 
+                bigBtn.style.display="grid"; 
+                playBtn.querySelector('img').src="start.png"; 
+            };
 
             video.ontimeupdate = () => {
                 const m = Math.floor(video.currentTime / 60);
@@ -276,7 +280,10 @@
 
             prog.oninput = () => video.currentTime = (prog.value / 100) * video.duration;
             vol.oninput = () => video.volume = vol.value;
-            mute.onclick = () => { video.muted = !video.muted; mute.textContent = video.muted ? "🔇" : "🔊"; };
+            mute.onclick = () => { 
+                video.muted = !video.muted; 
+                mute.textContent = video.muted ? "🔇" : "🔊"; 
+            };
 
             full.onclick = () => {
                 if (!document.fullscreenElement) {
