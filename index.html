@@ -121,7 +121,7 @@
 
   .video-card{
     border-radius:18px;
-    overflow:hidden; /* clips anything that goes outside (rounded corners) */
+    overflow:hidden;
     background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));
     border: 1px solid rgba(255,255,255,0.10);
     box-shadow: 0 18px 50px rgba(0,0,0,0.65);
@@ -142,14 +142,56 @@
     background:#000;
     display:flex;
     flex-direction:column;
+
+    /* ✅ helps fullscreen sizing */
+    min-height:0;
   }
 
   .p5-video{
     width:100%;
     flex:1;
+    height:100%; /* ✅ helps fullscreen sizing */
     object-fit:contain;
     display:block;
     background:#000;
+  }
+
+  /* ===== FULLSCREEN FIXES (desktop + mobile) ===== */
+  .p5-player:fullscreen{
+    width:100vw !important;
+    height:100vh !important;
+    background:#000 !important;
+    border-radius:0 !important;
+  }
+  .p5-player:fullscreen .p5-video{
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain !important;
+    background:#000 !important;
+  }
+  .p5-player:fullscreen .p5-controls{
+    left:16px;
+    right:16px;
+    bottom:14px;
+  }
+
+  /* Safari / older */
+  .p5-player:-webkit-full-screen{
+    width:100vw !important;
+    height:100vh !important;
+    background:#000 !important;
+    border-radius:0 !important;
+  }
+  .p5-player:-webkit-full-screen .p5-video{
+    width:100% !important;
+    height:100% !important;
+    object-fit:contain !important;
+    background:#000 !important;
+  }
+  .p5-player:-webkit-full-screen .p5-controls{
+    left:16px;
+    right:16px;
+    bottom:14px;
   }
 
   /* Mobile gesture overlay */
@@ -380,7 +422,6 @@
     .joker{display:none;}
     .sumire{right:-120px;max-height:85vh;}
 
-    /* ✅ MAIN FIX: wrap controls so buttons don't go outside the card */
     .p5-controls{
       left:14px;
       right:14px;
@@ -397,7 +438,6 @@
       font-size:16px;
     }
 
-    /* ✅ seek bar becomes a full row */
     .p5-progress{
       flex: 1 1 100%;
       height:8px;
@@ -435,7 +475,6 @@
           <source src="video1.mp4" type="video/mp4">
         </video>
 
-        <!-- Mobile gesture overlay -->
         <div class="p5-gestures" aria-hidden="true">
           <button class="p5-zone p5-left" type="button"></button>
           <button class="p5-zone p5-mid" type="button"></button>
@@ -448,7 +487,6 @@
           <img src="start.png" alt="Play">
         </button>
 
-        <!-- ✅ UPDATED CONTROLS (volume up/down + seek +/- + fullscreen) -->
         <div class="p5-controls">
           <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
             <img src="start.png" class="p5-icon" alt="Play">
@@ -468,6 +506,7 @@
           <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
           <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up">+</button>
 
+          <!-- ✅ icon will switch when in fullscreen -->
           <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
         </div>
       </div>
@@ -614,7 +653,6 @@
   let current = 0;
   music.volume = Number(volume.value);
 
-  // if user pauses music manually, don't auto-resume
   let userWantsMusic = true;
 
   function setMusicIcon(isPlaying){
@@ -688,12 +726,15 @@
     activeVideo = player ? player.querySelector(".p5-video") : null;
   }
 
-  function toggleFullscreen(el){
-    if(!document.fullscreenElement){
-      (el.requestFullscreen ? el.requestFullscreen() : el.querySelector("video")?.requestFullscreen?.());
-    }else{
-      document.exitFullscreen?.();
-    }
+  // ✅ helper: cross-browser fullscreen element getter
+  function getFsEl(){
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+
+  // ✅ helper: exit fullscreen cross-browser
+  function exitFs(){
+    if(document.exitFullscreen) return document.exitFullscreen();
+    if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
   }
 
   document.querySelectorAll(".p5-player").forEach(player=>{
@@ -705,7 +746,6 @@
     const prog = player.querySelector(".p5-progress");
     const cur = player.querySelector(".p5-current");
 
-    // New buttons
     const backBtn = player.querySelector(".p5-back");
     const fwdBtn  = player.querySelector(".p5-fwd");
     const volUp   = player.querySelector(".p5-vol-up");
@@ -716,7 +756,7 @@
     const mid = player.querySelector(".p5-mid");
     const right = player.querySelector(".p5-right");
 
-    // init volume for video
+    // init volume
     video.volume = 0.8;
     video.muted = false;
 
@@ -741,6 +781,26 @@
       video.volume = clamp01((video.volume ?? 0.8) + delta);
       setMuteIcon();
       showHint(player, `Vol ${Math.round(video.volume * 100)}%`);
+    }
+
+    // ✅ FULLSCREEN button should toggle (enter/exit)
+    async function togglePlayerFullscreen(){
+      setActive(player);
+
+      const fsEl = getFsEl();
+
+      // If ANY element is fullscreen, exit first
+      if(fsEl){
+        await exitFs();
+        return;
+      }
+
+      // Enter fullscreen on the player (keeps your custom controls)
+      try{
+        if(player.requestFullscreen) await player.requestFullscreen();
+        else if(player.webkitRequestFullscreen) await player.webkitRequestFullscreen();
+        else if(video.requestFullscreen) await video.requestFullscreen();
+      }catch(e){}
     }
 
     // Set active on interaction
@@ -789,19 +849,18 @@
       setMuteIcon();
     });
 
-    // fullscreen (better iOS support)
-    fullBtn.addEventListener("click", ()=>{
-      setActive(player);
+    // fullscreen toggle
+    fullBtn.addEventListener("click", togglePlayerFullscreen);
 
-      // iOS Safari fallback
-      if (video.webkitEnterFullscreen) {
-        video.webkitEnterFullscreen();
-        return;
-      }
-
-      if(player.requestFullscreen) player.requestFullscreen();
-      else if(video.requestFullscreen) video.requestFullscreen();
-    });
+    // optional: update fullscreen button icon when fullscreen changes
+    function updateFsIcon(){
+      const fs = !!getFsEl();
+      fullBtn.textContent = fs ? "⤢" : "⛶"; // exit / enter symbols
+      fullBtn.setAttribute("aria-label", fs ? "Exit fullscreen" : "Fullscreen");
+    }
+    document.addEventListener("fullscreenchange", updateFsIcon);
+    document.addEventListener("webkitfullscreenchange", updateFsIcon);
+    updateFsIcon();
 
     // UI events
     video.addEventListener("play", ()=>{
@@ -830,7 +889,6 @@
       if(!isTouchDevice()){
         gestures.style.display = "none";
       }else{
-        // Tap middle = play/pause
         mid?.addEventListener("click", ()=>{
           setActive(player);
           if(video.paused) video.play();
@@ -838,7 +896,6 @@
           showHint(player, video.paused ? "Paused" : "Play");
         });
 
-        // Double tap left/right = -10 / +10
         let lastTapL = 0;
         let lastTapR = 0;
         const dbl = 320;
@@ -863,15 +920,12 @@
           lastTapR = now;
         });
 
-        // Long press middle = fullscreen
+        // Long press middle = fullscreen toggle
         let pressTimer = null;
         mid?.addEventListener("touchstart", ()=>{
           pressTimer = setTimeout(()=>{
-            try{
-              if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-              else (video.requestFullscreen ? video.requestFullscreen() : player.requestFullscreen?.());
-              showHint(player, "Fullscreen");
-            }catch(e){}
+            togglePlayerFullscreen();
+            showHint(player, "Fullscreen");
           }, 520);
         }, {passive:true});
 
@@ -891,13 +945,12 @@
     if(first) setActive(first);
   }
 
-  // ===== Keyboard shortcuts =====
+  // Keyboard shortcuts (desktop)
   document.addEventListener("keydown", (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     if(tag === "input" || tag === "textarea") return;
     if(!activeVideo) return;
 
-    // Space = play/pause
     if(e.code === "Space"){
       e.preventDefault();
       activeVideo.paused ? activeVideo.play() : activeVideo.pause();
@@ -906,14 +959,17 @@
 
     const k = e.key;
 
-    // F = fullscreen
     if(k === "f" || k === "F"){
       e.preventDefault();
-      toggleFullscreen(activePlayer || activeVideo);
+      // toggle fullscreen for active player
+      const p = activePlayer;
+      if(p){
+        const btn = p.querySelector(".p5-full");
+        btn?.click();
+      }
       return;
     }
 
-    // Left/Right = seek
     if(k === "ArrowLeft"){
       e.preventDefault();
       activeVideo.currentTime = Math.max(0, activeVideo.currentTime - 5);
@@ -925,7 +981,6 @@
       return;
     }
 
-    // Up/Down = volume
     if(k === "ArrowUp"){
       e.preventDefault();
       activeVideo.volume = Math.min(1, (activeVideo.volume ?? 1) + 0.05);
@@ -939,7 +994,6 @@
       return;
     }
 
-    // M = mute
     if(k === "m" || k === "M"){
       e.preventDefault();
       activeVideo.muted = !activeVideo.muted;
