@@ -141,8 +141,11 @@
     width:100%;
     aspect-ratio: 16 / 10;
     background:#000;
-    overflow:hidden;
-  }
+  
+    overflow: visible;        /* ✅ FIX: allow controls to be clickable */
+    padding-bottom: 56px;     /* ✅ FIX: reserve space for controls */
+    box-sizing: border-box;
+}
 
   .p5-video{
     width:100%;
@@ -394,6 +397,13 @@
     .sumire{right:-120px;max-height:85vh;}
     .p5-vol{width:70px;}
     .p5-btn{padding:7px 9px;}
+  }
+
+  /* ===== Mobile safety: keep controls clickable ===== */
+  @media (max-width:768px){
+    .p5-player{
+      padding-bottom: 64px;
+    }
   }
 </style>
 </head>
