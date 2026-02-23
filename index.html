@@ -192,6 +192,54 @@
       --sumire-x: -140px;
     }
   }
+  /* ===== MOBILE CLEAN VIEW ===== */
+@media (max-width: 700px){
+
+  /* make hero breathe */
+  .hero{
+    height: 92vh;
+    padding: 18px;
+  }
+
+  /* smaller title/subtitle for phone */
+  .title{
+    font-size: 44px;
+    letter-spacing: 3px;
+  }
+
+  .subtitle{
+    font-size: 15px;
+    max-width: 320px;
+    margin-top: 10px;
+  }
+
+  .button{
+    padding: 14px 28px;
+    margin-top: 18px;
+  }
+
+  /* keep only ONE character on phone for cleanliness */
+  .joker{
+    display: none;
+  }
+
+  /* sumire becomes the “hero” character */
+  .sumire{
+    right: -120px;       /* move her slightly off the edge */
+    bottom: -40px;       /* push down so she doesn’t cover title */
+    max-height: 85vh;    /* fit better on phone */
+    transform: rotate(8deg);
+    opacity: 1;
+  }
+
+  /* add extra dark overlay so text stays readable */
+  body{
+    background-image:
+      linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.72)),
+      url("Background.jpg");
+  }
+} 
+  
 </style>
 </head>
 
