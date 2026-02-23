@@ -135,18 +135,62 @@
     box-shadow: 0 24px 70px rgba(0,0,0,0.75);
   }
 
-  /* ===== Persona 5 Custom Player ===== */
+  /* ===== Persona 5 Custom Player (UPDATED: perfect fit on desktop + mobile) ===== */
   .p5-player{
     position:relative;
+    width:100%;
+    aspect-ratio: 16 / 9;
     background:#000;
+    overflow:hidden;
   }
 
   .p5-video{
     width:100%;
-    height:auto;
-    max-height:520px;
+    height:100%;
+    object-fit: contain;   /* switch to cover if you want crop-to-fill */
     display:block;
     background:#000;
+    max-height:none;       /* IMPORTANT: removes old max-height issue */
+  }
+
+  /* Mobile gesture overlay */
+  .p5-gestures{
+    position:absolute;
+    inset:0;
+    display:flex;
+    z-index:4;
+    pointer-events:auto;
+  }
+  .p5-zone{
+    flex:1;
+    background:transparent;
+    border:none;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .p5-hint{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    padding:10px 14px;
+    border-radius:14px;
+    background:rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.14);
+    font-weight:800;
+    font-size:14px;
+    letter-spacing:0.6px;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity .15s ease, transform .15s ease;
+    z-index:5;
+  }
+  .p5-hint.show{
+    opacity:1;
+    transform:translate(-50%,-55%);
   }
 
   .p5-bigplay{
@@ -163,6 +207,7 @@
     place-items:center;
     box-shadow:0 0 40px rgba(255,0,60,0.35);
     transition:0.2s ease;
+    z-index:6; /* above gestures */
   }
   .p5-bigplay:hover{ transform:scale(1.05); }
 
@@ -180,6 +225,7 @@
     gap:10px;
     padding:10px 10px;
     background:linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0.20));
+    z-index:7; /* top layer */
   }
 
   .p5-btn{
@@ -279,7 +325,7 @@
     opacity:0.9;
   }
 
-  /* MUSIC PLAYER (UPDATED: icon button + red slider) */
+  /* MUSIC PLAYER (icon + red slider) */
   .music-player{
     position:fixed;
     bottom:20px;
@@ -368,11 +414,20 @@
 
   <div class="video-grid">
 
+    <!-- ===== CARD 1 ===== -->
     <div class="video-card">
       <div class="p5-player">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video1.mp4" type="video/mp4">
         </video>
+
+        <!-- Mobile gesture overlay -->
+        <div class="p5-gestures" aria-hidden="true">
+          <button class="p5-zone p5-left" type="button"></button>
+          <button class="p5-zone p5-mid" type="button"></button>
+          <button class="p5-zone p5-right" type="button"></button>
+        </div>
+        <div class="p5-hint">+10s</div>
 
         <button class="p5-bigplay" type="button" aria-label="Play">
           <img src="start.png" alt="Play">
@@ -398,11 +453,19 @@
       <div class="video-label">Edit 1 <span>Persona-style player</span></div>
     </div>
 
+    <!-- ===== CARD 2 ===== -->
     <div class="video-card">
       <div class="p5-player">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video2.mp4" type="video/mp4">
         </video>
+
+        <div class="p5-gestures" aria-hidden="true">
+          <button class="p5-zone p5-left" type="button"></button>
+          <button class="p5-zone p5-mid" type="button"></button>
+          <button class="p5-zone p5-right" type="button"></button>
+        </div>
+        <div class="p5-hint">+10s</div>
 
         <button class="p5-bigplay" type="button" aria-label="Play">
           <img src="start.png" alt="Play">
@@ -428,11 +491,19 @@
       <div class="video-label">Edit 2 <span>Persona-style player</span></div>
     </div>
 
+    <!-- ===== CARD 3 ===== -->
     <div class="video-card">
       <div class="p5-player">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video3.mp4" type="video/mp4">
         </video>
+
+        <div class="p5-gestures" aria-hidden="true">
+          <button class="p5-zone p5-left" type="button"></button>
+          <button class="p5-zone p5-mid" type="button"></button>
+          <button class="p5-zone p5-right" type="button"></button>
+        </div>
+        <div class="p5-hint">+10s</div>
 
         <button class="p5-bigplay" type="button" aria-label="Play">
           <img src="start.png" alt="Play">
@@ -458,11 +529,19 @@
       <div class="video-label">Edit 3 <span>Persona-style player</span></div>
     </div>
 
+    <!-- ===== CARD 4 ===== -->
     <div class="video-card">
       <div class="p5-player">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video4.mp4" type="video/mp4">
         </video>
+
+        <div class="p5-gestures" aria-hidden="true">
+          <button class="p5-zone p5-left" type="button"></button>
+          <button class="p5-zone p5-mid" type="button"></button>
+          <button class="p5-zone p5-right" type="button"></button>
+        </div>
+        <div class="p5-hint">+10s</div>
 
         <button class="p5-bigplay" type="button" aria-label="Play">
           <img src="start.png" alt="Play">
@@ -491,7 +570,7 @@
   </div>
 </section>
 
-<!-- MUSIC UI (UPDATED) -->
+<!-- MUSIC UI -->
 <div class="music-player">
   <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music">
     <img src="pause.png" id="musicIcon" class="music-icon" alt="Pause">
@@ -506,7 +585,7 @@
 </footer>
 
 <script>
-  // ===== Background Music (UPDATED: icon + respects user pause) =====
+  // ===== Background Music (icon + respects user pause) =====
   const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
   const toggle = document.getElementById("musicToggle");
@@ -569,6 +648,36 @@
     return `${m}:${sec}`;
   }
 
+  function isTouchDevice(){
+    return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+  }
+
+  function showHint(player, text){
+    const hint = player.querySelector(".p5-hint");
+    if(!hint) return;
+    hint.textContent = text;
+    hint.classList.add("show");
+    clearTimeout(hint._t);
+    hint._t = setTimeout(()=> hint.classList.remove("show"), 450);
+  }
+
+  // Active video tracking (for keyboard)
+  let activePlayer = null;
+  let activeVideo = null;
+
+  function setActive(player){
+    activePlayer = player;
+    activeVideo = player ? player.querySelector(".p5-video") : null;
+  }
+
+  function toggleFullscreen(el){
+    if(!document.fullscreenElement){
+      (el.requestFullscreen ? el.requestFullscreen() : el.querySelector("video")?.requestFullscreen?.());
+    }else{
+      document.exitFullscreen?.();
+    }
+  }
+
   document.querySelectorAll(".p5-player").forEach(player=>{
     const video = player.querySelector(".p5-video");
     const bigPlay = player.querySelector(".p5-bigplay");
@@ -579,8 +688,17 @@
     const vol = player.querySelector(".p5-vol");
     const cur = player.querySelector(".p5-current");
 
+    const gestures = player.querySelector(".p5-gestures");
+    const left = player.querySelector(".p5-left");
+    const mid = player.querySelector(".p5-mid");
+    const right = player.querySelector(".p5-right");
+
     // init volume for video
     video.volume = Number(vol.value);
+
+    // Set active on interaction
+    player.addEventListener("pointerdown", ()=> setActive(player));
+    player.addEventListener("mouseenter", ()=> setActive(player));
 
     function setPlayUI(){
       const playing = !video.paused && !video.ended;
@@ -594,8 +712,8 @@
     }
 
     // play/pause
-    bigPlay.addEventListener("click", ()=> video.play());
-    playBtn.addEventListener("click", ()=> video.paused ? video.play() : video.pause());
+    bigPlay.addEventListener("click", ()=> { setActive(player); video.play(); });
+    playBtn.addEventListener("click", ()=> { setActive(player); video.paused ? video.play() : video.pause(); });
 
     // time updates
     video.addEventListener("timeupdate", ()=>{
@@ -625,16 +743,20 @@
       muteBtn.textContent = video.muted ? "🔇" : "🔊";
     });
 
-    // fullscreen
+    // fullscreen button
     fullBtn.addEventListener("click", ()=>{
+      setActive(player);
       if(player.requestFullscreen) player.requestFullscreen();
       else if(video.requestFullscreen) video.requestFullscreen();
     });
 
     // UI events
     video.addEventListener("play", ()=>{
+      setActive(player);
+
       music.pause();
       setMusicIcon(false);
+
       setPlayUI();
     });
 
@@ -652,8 +774,124 @@
       setPlayUI();
     });
 
+    // ===== Mobile gestures =====
+    if(gestures){
+      if(!isTouchDevice()){
+        gestures.style.display = "none";
+      }else{
+        // Tap middle = play/pause
+        mid?.addEventListener("click", ()=>{
+          setActive(player);
+          if(video.paused) video.play();
+          else video.pause();
+          showHint(player, video.paused ? "Paused" : "Play");
+        });
+
+        // Double tap left/right = -10 / +10
+        let lastTapL = 0;
+        let lastTapR = 0;
+        const dbl = 320;
+
+        left?.addEventListener("click", ()=>{
+          setActive(player);
+          const now = Date.now();
+          if(now - lastTapL < dbl){
+            video.currentTime = Math.max(0, video.currentTime - 10);
+            showHint(player, "⏪ -10s");
+          }
+          lastTapL = now;
+        });
+
+        right?.addEventListener("click", ()=>{
+          setActive(player);
+          const now = Date.now();
+          if(now - lastTapR < dbl){
+            video.currentTime = Math.min(video.duration || Infinity, video.currentTime + 10);
+            showHint(player, "⏩ +10s");
+          }
+          lastTapR = now;
+        });
+
+        // Long press middle = fullscreen (nice on mobile)
+        let pressTimer = null;
+        mid?.addEventListener("touchstart", ()=>{
+          pressTimer = setTimeout(()=>{
+            try{
+              (video.requestFullscreen ? video.requestFullscreen() : player.requestFullscreen?.());
+              showHint(player, "Fullscreen");
+            }catch(e){}
+          }, 520);
+        }, {passive:true});
+
+        mid?.addEventListener("touchend", ()=> clearTimeout(pressTimer), {passive:true});
+        mid?.addEventListener("touchmove", ()=> clearTimeout(pressTimer), {passive:true});
+      }
+    }
+
     // initial
     setPlayUI();
+  });
+
+  // Fallback active
+  if(!activePlayer){
+    const first = document.querySelector(".p5-player");
+    if(first) setActive(first);
+  }
+
+  // ===== Keyboard shortcuts =====
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+    if(tag === "input" || tag === "textarea") return;
+    if(!activeVideo) return;
+
+    // Space = play/pause
+    if(e.code === "Space"){
+      e.preventDefault();
+      activeVideo.paused ? activeVideo.play() : activeVideo.pause();
+      return;
+    }
+
+    const k = e.key;
+
+    // F = fullscreen
+    if(k === "f" || k === "F"){
+      e.preventDefault();
+      toggleFullscreen(activePlayer || activeVideo);
+      return;
+    }
+
+    // Left/Right = seek
+    if(k === "ArrowLeft"){
+      e.preventDefault();
+      activeVideo.currentTime = Math.max(0, activeVideo.currentTime - 5);
+      return;
+    }
+    if(k === "ArrowRight"){
+      e.preventDefault();
+      activeVideo.currentTime = Math.min(activeVideo.duration || Infinity, activeVideo.currentTime + 5);
+      return;
+    }
+
+    // Up/Down = volume
+    if(k === "ArrowUp"){
+      e.preventDefault();
+      activeVideo.volume = Math.min(1, (activeVideo.volume ?? 1) + 0.05);
+      activeVideo.muted = false;
+      return;
+    }
+    if(k === "ArrowDown"){
+      e.preventDefault();
+      activeVideo.volume = Math.max(0, (activeVideo.volume ?? 1) - 0.05);
+      if(activeVideo.volume === 0) activeVideo.muted = true;
+      return;
+    }
+
+    // M = mute
+    if(k === "m" || k === "M"){
+      e.preventDefault();
+      activeVideo.muted = !activeVideo.muted;
+      return;
+    }
   });
 </script>
 
