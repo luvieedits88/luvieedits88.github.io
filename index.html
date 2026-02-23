@@ -8,145 +8,178 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-  html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
 
-  body{
-    margin:0;
-    font-family:'Montserrat', sans-serif;
-    color:#fff;
-    text-align:center;
+body{
+  margin:0;
+  font-family:'Montserrat', sans-serif;
+  color:#fff;
+  text-align:center;
 
-    /* Background image + readable dark overlay */
-    background-image:
-      linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-      url("Background.jpg");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-    min-height:100vh;
-  }
+  background-image:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url("Background.jpg");
 
-  /* HERO */
-  .hero{
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-  }
-
-  .title{
-    font-size:clamp(50px, 7vw, 110px);
-    font-weight:800;
-    letter-spacing:6px;
-    margin:0;
-    text-transform:uppercase;
-    text-shadow:0 15px 40px rgba(0,0,0,0.8);
-  }
-
-  .subtitle{
-    margin-top:20px;
-    font-size:20px;
-    color:rgba(255,255,255,0.85);
-    letter-spacing:1px;
-    max-width:900px;
-  }
-
-  .button{
-    margin-top:40px;
-    padding:16px 45px;
-    background:#ff003c;
-    color:#fff;
-    text-decoration:none;
-    border-radius:12px;
-    font-weight:700;
-    letter-spacing:1px;
-    transition:0.3s ease;
-    box-shadow:0 0 30px rgba(255,0,60,0.5);
-    display:inline-block;
-  }
-
-  .button:hover{
-    transform:scale(1.07);
-    box-shadow:0 0 45px rgba(255,0,60,0.8);
-    background:#ff2a5c;
-  }
-
-  /* PORTFOLIO */
-  .portfolio{
-    padding:110px 20px 80px;
-    background:rgba(0,0,0,0.86);
-  }
-
-  .section-title{
-    font-size:clamp(32px, 4vw, 56px);
-    font-weight:800;
-    margin:0 0 40px;
-    text-shadow:0 12px 30px rgba(0,0,0,0.6);
-  }
-
-  .video-grid{
-    max-width:1200px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-    gap:28px;
-  }
-
-  .video-card{
-    background:rgba(0,0,0,0.55);
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,0.6);
-    transition:0.25s ease;
-  }
-
-  .video-card:hover{
-    transform:translateY(-8px);
-  }
-
-video {
-  width: 100%;
-  height: auto;
-  max-height: 500px;
-  border-radius: 18px;
-  background: #000;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  min-height:100vh;
 }
 
-  .video-label{
-    padding:14px 14px 16px;
-    font-size:14px;
-    opacity:0.85;
-    text-align:left;
-  }
+/* HERO */
+.hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  overflow:hidden;
+}
 
-  /* FOOTER */
-  footer{
-    padding:50px 20px;
-    font-size:14px;
-    background:rgba(0,0,0,0.92);
-    opacity:0.9;
-  }
+/* Character base */
+.character{
+  position:absolute;
+  bottom:0;
+  max-height:90vh;
+  pointer-events:none;
+  z-index:1;
+  transition:0.5s ease;
+}
 
-  footer a{
-    color:#ff003c;
-    text-decoration:none;
-  }
+/* Joker (blue side) */
+.joker{
+  left:-60px;
+  transform:rotate(-14deg);
+  filter:drop-shadow(0 0 45px rgba(0,140,255,0.6));
+}
 
-  footer a:hover{
-    text-decoration:underline;
-  }
+/* Sumire (red side) */
+.sumire{
+  right:-40px;
+  transform:rotate(12deg);
+  filter:drop-shadow(0 0 45px rgba(255,0,60,0.6));
+}
+
+/* Hero text above characters */
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.title{
+  font-size:clamp(50px, 7vw, 110px);
+  font-weight:800;
+  letter-spacing:6px;
+  margin:0;
+  text-transform:uppercase;
+  text-shadow:0 15px 40px rgba(0,0,0,0.8);
+}
+
+.subtitle{
+  margin-top:20px;
+  font-size:20px;
+  color:rgba(255,255,255,0.9);
+  letter-spacing:1px;
+  max-width:900px;
+}
+
+.button{
+  margin-top:40px;
+  padding:16px 45px;
+  background:#ff003c;
+  color:#fff;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:700;
+  letter-spacing:1px;
+  transition:0.3s ease;
+  box-shadow:0 0 30px rgba(255,0,60,0.5);
+  display:inline-block;
+}
+
+.button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 50px rgba(255,0,60,0.9);
+  background:#ff2a5c;
+}
+
+/* PORTFOLIO */
+.portfolio{
+  padding:110px 20px 80px;
+  background:rgba(0,0,0,0.88);
+}
+
+.section-title{
+  font-size:clamp(32px, 4vw, 56px);
+  font-weight:800;
+  margin:0 0 40px;
+  text-shadow:0 12px 30px rgba(0,0,0,0.6);
+}
+
+.video-grid{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:28px;
+}
+
+.video-card{
+  background:rgba(0,0,0,0.6);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+  transition:0.25s ease;
+}
+
+.video-card:hover{
+  transform:translateY(-8px);
+}
+
+video{
+  width:100%;
+  height:auto;
+  max-height:500px;
+  border-radius:18px;
+  background:#000;
+}
+
+.video-label{
+  padding:14px 14px 16px;
+  font-size:14px;
+  opacity:0.85;
+  text-align:left;
+}
+
+/* FOOTER */
+footer{
+  padding:50px 20px;
+  font-size:14px;
+  background:rgba(0,0,0,0.92);
+  opacity:0.9;
+}
 </style>
 </head>
 
 <body>
 
 <section class="hero">
-  <h1 class="title">LUVIE EDITS</h1>
-  <p class="subtitle">the editor that makes your vision come to life</p>
-  <a href="#portfolio" class="button">Watch My Work</a>
+
+  <!-- Joker -->
+  <img src="P5RRen.png" class="character joker">
+
+  <!-- Sumire -->
+  <img src="Kasumi_Yoshizawa_29.png" class="character sumire">
+
+  <div class="hero-content">
+    <h1 class="title">LUVIE EDITS</h1>
+    <p class="subtitle">the editor that makes your vision come to life</p>
+    <a href="#portfolio" class="button">Watch My Work</a>
+  </div>
+
 </section>
 
 <section id="portfolio" class="portfolio">
@@ -155,9 +188,8 @@ video {
   <div class="video-grid">
 
     <div class="video-card">
-      <video controls preload="metadata" poster="">
+      <video controls preload="metadata">
         <source src="video1.mp4" type="video/mp4">
-        Your browser does not support the video tag.
       </video>
       <div class="video-label">Edit 1</div>
     </div>
@@ -165,7 +197,6 @@ video {
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video2.mp4" type="video/mp4">
-        Your browser does not support the video tag.
       </video>
       <div class="video-label">Edit 2</div>
     </div>
@@ -173,7 +204,6 @@ video {
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video3.mp4" type="video/mp4">
-        Your browser does not support the video tag.
       </video>
       <div class="video-label">Edit 3</div>
     </div>
@@ -181,7 +211,6 @@ video {
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video4.mp4" type="video/mp4">
-        Your browser does not support the video tag.
       </video>
       <div class="video-label">Edit 4</div>
     </div>
