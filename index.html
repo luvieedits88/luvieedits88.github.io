@@ -1,298 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luvie Edits</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    /* ===== EASY CONTROLS (MOVE/ROTATE/SIZE) ===== */
-    --joker-x: -40px;     /* move Joker left/right  (more + = to the right) */
-    --joker-y: 0px;       /* move Joker up/down     (more - = up, more + = down) */
-    --joker-rot: 8deg;    /* Joker rotation */
-    --joker-size: 92vh;   /* Joker size (vh = screen height) */
+html { scroll-behavior: smooth; }
 
-    --sumire-x: -25px;    /* this is from RIGHT side (more - = goes further right/outside) */
-    --sumire-y: 0px;      /* up/down */
-    --sumire-rot: 10deg;  /* rotation */
-    --sumire-size: 92vh;  /* size */
-  }
+body{
+  margin:0;
+  font-family:'Montserrat', sans-serif;
+  color:#fff;
+  text-align:center;
 
-  html { scroll-behavior: smooth; }
+  background-image:
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url("Background.jpg");
 
-  body{
-    margin:0;
-    font-family:'Montserrat', sans-serif;
-    color:#fff;
-    text-align:center;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
 
-    background-image:
-      linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-      url("Background.jpg");
+/* HERO SECTION */
+.hero{
+  position:relative;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  overflow:hidden;
+}
 
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-    min-height:100vh;
-  }
+.title{
+  font-size:clamp(50px, 7vw, 110px);
+  font-weight:800;
+  letter-spacing:6px;
+  margin:0;
+  text-transform:uppercase;
+  text-shadow:0 15px 40px rgba(0,0,0,0.8);
+  z-index:2;
+}
 
-  /* HERO */
+.subtitle{
+  margin-top:20px;
+  font-size:20px;
+  color:rgba(255,255,255,0.85);
+  max-width:900px;
+  z-index:2;
+}
+
+.button{
+  margin-top:40px;
+  padding:16px 45px;
+  background:#ff003c;
+  color:#fff;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:700;
+  transition:0.3s ease;
+  box-shadow:0 0 30px rgba(255,0,60,0.5);
+  display:inline-block;
+  z-index:2;
+}
+
+.button:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 45px rgba(255,0,60,0.8);
+  background:#ff2a5c;
+}
+
+/* CHARACTER IMAGES */
+.character{
+  position:absolute;
+  bottom:0;
+  max-height:95vh;
+  z-index:1;
+  pointer-events:none;
+}
+
+/* Joker (LEFT SIDE) */
+.joker{
+  left:-60px;        /* MOVE LEFT/RIGHT HERE */
+  transform:scaleX(-1) rotate(-6deg);  /* flip + rotate */
+}
+
+/* Sumire (RIGHT SIDE) */
+.sumire{
+  right:-40px;       /* MOVE LEFT/RIGHT HERE */
+  transform:rotate(6deg);
+}
+
+/* PORTFOLIO */
+.portfolio{
+  padding:110px 20px 80px;
+  background:rgba(0,0,0,0.90);
+}
+
+.section-title{
+  font-size:clamp(32px, 4vw, 56px);
+  font-weight:800;
+  margin-bottom:40px;
+}
+
+.video-grid{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:28px;
+}
+
+.video-card{
+  background:rgba(0,0,0,0.55);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+}
+
+video{
+  width:100%;
+  height:auto;
+  max-height:500px;
+  background:#000;
+}
+
+/* FOOTER */
+footer{
+  padding:50px 20px;
+  font-size:14px;
+  background:rgba(0,0,0,0.92);
+  opacity:0.9;
+}
+
+/* ===== MOBILE CLEAN VERSION ===== */
+@media (max-width: 768px){
+
   .hero{
-    position:relative;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    overflow:hidden; /* keeps edges clean */
-  }
-
-  /* Characters (base) */
-  .character{
-    position:absolute;
-    bottom:0;
-    width:auto;
-    height:auto;
-    display:block;
-    pointer-events:none;
-    z-index:1;
-    transform-origin: bottom center;
-    user-select:none;
-    -webkit-user-drag:none;
-  }
-
-  /* Joker (LEFT) — flipped to face center */
-  .joker{
-    left: var(--joker-x);
-    bottom: var(--joker-y);
-    max-height: var(--joker-size);
-    transform: scaleX(-1) rotate(var(--joker-rot));
-    filter: drop-shadow(0 0 45px rgba(0,140,255,0.55));
-  }
-
-  /* Sumire (RIGHT) */
-  .sumire{
-    right: var(--sumire-x);
-    bottom: var(--sumire-y);
-    max-height: var(--sumire-size);
-    transform: rotate(var(--sumire-rot));
-    filter: drop-shadow(0 0 45px rgba(255,0,60,0.55));
-  }
-
-  /* Content above characters */
-  .hero-content{
-    position:relative;
-    z-index:2;
-    max-width: 980px;
+    height:92vh;
   }
 
   .title{
-    font-size:clamp(50px, 7vw, 110px);
-    font-weight:800;
-    letter-spacing:6px;
-    margin:0;
-    text-transform:uppercase;
-    text-shadow:0 15px 40px rgba(0,0,0,0.8);
+    font-size:38px;
+    letter-spacing:3px;
   }
 
   .subtitle{
-    margin-top:18px;
-    font-size:20px;
-    color:rgba(255,255,255,0.9);
-    letter-spacing:1px;
+    font-size:15px;
+    max-width:320px;
   }
 
   .button{
-    margin-top:36px;
-    padding:16px 45px;
-    background:#ff003c;
-    color:#fff;
-    text-decoration:none;
-    border-radius:12px;
-    font-weight:700;
-    letter-spacing:1px;
-    transition:0.3s ease;
-    box-shadow:0 0 30px rgba(255,0,60,0.5);
-    display:inline-block;
+    padding:14px 28px;
   }
 
-  .button:hover{
-    transform:scale(1.08);
-    box-shadow:0 0 50px rgba(255,0,60,0.9);
-    background:#ff2a5c;
-  }
-
-  /* PORTFOLIO */
-  .portfolio{
-    padding:110px 20px 80px;
-    background:rgba(0,0,0,0.88);
-  }
-
-  .section-title{
-    font-size:clamp(32px, 4vw, 56px);
-    font-weight:800;
-    margin:0 0 40px;
-    text-shadow:0 12px 30px rgba(0,0,0,0.6);
-  }
-
-  .video-grid{
-    max-width:1200px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-    gap:28px;
-  }
-
-  .video-card{
-    background:rgba(0,0,0,0.6);
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,0.6);
-    transition:0.25s ease;
-  }
-
-  .video-card:hover{
-    transform:translateY(-8px);
-  }
-
-  video{
-    width:100%;
-    height:auto;
-    max-height:500px;
-    border-radius:18px;
-    background:#000;
-  }
-
-  .video-label{
-    padding:14px 14px 16px;
-    font-size:14px;
-    opacity:0.85;
-    text-align:left;
-  }
-
-  /* FOOTER (unchanged text) */
-  footer{
-    padding:50px 20px;
-    font-size:14px;
-    background:rgba(0,0,0,0.92);
-    opacity:0.9;
-  }
-
-  /* Mobile: reduce size so they don’t take over */
-  @media (max-width: 900px){
-    :root{
-      --joker-size: 70vh;
-      --sumire-size: 70vh;
-      --joker-x: -140px;
-      --sumire-x: -140px;
-    }
-  }
-  /* ===== MOBILE CLEAN VIEW ===== */
-@media (max-width: 700px){
-
-  /* make hero breathe */
-  .hero{
-    height: 92vh;
-    padding: 18px;
-  }
-
-  /* smaller title/subtitle for phone */
-  .title{
-    font-size: 44px;
-    letter-spacing: 3px;
-  }
-
-  .subtitle{
-    font-size: 15px;
-    max-width: 320px;
-    margin-top: 10px;
-  }
-
-  .button{
-    padding: 14px 28px;
-    margin-top: 18px;
-  }
-
-  /* keep only ONE character on phone for cleanliness */
+  /* Hide Joker on phone for clean look */
   .joker{
-    display: none;
+    display:none;
   }
 
-  /* sumire becomes the “hero” character */
+  /* Move Sumire slightly */
   .sumire{
-    right: -120px;       /* move her slightly off the edge */
-    bottom: -40px;       /* push down so she doesn’t cover title */
-    max-height: 85vh;    /* fit better on phone */
-    transform: rotate(8deg);
-    opacity: 1;
+    right:-120px;
+    max-height:85vh;
+    transform:rotate(8deg);
   }
+}
 
-  /* add extra dark overlay so text stays readable */
-  body{
-    background-image:
-      linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.72)),
-      url("Background.jpg");
-  }
-} 
-  
 </style>
 </head>
 
 <body>
 
 <section class="hero">
+  <img src="P5RRen.png" class="character joker">
+  <img src="Kasumi_Yoshizawa_29.png" class="character sumire">
 
-  <!-- Characters -->
-  <img src="joker.png" class="character joker" alt="Joker">
-  <img src="sumire.png" class="character sumire" alt="Sumire">
-
-  <!-- Text -->
-  <div class="hero-content">
-    <h1 class="title">LUVIE EDITS</h1>
-    <p class="subtitle">the editor that makes your vision come to life</p>
-    <a href="#portfolio" class="button">Watch My Work</a>
-  </div>
-
+  <h1 class="title">LUVIE EDITS</h1>
+  <p class="subtitle">the editor that makes your vision come to life</p>
+  <a href="#portfolio" class="button">Watch My Work</a>
 </section>
 
 <section id="portfolio" class="portfolio">
   <h2 class="section-title">Portfolio</h2>
 
   <div class="video-grid">
-
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video1.mp4" type="video/mp4">
       </video>
-      <div class="video-label">Edit 1</div>
     </div>
 
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video2.mp4" type="video/mp4">
       </video>
-      <div class="video-label">Edit 2</div>
     </div>
 
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video3.mp4" type="video/mp4">
       </video>
-      <div class="video-label">Edit 3</div>
     </div>
 
     <div class="video-card">
       <video controls preload="metadata">
         <source src="video4.mp4" type="video/mp4">
       </video>
-      <div class="video-label">Edit 4</div>
     </div>
-
   </div>
 </section>
 
