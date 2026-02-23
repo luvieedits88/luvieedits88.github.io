@@ -1,299 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luvie Edits | Portfolio</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Luvie Edits</title>
 
-    <style>
-        /* --- 1. GLOBAL RESET --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: 'Montserrat', sans-serif;
-            color: #fff;
-            text-align: center;
-            background: #000 url("Background.jpg") no-repeat center center fixed;
-            background-size: cover;
-            overflow-x: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
-        /* --- 2. HERO SECTION --- */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+<style>
+  /* GLOBAL FIXES - Ensuring nothing overflows */
+  * { box-sizing: border-box; }
+  html{scroll-behavior:smooth;}
 
-        .title {
-            font-size: clamp(40px, 8vw, 100px);
-            font-weight: 800;
-            text-transform: uppercase;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 2;
-        }
+  body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    color:#fff;
+    text-align:center;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+      url("Background.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-color: #000;
+  }
 
-        .character {
-            position: absolute;
-            bottom: 0;
-            max-height: 90vh;
-            z-index: 1;
-            pointer-events: none;
-        }
-        .joker { left: -50px; transform: scaleX(-1); }
-        .sumire { right: -50px; }
+  /* HERO */
+  .hero{
+    position:relative;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow:hidden;
+  }
 
-        .button {
-            margin-top: 30px;
-            padding: 15px 40px;
-            background: #ff003c;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
-            z-index: 2;
-            transition: 0.3s ease;
-        }
+  .title{
+    font-size:clamp(50px,7vw,110px);
+    font-weight:800;
+    letter-spacing:6px;
+    margin:0;
+    text-transform:uppercase;
+    text-shadow:0 15px 40px rgba(0,0,0,0.8);
+    z-index:2;
+  }
 
-        /* --- 3. PORTFOLIO GRID --- */
-        .portfolio {
-            padding: 100px 20px;
-            background: rgba(0,0,0,0.95);
-        }
+  .subtitle{
+    margin-top:20px;
+    font-size:20px;
+    color:rgba(255,255,255,0.85);
+    max-width:900px;
+    z-index:2;
+  }
 
-        .video-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+  .button{
+    margin-top:40px;
+    padding:16px 45px;
+    background:#ff003c;
+    color:#fff;
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:700;
+    transition:0.3s ease;
+    box-shadow:0 0 30px rgba(255,0,60,0.5);
+    display:inline-block;
+    z-index:2;
+  }
 
-        .video-card {
-            background: #0a0a0a;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+  .button:hover{
+    transform:scale(1.07);
+    box-shadow:0 0 45px rgba(255,0,60,0.8);
+    background:#ff2a5c;
+  }
 
-        /* --- 4. PERSONA PLAYER UI (FIXED) --- */
-        .p5-player {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: #000;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-        }
+  /* CHARACTERS */
+  .character{
+    position:absolute;
+    bottom:0;
+    max-height:95vh;
+    z-index:1;
+    pointer-events:none;
+  }
 
-        .p5-video { width: 100%; height: 100%; object-fit: contain; }
+  .joker{
+    left:-60px;
+    transform:scaleX(-1) rotate(-6deg);
+    filter: drop-shadow(0 0 30px rgba(0,140,255,0.6));
+  }
 
-        .p5-bigplay {
-            position: absolute;
-            inset: 0;
-            margin: auto;
-            width: 65px; height: 65px;
-            background: rgba(0,0,0,0.7);
-            border: 2px solid #ff003c;
-            border-radius: 15px;
-            cursor: pointer;
-            z-index: 5;
-            display: grid; place-items: center;
-        }
+  .sumire{
+    right:-40px;
+    transform:rotate(6deg);
+    filter: drop-shadow(0 0 30px rgba(255,0,60,0.6));
+  }
 
-        .p5-controls {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%;
-            height: 50px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.92));
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            gap: 8px; /* Slightly tighter gap for mobile */
-            z-index: 10;
-        }
+  /* PORTFOLIO */
+  .portfolio{
+    padding:110px 20px 80px;
+    background:rgba(0,0,0,0.90);
+  }
 
-        .p5-btn {
-            background: #151515;
-            border: 1px solid #333;
-            color: #fff;
-            width: 32px; height: 32px;
-            border-radius: 8px;
-            cursor: pointer;
-            flex-shrink: 0; /* STOP BUTTON FROM DISAPPEARING */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  .section-title{
+    font-size:clamp(32px,4vw,56px);
+    font-weight:800;
+    margin-bottom:40px;
+  }
 
-        .p5-btn img { width: 14px; height: 14px; }
-        .p5-time { font-size: 11px; font-weight: 700; min-width: 35px; flex-shrink: 0; }
+  .video-grid{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:28px;
+  }
 
-        /* THE FIX: Progress bar absorbs the space so buttons don't move */
-        .p5-progress {
-            flex: 1; 
-            height: 6px;
-            cursor: pointer;
-            accent-color: #ff003c;
-            min-width: 40px; 
-        }
+  .video-card{
+    border-radius:18px;
+    overflow:hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.65);
+    transition: transform 0.25s ease;
+    position:relative;
+  }
 
-        .p5-vol { 
-            width: 60px; 
-            height: 5px; 
-            accent-color: #ff003c; 
-            flex-shrink: 1; /* Allow slider to shrink if needed */
-        }
+  /* PERSONA PLAYER FIXES */
+  .p5-player{
+    position:relative;
+    width:100%;
+    aspect-ratio: 16 / 9;
+    background:#000;
+    overflow:hidden;
+    display: flex;
+    align-items: center;
+  }
 
-        .video-label {
-            padding: 15px;
-            text-align: left;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
+  /* This ensures custom UI stays visible in Fullscreen */
+  .p5-player:fullscreen { width: 100vw; height: 100vh; background: #000; }
+  .p5-player:-webkit-full-screen { width: 100vw; height: 100vh; }
 
-        /* --- 5. MOBILE OVERRIDE --- */
-        @media (max-width: 600px) {
-            .p5-vol { display: none; } /* Hide volume on mobile to save the Fullscreen button */
-            .character { display: none; }
-            .p5-controls { gap: 6px; }
-        }
-    </style>
+  .p5-video{
+    width:100%;
+    height:100%;
+    object-fit: contain;
+    display:block;
+  }
+
+  /* Mobile gesture overlay */
+  .p5-gestures{
+    position:absolute;
+    inset:0;
+    display:flex;
+    z-index:4;
+  }
+  .p5-zone{
+    flex:1;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .p5-hint{
+    position:absolute;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    padding:10px 14px;
+    border-radius:14px;
+    background:rgba(0,0,0,0.7);
+    border:1px solid #ff003c;
+    font-weight:800;
+    opacity:0;
+    pointer-events:none;
+    transition: 0.2s;
+    z-index:15;
+  }
+  .p5-hint.show{ opacity:1; }
+
+  .p5-bigplay{
+    position:absolute;
+    inset:0;
+    margin:auto;
+    width:80px; height:80px;
+    border-radius:18px;
+    border:2px solid rgba(255,255,255,0.25);
+    background:rgba(0,0,0,0.5);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    z-index:6;
+    transition:0.2s;
+  }
+  .p5-bigplay:hover{ transform:scale(1.1); border-color: #ff003c; }
+
+  .p5-bigplay img{ width:30px; height:30px; }
+
+  /* THE FIXED CONTROLS BAR */
+  .p5-controls{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px;
+    background:linear-gradient(transparent, rgba(0,0,0,0.9));
+    z-index:10;
+  }
+
+  .p5-btn{
+    background:#0b0b0b;
+    border:1px solid rgba(255,255,255,0.15);
+    color:#fff;
+    border-radius:8px;
+    padding:6px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink: 0; /* Prevents button from being squashed */
+  }
+
+  .p5-btn:hover{ border-color: #ff003c; }
+  .p5-icon{ width:16px; height:16px; }
+
+  .p5-time{
+    min-width:45px;
+    font-size:11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Progress bar takes all remaining space */
+  .p5-progress{
+    flex:1;
+    height:6px;
+    -webkit-appearance:none;
+    background:rgba(255,0,60,0.2);
+    border-radius:10px;
+    cursor:pointer;
+    accent-color: #ff003c;
+  }
+
+  .p5-vol{
+    width:70px;
+    height:6px;
+    -webkit-appearance:none;
+    background:rgba(255,255,255,0.2);
+    border-radius:10px;
+    accent-color: #ff003c;
+  }
+
+  .video-label{
+    padding: 12px 14px;
+    text-align:left;
+    background: rgba(0,0,0,0.4);
+  }
+  .video-label span{ color: #888; font-size: 12px; display:block; }
+
+  /* MUSIC PLAYER */
+  .music-player{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:rgba(0,0,0,0.8);
+    padding:10px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    z-index:9999;
+    border:1px solid #ff003c;
+  }
+
+  /* MOBILE RESPONSIVENESS */
+  @media (max-width:768px){
+    .joker{display:none;}
+    .sumire{right:-100px; opacity: 0.5;}
+    /* Hiding volume on mobile ensures Fullscreen button is always visible */
+    .p5-vol, .p5-mute { display: none; }
+    .p5-controls { gap: 5px; }
+    .video-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
+
 <body oncontextmenu="return false;">
 
-    <section class="hero">
-        <img src="joker.png" class="character joker" alt="Joker">
-        <img src="sumire.png" class="character sumire" alt="Sumire">
-        <h1 class="title">LUVIE EDITS</h1>
-        <a href="#portfolio" class="button">WATCH WORK</a>
-    </section>
+<section class="hero">
+  <img src="joker.png" class="character joker" alt="Joker">
+  <img src="sumire.png" class="character sumire" alt="Sumire">
+  <h1 class="title">LUVIE EDITS</h1>
+  <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
+  <a href="#portfolio" class="button">Watch My Work</a>
+</section>
 
-    <section id="portfolio" class="portfolio">
-        <div class="video-grid">
-            
-            <div class="video-card">
-                <div class="p5-player">
-                    <video class="p5-video" playsinline src="video1.mp4"></video>
-                    <button class="p5-bigplay"><img src="start.png"></button>
-                    <div class="p5-controls">
-                        <button class="p5-btn p5-play"><img src="start.png"></button>
-                        <div class="p5-time">0:00</div>
-                        <input type="range" class="p5-progress" value="0">
-                        <button class="p5-btn p5-mute">🔊</button>
-                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
-                        <button class="p5-btn p5-full">⛶</button>
-                    </div>
-                </div>
-                <div class="video-label"><h3>Edit 1</h3><p>Persona-style player</p></div>
-            </div>
+<section id="portfolio" class="portfolio">
+  <h2 class="section-title">Portfolio</h2>
+  <div class="video-grid">
 
-            <div class="video-card">
-                <div class="p5-player">
-                    <video class="p5-video" playsinline src="video2.mp4"></video>
-                    <button class="p5-bigplay"><img src="start.png"></button>
-                    <div class="p5-controls">
-                        <button class="p5-btn p5-play"><img src="start.png"></button>
-                        <div class="p5-time">0:00</div>
-                        <input type="range" class="p5-progress" value="0">
-                        <button class="p5-btn p5-mute">🔊</button>
-                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
-                        <button class="p5-btn p5-full">⛶</button>
-                    </div>
-                </div>
-                <div class="video-label"><h3>Edit 2</h3><p>Persona-style player</p></div>
-            </div>
-
-            <div class="video-card">
-                <div class="p5-player">
-                    <video class="p5-video" playsinline src="video3.mp4"></video>
-                    <button class="p5-bigplay"><img src="start.png"></button>
-                    <div class="p5-controls">
-                        <button class="p5-btn p5-play"><img src="start.png"></button>
-                        <div class="p5-time">0:00</div>
-                        <input type="range" class="p5-progress" value="0">
-                        <button class="p5-btn p5-mute">🔊</button>
-                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
-                        <button class="p5-btn p5-full">⛶</button>
-                    </div>
-                </div>
-                <div class="video-label"><h3>Edit 3</h3><p>Persona-style player</p></div>
-            </div>
-
-            <div class="video-card">
-                <div class="p5-player">
-                    <video class="p5-video" playsinline src="video4.mp4"></video>
-                    <button class="p5-bigplay"><img src="start.png"></button>
-                    <div class="p5-controls">
-                        <button class="p5-btn p5-play"><img src="start.png"></button>
-                        <div class="p5-time">0:00</div>
-                        <input type="range" class="p5-progress" value="0">
-                        <button class="p5-btn p5-mute">🔊</button>
-                        <input type="range" class="p5-vol" min="0" max="1" step="0.1" value="0.8">
-                        <button class="p5-btn p5-full">⛶</button>
-                    </div>
-                </div>
-                <div class="video-label"><h3>Edit 4</h3><p>Persona-style player</p></div>
-            </div>
-
+    <div class="video-card">
+      <div class="p5-player">
+        <video class="p5-video" preload="metadata" playsinline><source src="video1.mp4" type="video/mp4"></video>
+        <div class="p5-gestures"><button class="p5-zone p5-left"></button><button class="p5-zone p5-mid"></button><button class="p5-zone p5-right"></button></div>
+        <div class="p5-hint">+10s</div>
+        <button class="p5-bigplay"><img src="start.png" alt="Play"></button>
+        <div class="p5-controls">
+          <button class="p5-btn p5-play"><img src="start.png" class="p5-icon" alt="Play"></button>
+          <div class="p5-time"><span class="p5-current">0:00</span></div>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1">
+          <button class="p5-btn p5-mute">🔊</button>
+          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8">
+          <button class="p5-btn p5-full">⛶</button>
         </div>
-    </section>
+      </div>
+      <div class="video-label">Edit 1 <span>Persona-style player</span></div>
+    </div>
 
-    <script>
-        // Apply logic to all 4 video players
-        document.querySelectorAll('.video-card').forEach(card => {
-            const video = card.querySelector('video');
-            const playBtn = card.querySelector('.p5-play');
-            const bigBtn = card.querySelector('.p5-bigplay');
-            const prog = card.querySelector('.p5-progress');
-            const time = card.querySelector('.p5-time');
-            const mute = card.querySelector('.p5-mute');
-            const vol = card.querySelector('.p5-vol');
-            const full = card.querySelector('.p5-full');
-            const player = card.querySelector('.p5-player');
+    <div class="video-card">
+      <div class="p5-player">
+        <video class="p5-video" preload="metadata" playsinline><source src="video2.mp4" type="video/mp4"></video>
+        <div class="p5-gestures"><button class="p5-zone p5-left"></button><button class="p5-zone p5-mid"></button><button class="p5-zone p5-right"></button></div>
+        <div class="p5-hint">+10s</div>
+        <button class="p5-bigplay"><img src="start.png" alt="Play"></button>
+        <div class="p5-controls">
+          <button class="p5-btn p5-play"><img src="start.png" class="p5-icon" alt="Play"></button>
+          <div class="p5-time"><span class="p5-current">0:00</span></div>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1">
+          <button class="p5-btn p5-mute">🔊</button>
+          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8">
+          <button class="p5-btn p5-full">⛶</button>
+        </div>
+      </div>
+      <div class="video-label">Edit 2 <span>Persona-style player</span></div>
+    </div>
 
-            const toggle = () => { video.paused ? video.play() : video.pause(); };
-            playBtn.onclick = bigBtn.onclick = toggle;
+    <div class="video-card">
+      <div class="p5-player">
+        <video class="p5-video" preload="metadata" playsinline><source src="video3.mp4" type="video/mp4"></video>
+        <div class="p5-gestures"><button class="p5-zone p5-left"></button><button class="p5-zone p5-mid"></button><button class="p5-zone p5-right"></button></div>
+        <div class="p5-hint">+10s</div>
+        <button class="p5-bigplay"><img src="start.png" alt="Play"></button>
+        <div class="p5-controls">
+          <button class="p5-btn p5-play"><img src="start.png" class="p5-icon" alt="Play"></button>
+          <div class="p5-time"><span class="p5-current">0:00</span></div>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1">
+          <button class="p5-btn p5-mute">🔊</button>
+          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8">
+          <button class="p5-btn p5-full">⛶</button>
+        </div>
+      </div>
+      <div class="video-label">Edit 3 <span>Persona-style player</span></div>
+    </div>
 
-            video.onplay = () => { 
-                bigBtn.style.display="none"; 
-                playBtn.querySelector('img').src="pause.png"; 
-            };
-            video.onpause = () => { 
-                bigBtn.style.display="grid"; 
-                playBtn.querySelector('img').src="start.png"; 
-            };
+    <div class="video-card">
+      <div class="p5-player">
+        <video class="p5-video" preload="metadata" playsinline><source src="video4.mp4" type="video/mp4"></video>
+        <div class="p5-gestures"><button class="p5-zone p5-left"></button><button class="p5-zone p5-mid"></button><button class="p5-zone p5-right"></button></div>
+        <div class="p5-hint">+10s</div>
+        <button class="p5-bigplay"><img src="start.png" alt="Play"></button>
+        <div class="p5-controls">
+          <button class="p5-btn p5-play"><img src="start.png" class="p5-icon" alt="Play"></button>
+          <div class="p5-time"><span class="p5-current">0:00</span></div>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1">
+          <button class="p5-btn p5-mute">🔊</button>
+          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8">
+          <button class="p5-btn p5-full">⛶</button>
+        </div>
+      </div>
+      <div class="video-label">Edit 4 <span>Persona-style player</span></div>
+    </div>
 
-            video.ontimeupdate = () => {
-                const m = Math.floor(video.currentTime / 60);
-                const s = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
-                time.textContent = `${m}:${s}`;
-                prog.value = (video.currentTime / video.duration) * 100 || 0;
-            };
+  </div>
+</section>
 
-            prog.oninput = () => video.currentTime = (prog.value / 100) * video.duration;
-            vol.oninput = () => video.volume = vol.value;
-            mute.onclick = () => { 
-                video.muted = !video.muted; 
-                mute.textContent = video.muted ? "🔇" : "🔊"; 
-            };
+<div class="music-player">
+  <button id="musicToggle" class="p5-btn"><img src="pause.png" id="musicIcon" class="p5-icon"></button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" style="width:80px">
+</div>
+<audio id="bgMusic" loop src="music1.mp3"></audio>
 
-            full.onclick = () => {
-                if (!document.fullscreenElement) {
-                    if (player.requestFullscreen) player.requestFullscreen();
-                    else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-                } else {
-                    document.exitFullscreen();
-                }
-            };
-        });
-    </script>
+<script>
+  const music = document.getElementById("bgMusic");
+  const musicToggle = document.getElementById("musicToggle");
+  const musicIcon = document.getElementById("musicIcon");
+  const musicVol = document.getElementById("volumeSlider");
+
+  musicToggle.onclick = () => {
+    if(music.paused) { music.play(); musicIcon.src="pause.png"; }
+    else { music.pause(); musicIcon.src="start.png"; }
+  };
+  musicVol.oninput = (e) => music.volume = e.target.value;
+
+  function fmtTime(s){
+    if(!isFinite(s)) return "0:00";
+    const m = Math.floor(s/60);
+    const sec = Math.floor(s%60).toString().padStart(2,"0");
+    return `${m}:${sec}`;
+  }
+
+  document.querySelectorAll(".p5-player").forEach(player => {
+    const video = player.querySelector(".p5-video");
+    const playBtn = player.querySelector(".p5-play");
+    const bigPlay = player.querySelector(".p5-bigplay");
+    const prog = player.querySelector(".p5-progress");
+    const curTime = player.querySelector(".p5-current");
+    const muteBtn = player.querySelector(".p5-mute");
+    const vol = player.querySelector(".p5-vol");
+    const fullBtn = player.querySelector(".p5-full");
+    const hint = player.querySelector(".p5-hint");
+
+    const togglePlay = () => {
+      if(video.paused) { video.play(); music.pause(); musicIcon.src="start.png"; }
+      else { video.pause(); }
+    };
+
+    playBtn.onclick = togglePlay;
+    bigPlay.onclick = togglePlay;
+
+    video.onplay = () => { bigPlay.style.display="none"; playBtn.querySelector("img").src="pause.png"; };
+    video.onpause = () => { bigPlay.style.display="grid"; playBtn.querySelector("img").src="start.png"; };
+
+    video.ontimeupdate = () => {
+      curTime.textContent = fmtTime(video.currentTime);
+      prog.value = (video.currentTime / video.duration) * 100 || 0;
+    };
+
+    prog.oninput = () => video.currentTime = (prog.value / 100) * video.duration;
+    vol.oninput = () => video.volume = vol.value;
+    muteBtn.onclick = () => { video.muted = !video.muted; muteBtn.textContent = video.muted ? "🔇" : "🔊"; };
+
+    fullBtn.onclick = () => {
+      if (!document.fullscreenElement) {
+        if (player.requestFullscreen) player.requestFullscreen();
+        else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen(); // iOS fix
+      } else {
+        document.exitFullscreen();
+      }
+    };
+
+    // Mobile Double Tap Seek
+    let lastTap = 0;
+    player.querySelector(".p5-right")?.addEventListener("click", () => {
+      let now = Date.now();
+      if(now - lastTap < 300) { video.currentTime += 10; hint.textContent="+10s"; hint.classList.add("show"); setTimeout(()=>hint.classList.remove("show"), 500); }
+      lastTap = now;
+    });
+    player.querySelector(".p5-left")?.addEventListener("click", () => {
+      let now = Date.now();
+      if(now - lastTap < 300) { video.currentTime -= 10; hint.textContent="-10s"; hint.classList.add("show"); setTimeout(()=>hint.classList.remove("show"), 500); }
+      lastTap = now;
+    });
+  });
+</script>
+
 </body>
 </html>
