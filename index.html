@@ -1,97 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Luvie Edits</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
-*,
-*::before,
-*::after{
-  box-sizing:border-box;
-}
+html{scroll-behavior:smooth;}
 
-html,body{
+body{
   margin:0;
   font-family:'Montserrat',sans-serif;
-  background:#000;
   color:#fff;
+  text-align:center;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+    url("Background.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
 }
 
-/* ================= HERO ================= */
+/* HERO */
 .hero{
-  min-height:100vh;
+  position:relative;
+  height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:
-    linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
-    url("Background.jpg") center/cover no-repeat;
-  text-align:center;
-  padding:40px 20px;
+  padding:20px;
+  overflow:hidden;
 }
 
 .title{
-  font-size:clamp(40px,7vw,110px);
+  font-size:clamp(50px,7vw,110px);
   font-weight:800;
   letter-spacing:6px;
+  margin:0;
+  text-transform:uppercase;
+  text-shadow:0 15px 40px rgba(0,0,0,0.8);
+  z-index:2;
 }
 
 .subtitle{
-  margin-top:15px;
-  opacity:.85;
+  margin-top:20px;
+  font-size:20px;
+  color:rgba(255,255,255,0.85);
+  max-width:900px;
+  z-index:2;
 }
 
 .button{
-  margin-top:35px;
-  padding:16px 40px;
+  margin-top:40px;
+  padding:16px 45px;
   background:#ff003c;
   color:#fff;
   text-decoration:none;
+  border-radius:12px;
   font-weight:700;
-  border-radius:14px;
-  box-shadow:0 0 30px rgba(255,0,60,.6);
+  transition:0.3s ease;
+  box-shadow:0 0 30px rgba(255,0,60,0.5);
+  display:inline-block;
+  z-index:2;
 }
 
-/* ================= PORTFOLIO ================= */
+.button:hover{
+  transform:scale(1.07);
+  box-shadow:0 0 45px rgba(255,0,60,0.8);
+  background:#ff2a5c;
+}
+
+/* CHARACTERS */
+.character{
+  position:absolute;
+  bottom:0;
+  max-height:95vh;
+  z-index:1;
+  pointer-events:none;
+}
+
+.joker{
+  left:-60px;
+  transform:scaleX(-1) rotate(-6deg);
+  filter:drop-shadow(0 0 30px rgba(0,140,255,0.6))
+         drop-shadow(0 0 70px rgba(0,140,255,0.3));
+}
+
+.sumire{
+  right:-40px;
+  transform:rotate(6deg);
+  filter:drop-shadow(0 0 30px rgba(255,0,60,0.6))
+         drop-shadow(0 0 70px rgba(255,0,60,0.3));
+}
+
+/* PORTFOLIO */
 .portfolio{
-  padding:100px 20px;
-  background:#050505;
+  padding:110px 20px 80px;
+  background:rgba(0,0,0,0.90);
 }
 
 .section-title{
-  font-size:clamp(30px,4vw,56px);
-  margin-bottom:50px;
-  text-align:center;
+  font-size:clamp(32px,4vw,56px);
+  font-weight:800;
+  margin-bottom:40px;
 }
 
 .video-grid{
   max-width:1200px;
-  margin:auto;
+  margin:0 auto;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:30px;
+  gap:28px;
 }
 
-/* ================= CARD ================= */
 .video-card{
-  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.65));
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 20px 60px rgba(0,0,0,.75);
-  overflow:visible; /* IMPORTANT */
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow:0 18px 50px rgba(0,0,0,0.65);
+  transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position:relative;
+  overflow:visible; /* FIX */
 }
 
-/* ================= PLAYER ================= */
+.video-card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(255,0,60,0.35);
+  box-shadow:0 24px 70px rgba(0,0,0,0.75);
+}
+
+/* SAFE CLIP LAYER */
+.p5-frame{
+  border-radius:18px;
+  overflow:hidden;
+}
+
+/* PLAYER */
 .p5-player{
   position:relative;
   width:100%;
   aspect-ratio:16/9;
   background:#000;
+  overflow:visible; /* FIX */
 }
 
 .p5-video{
@@ -99,185 +153,159 @@ html,body{
   height:100%;
   object-fit:contain;
   display:block;
+  background:#000;
 }
 
-/* Big play */
+/* Mobile gesture overlay */
+.p5-gestures{
+  position:absolute;
+  inset:0;
+  display:flex;
+  z-index:4;
+}
+
+.p5-zone{
+  flex:1;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+}
+
+.p5-hint{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  padding:10px 14px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.55);
+  border:1px solid rgba(255,255,255,0.14);
+  font-weight:800;
+  font-size:14px;
+  opacity:0;
+  transition:.15s;
+  z-index:5;
+}
+.p5-hint.show{opacity:1}
+
+/* BIG PLAY */
 .p5-bigplay{
   position:absolute;
   inset:0;
   margin:auto;
-  width:90px;
-  height:90px;
+  width:86px;
+  height:86px;
   border-radius:18px;
-  background:rgba(0,0,0,.6);
-  border:2px solid rgba(255,255,255,.25);
+  border:2px solid rgba(255,255,255,0.25);
+  background:rgba(0,0,0,0.45);
+  cursor:pointer;
   display:grid;
   place-items:center;
-  cursor:pointer;
-  z-index:5;
+  z-index:6;
 }
 
-.p5-bigplay img{
-  width:36px;
-}
+.p5-bigplay img{width:34px}
 
-/* ================= CONTROLS ================= */
+/* CONTROLS */
 .p5-controls{
   position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:12px;
+  left:0; right:0; bottom:0;
   display:flex;
   align-items:center;
   gap:10px;
-  background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.25));
-  z-index:6;
+  padding:10px;
+  background:linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0.20));
+  z-index:7;
 }
 
 .p5-btn{
   background:#0b0b0b;
-  border:1px solid rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,0.12);
+  color:#fff;
   border-radius:10px;
-  padding:8px;
+  padding:8px 10px;
   cursor:pointer;
-  display:grid;
-  place-items:center;
 }
 
-.p5-btn img{
-  width:18px;
-}
+.p5-icon{width:18px}
 
-.p5-time{
-  font-size:12px;
-  opacity:.85;
-  min-width:48px;
-}
-
-.p5-progress{
-  flex:1;
+.p5-progress,.p5-vol{
   height:6px;
   appearance:none;
-  background:rgba(255,0,60,.25);
+  background:rgba(255,0,60,0.25);
   border-radius:999px;
 }
 
-.p5-progress::-webkit-slider-thumb{
-  appearance:none;
-  width:14px;
-  height:14px;
-  background:#ff003c;
-  border-radius:50%;
-}
-
-.p5-vol{
-  width:90px;
-}
-
-/* ================= LABEL ================= */
 .video-label{
   padding:12px 14px;
+  text-align:left;
   font-size:14px;
-  border-top:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,0.35);
 }
 
-/* ================= MOBILE ================= */
+/* MUSIC PLAYER */
+.music-player{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:rgba(0,0,0,0.75);
+  padding:10px 14px;
+  border-radius:14px;
+  display:flex;
+  gap:12px;
+  z-index:9999;
+}
+
+/* MOBILE */
 @media(max-width:768px){
-  .p5-vol{width:65px;}
+  .joker{display:none}
+  .sumire{right:-120px}
 }
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 
 <section class="hero">
+  <img src="joker.png" class="character joker">
+  <img src="sumire.png" class="character sumire">
   <h1 class="title">LUVIE EDITS</h1>
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
   <a href="#portfolio" class="button">Watch My Work</a>
 </section>
 
 <section id="portfolio" class="portfolio">
-  <h2 class="section-title">Portfolio</h2>
+<h2 class="section-title">Portfolio</h2>
 
-  <div class="video-grid">
+<div class="video-grid">
 
-    <!-- CARD -->
-    <div class="video-card">
-      <div class="p5-player">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video1.mp4" type="video/mp4">
-        </video>
-
-        <button class="p5-bigplay">
-          <img src="start.png" alt="">
-        </button>
-
-        <div class="p5-controls">
-          <button class="p5-btn play"><img src="start.png"></button>
-          <span class="p5-time">0:00</span>
-          <input class="p5-progress" type="range" min="0" max="100" value="0">
-          <button class="p5-btn mute">🔊</button>
-          <input class="p5-vol" type="range" min="0" max="1" step="0.01" value="0.8">
-          <button class="p5-btn full">⛶</button>
-        </div>
+<!-- REPEAT FOR ALL 4 -->
+<div class="video-card">
+  <div class="p5-frame">
+    <div class="p5-player">
+      <video class="p5-video" playsinline preload="metadata">
+        <source src="video1.mp4" type="video/mp4">
+      </video>
+      <div class="p5-gestures">
+        <button class="p5-zone p5-left"></button>
+        <button class="p5-zone p5-mid"></button>
+        <button class="p5-zone p5-right"></button>
       </div>
-      <div class="video-label">Edit 1</div>
+      <div class="p5-hint">+10s</div>
+      <button class="p5-bigplay"><img src="start.png"></button>
+      <div class="p5-controls">
+        <button class="p5-btn p5-play"><img src="start.png" class="p5-icon"></button>
+        <input class="p5-progress" type="range" min="0" max="100">
+        <button class="p5-btn p5-full">⛶</button>
+      </div>
     </div>
-
   </div>
+  <div class="video-label">Edit 1</div>
+</div>
+
+</div>
 </section>
 
-<script>
-document.querySelectorAll(".p5-player").forEach(player=>{
-  const video = player.querySelector("video");
-  const playBtn = player.querySelector(".play");
-  const bigPlay = player.querySelector(".p5-bigplay");
-  const muteBtn = player.querySelector(".mute");
-  const vol = player.querySelector(".p5-vol");
-  const prog = player.querySelector(".p5-progress");
-  const time = player.querySelector(".p5-time");
-  const full = player.querySelector(".full");
-
-  function updateUI(){
-    const playing = !video.paused;
-    playBtn.innerHTML = `<img src="${playing?'pause.png':'start.png'}">`;
-    bigPlay.style.display = playing ? "none" : "grid";
-  }
-
-  playBtn.onclick = bigPlay.onclick = ()=>{
-    video.paused ? video.play() : video.pause();
-  };
-
-  video.ontimeupdate = ()=>{
-    time.textContent = Math.floor(video.currentTime/60)+":"+
-      Math.floor(video.currentTime%60).toString().padStart(2,"0");
-    prog.value = (video.currentTime/video.duration)*100 || 0;
-  };
-
-  prog.oninput = ()=>{
-    video.currentTime = (prog.value/100)*video.duration;
-  };
-
-  vol.oninput = ()=>{
-    video.volume = vol.value;
-    video.muted = vol.value==0;
-    muteBtn.textContent = video.muted?"🔇":"🔊";
-  };
-
-  muteBtn.onclick = ()=>{
-    video.muted = !video.muted;
-    muteBtn.textContent = video.muted?"🔇":"🔊";
-  };
-
-  full.onclick = ()=>{
-    if(video.requestFullscreen) video.requestFullscreen();
-  };
-
-  video.onplay = video.onpause = updateUI;
-});
-</script>
-
+<footer>© 2026 Luvie Edits</footer>
 </body>
 </html>
