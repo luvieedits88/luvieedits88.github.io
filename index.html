@@ -1,149 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Luvie Edits</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
-
-<style>
-  html{scroll-behavior:smooth;}
-
-  body{
-    margin:0;
-    font-family:'Montserrat',sans-serif;
-    color:#fff;
-    text-align:center;
-    background-image:
-      linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
-      url("Background.jpg");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-  }
-
-  /* HERO & PORTFOLIO (Styles remain unchanged for brevity) */
-  .hero{ position:relative; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px; overflow:hidden; }
-  .title{ font-size:clamp(50px,7vw,110px); font-weight:800; letter-spacing:6px; margin:0; text-transform:uppercase; text-shadow:0 15px 40px rgba(0,0,0,0.8); z-index:2; }
-  .subtitle{ margin-top:20px; font-size:20px; color:rgba(255,255,255,0.85); max-width:900px; z-index:2; }
-  .button{ margin-top:40px; padding:16px 45px; background:#ff003c; color:#fff; text-decoration:none; border-radius:12px; font-weight:700; transition:0.3s ease; box-shadow:0 0 30px rgba(255,0,60,0.5); display:inline-block; z-index:2; }
-  .button:hover{ transform:scale(1.07); box-shadow:0 0 45px rgba(255,0,60,0.8); background:#ff2a5c; }
-  .character{ position:absolute; bottom:0; max-height:95vh; z-index:1; pointer-events:none; }
-  .joker{ left:-60px; transform:scaleX(-1) rotate(-6deg); filter: drop-shadow(0 0 30px rgba(0,140,255,0.6)); }
-  .sumire{ right:-40px; transform:rotate(6deg); filter: drop-shadow(0 0 30px rgba(255,0,60,0.6)); }
-  .portfolio{ padding:110px 20px 80px; background:rgba(0,0,0,0.90); }
-  .video-grid{ max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:28px; }
-  .video-card{ border-radius:18px; overflow:hidden; background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55)); border: 1px solid rgba(255,255,255,0.10); transition: 0.25s ease; position:relative; }
-  .video-card:hover{ transform: translateY(-8px); border-color: rgba(255,0,60,0.35); }
-
-  /* ===== RENEWED MUSIC PLAYER CSS ===== */
-  .music-player{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:rgba(0,0,0,0.75);
-    padding:10px 14px;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    z-index:9999;
-    backdrop-filter:blur(6px);
-    border:1px solid rgba(255,0,60,0.25);
-    box-shadow:0 0 25px rgba(255,0,60,0.25);
-  }
-
-  .music-btn{
-    background:#0b0b0b;
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:10px;
-    padding:8px;
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-  }
-
-  .music-btn:hover{
-    border-color:rgba(255,0,60,0.6);
-    box-shadow:0 0 20px rgba(255,0,60,0.4);
-  }
-
-  .music-icon{
-    width:18px;
-    height:18px;
-  }
-
-  #volumeSlider{
-    width:100px;
-    height:6px;
-    -webkit-appearance:none;
-    appearance:none;
-    background:rgba(255,0,60,0.25);
-    border-radius:999px;
-    outline:none;
-  }
-
-  #volumeSlider::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    appearance:none;
-    width:14px;
-    height:14px;
-    border-radius:999px;
-    background:#ff003c;
-    box-shadow:0 0 20px rgba(255,0,60,0.7);
-    cursor:pointer;
-  }
-
-  /* ===== Persona 5 Video Player Styles (Same as before) ===== */
-  .p5-player{ position:relative; background:#000; }
-  .p5-video{ width:100%; display:block; }
-  .p5-bigplay{ position:absolute; inset:0; margin:auto; width:86px; height:86px; border-radius:18px; border:2px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.45); cursor:pointer; display:grid; place-items:center; z-index:2; }
-  .p5-controls{ position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:10px; padding:10px; background:linear-gradient(to top, rgba(0,0,0,0.88), transparent); z-index:3; }
-  .p5-btn{ background:#0b0b0b; border:1px solid rgba(255,255,255,0.12); color:#fff; border-radius:10px; padding:8px; cursor:pointer; }
-  .p5-progress{ flex:1; height:6px; -webkit-appearance:none; background:rgba(255,0,60,0.22); border-radius:10px; }
-  .p5-progress::-webkit-slider-thumb{ -webkit-appearance:none; width:12px; height:12px; background:#ff003c; border-radius:50%; cursor:pointer; }
-  .video-label{ padding:12px; text-align:left; font-size:14px; background:rgba(0,0,0,0.35); }
-</style>
-</head>
-
-<body oncontextmenu="return false;">
-
-<section class="hero">
-  <img src="joker.png" class="character joker" alt="Joker">
-  <img src="sumire.png" class="character sumire" alt="Sumire">
-  <h1 class="title">LUVIE EDITS</h1>
-  <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
-  <a href="#portfolio" class="button">Watch My Work</a>
-</section>
-
-<section id="portfolio" class="portfolio">
-  <div class="video-grid">
-    <div class="video-card">
-      <div class="p5-player">
-        <video class="p5-video" preload="metadata" playsinline><source src="video1.mp4" type="video/mp4"></video>
-        <button class="p5-bigplay"><img src="start.png" width="30"></button>
-        <div class="p5-controls">
-          <button class="p5-btn p5-play"><img src="start.png" width="16"></button>
-          <input class="p5-progress" type="range" value="0">
-        </div>
-      </div>
-      <div class="video-label">Edit 1 <span>Persona Style</span></div>
-    </div>
-  </div>
-</section>
-
-<div class="music-player">
-  <button id="musicToggle" class="music-btn">
-    <img src="pause.png" id="musicIcon" class="music-icon">
-  </button>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
-</div>
-
-<audio id="bgMusic" loop></audio>
-
 <script>
+  // ===== MUSIC =====
   const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
   const toggle = document.getElementById("musicToggle");
@@ -151,24 +7,56 @@
   const volume = document.getElementById("volumeSlider");
 
   let current = 0;
-  music.volume = 0.5;
 
-  function playTrack(i){
-    music.src = tracks[i];
-    music.play().catch(()=>{});
+  // IMPORTANT: this tracks whether the USER wants music playing.
+  // We will NOT auto-play music unless this is true.
+  let userWantsMusic = true;
+
+  function setMusicIcon(isPlaying){
+    musicIcon.src = isPlaying ? "pause.png" : "start.png";
   }
 
-  // Initial Load
-  window.addEventListener("load", () => playTrack(0));
-
-  // YOUR UPDATED TOGGLE LOGIC
-  toggle.addEventListener("click", () => {
-    if(music.paused){
-      music.play();
-      musicIcon.src = "pause.png";
+  function playTrack(i){
+    current = i;
+    music.src = tracks[current];
+    // only attempt to play if user wants music
+    if (userWantsMusic) {
+      music.play().then(() => setMusicIcon(true)).catch(() => {
+        // autoplay can be blocked until user clicks somewhere
+        setMusicIcon(false);
+      });
     } else {
+      setMusicIcon(false);
+    }
+  }
+
+  function nextTrack(){
+    // simple shuffle-ish: pick a different index
+    let next = Math.floor(Math.random() * tracks.length);
+    if (tracks.length > 1) {
+      while (next === current) next = Math.floor(Math.random() * tracks.length);
+    }
+    playTrack(next);
+  }
+
+  // Initial load (may be blocked by browser until first interaction)
+  window.addEventListener("load", () => {
+    music.volume = Number(volume.value);
+    playTrack(0);
+  });
+
+  // When a track ends, go to next (still respects userWantsMusic)
+  music.addEventListener("ended", nextTrack);
+
+  // Toggle: user intent
+  toggle.addEventListener("click", () => {
+    if (music.paused) {
+      userWantsMusic = true;
+      music.play().then(() => setMusicIcon(true)).catch(() => setMusicIcon(false));
+    } else {
+      userWantsMusic = false;
       music.pause();
-      musicIcon.src = "start.png";
+      setMusicIcon(false);
     }
   });
 
@@ -176,19 +64,100 @@
     music.volume = Number(volume.value);
   });
 
-  // Handle Video Player Auto-Pause Logic
+  // ===== VIDEO PLAYERS =====
+  // helper to pause all other videos
+  function pauseOtherVideos(currentVideo){
+    document.querySelectorAll(".p5-video").forEach(v => {
+      if (v !== currentVideo) v.pause();
+    });
+  }
+
   document.querySelectorAll(".p5-player").forEach(player => {
     const video = player.querySelector(".p5-video");
-    video.addEventListener("play", () => {
-      music.pause();
-      musicIcon.src = "start.png";
-    });
-    video.addEventListener("pause", () => {
-      music.play().catch(()=>{});
-      musicIcon.src = "pause.png";
-    });
-  });
-</script>
+    const bigPlay = player.querySelector(".p5-bigplay");
+    const playBtn = player.querySelector(".p5-play");
+    const progress = player.querySelector(".p5-progress");
 
-</body>
-</html>
+    function setPlayIcon(isPlaying){
+      // same icons you already use
+      playBtn.querySelector("img").src = isPlaying ? "pause.png" : "start.png";
+    }
+
+    function showBigPlay(show){
+      bigPlay.style.display = show ? "grid" : "none";
+    }
+
+    // clicking big overlay toggles play
+    bigPlay.addEventListener("click", () => {
+      if (video.paused) video.play();
+      else video.pause();
+    });
+
+    // clicking small play button toggles play
+    playBtn.addEventListener("click", () => {
+      if (video.paused) video.play();
+      else video.pause();
+    });
+
+    // when video starts: pause others + pause music (but don't change user intent)
+    video.addEventListener("play", () => {
+      pauseOtherVideos(video);
+
+      // pause music while video is playing
+      if (!music.paused) music.pause();
+      setMusicIcon(false);
+
+      setPlayIcon(true);
+      showBigPlay(false);
+    });
+
+    // when video pauses: ONLY resume music if userWantsMusic is true
+    video.addEventListener("pause", () => {
+      setPlayIcon(false);
+      showBigPlay(true);
+
+      if (userWantsMusic) {
+        music.play().then(() => setMusicIcon(true)).catch(() => setMusicIcon(false));
+      }
+    });
+
+    // when video ends: show overlay + maybe resume music
+    video.addEventListener("ended", () => {
+      setPlayIcon(false);
+      showBigPlay(true);
+
+      if (userWantsMusic) {
+        music.play().then(() => setMusicIcon(true)).catch(() => setMusicIcon(false));
+      }
+    });
+
+    // progress bar setup
+    video.addEventListener("loadedmetadata", () => {
+      progress.min = 0;
+      progress.max = Math.floor(video.duration * 1000); // ms precision
+      progress.value = 0;
+    });
+
+    // update progress while playing
+    video.addEventListener("timeupdate", () => {
+      progress.value = Math.floor(video.currentTime * 1000);
+    });
+
+    // seeking
+    progress.addEventListener("input", () => {
+      video.currentTime = Number(progress.value) / 1000;
+    });
+
+    // initial UI state
+    setPlayIcon(false);
+    showBigPlay(true);
+  });
+
+  // ===== Autoplay fix on first user click (browser policy) =====
+  // If autoplay got blocked on load, first click anywhere will start music IF userWantsMusic is true.
+  document.addEventListener("click", () => {
+    if (userWantsMusic && music.paused) {
+      music.play().then(() => setMusicIcon(true)).catch(() => setMusicIcon(false));
+    }
+  }, { once: true });
+</script>
