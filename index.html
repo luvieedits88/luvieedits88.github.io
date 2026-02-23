@@ -396,35 +396,18 @@
     .p5-btn{padding:7px 9px;}
   }
   /* =====================================================
-   FIX: Controls out of reach in NON-fullscreen mode
-   (no layout change, no visual change)
+   FIX: Controls not clickable (gesture overlay blocking)
    ===================================================== */
 
-/* Pull controls away from clipped edges */
-.p5-controls{
-  padding-left: 16px;
-  padding-right: 16px;
-  box-sizing: border-box;
+/* Gesture layer should NEVER block controls */
+.p5-gestures{
+  pointer-events: none;
 }
 
-/* Ensure sliders and buttons never overflow the card */
-.p5-controls > *{
-  max-width: 100%;
-}
-
-/* Improve touch hit-area without changing visuals */
-.p5-btn,
-.p5-vol,
-.p5-progress{
-  touch-action: manipulation;
-}
-
-/* Mobile-specific safety (thumb-friendly spacing) */
-@media (max-width:768px){
-  .p5-controls{
-    padding-left: 18px;
-    padding-right: 18px;
-  }
+/* Controls must always receive input */
+.p5-controls,
+.p5-controls *{
+  pointer-events: auto;
 }
 </style>
 </head>
