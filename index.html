@@ -9,7 +9,6 @@
 
 <style>
   html{scroll-behavior:smooth;}
-
   body{
     margin:0;
     font-family:'Montserrat',sans-serif;
@@ -37,16 +36,13 @@
     transition:opacity .55s ease;
     pointer-events:auto;
   }
-  .intro.hide{
-    opacity:0;
-    pointer-events:none;
-  }
+  .intro.hide{ opacity:0; pointer-events:none; }
 
-  .intro video{ display:none; } /* hidden source video (we draw it to canvas) */
-
-  .intro-canvas{
+  /* SUMIRE webm with alpha (no canvas needed) */
+  #introVideo{
     width:100%;
     height:100%;
+    object-fit:cover;
     display:block;
   }
 
@@ -61,7 +57,7 @@
     color:#fff;
     font-weight:800;
     cursor:pointer;
-    z-index:5;
+    z-index:7;
     -webkit-tap-highlight-color: transparent;
   }
   .intro-skip:hover{
@@ -70,63 +66,40 @@
   }
   .intro-skip:active{ transform:scale(0.98); }
 
-  .tap-sound-hint{
+  /* Tap-to-enable-sound overlay (now actually clickable) */
+  .tap-sound-overlay{
     position:absolute;
-    left:50%;
-    bottom:calc(20px + env(safe-area-inset-bottom));
-    transform:translateX(-50%);
-    padding:10px 14px;
-    border-radius:14px;
-    background:rgba(0,0,0,0.55);
-    border:1px solid rgba(255,255,255,0.14);
-    font-weight:800;
-    font-size:14px;
+    inset:0;
+    z-index:8;
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:calc(22px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
+    pointer-events:auto;
+  }
+  .tap-sound-overlay.show{ display:flex; }
+
+  .tap-sound-btn{
+    padding:14px 18px;
+    border-radius:16px;
+    background:rgba(0,0,0,0.65);
+    border:1px solid rgba(255,255,255,0.16);
+    color:#fff;
+    font-weight:900;
     letter-spacing:.4px;
-    opacity:0;
-    transition:opacity .25s ease, transform .25s ease;
-    z-index:5;
-    pointer-events:none;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow:0 0 30px rgba(255,0,60,0.18);
   }
-  .tap-sound-hint.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(-6px);
+  .tap-sound-btn:hover{
+    border-color: rgba(255,0,60,0.55);
+    box-shadow:0 0 28px rgba(255,0,60,0.28);
   }
-
-  /* Umbrella overlay animation (needs umbrella.png with transparent bg) */
-  .umbrella{
-  position:absolute;
-  left:50%;
-  bottom:-28%;
-  width:min(210px,34vw);
-  transform:translateX(-50%) rotate(-12deg) scale(0.9);
-  opacity:0;
-  z-index:6;
-  pointer-events:none;
-
-  /* ✅ red glow instead of green-ish edge */
-  filter:
-    drop-shadow(0 18px 35px rgba(0,0,0,0.55))
-    drop-shadow(0 0 26px rgba(255,0,60,0.28));
-}
-
-.umbrella.throw{
-  opacity:1;
-  animation:umbrellaThrow 1.25s cubic-bezier(.2,.9,.2,1) forwards;
-}
-
-@keyframes umbrellaThrow{
-  0%   { transform:translateX(-50%) translateY(0)      rotate(-16deg) scale(0.86); opacity:0; }
-  16%  { opacity:1; }
-  65%  { transform:translateX(-50%) translateY(-62vh)  rotate(10deg)  scale(1.0); }
-  100% { transform:translateX(-50%) translateY(-112vh) rotate(18deg)  scale(0.92); opacity:0; }
-}
+  .tap-sound-btn:active{ transform:scale(0.99); }
 
   @media (max-width:768px){
-    .intro-skip{
-      padding:14px 18px;
-      font-size:16px;
-      border-radius:16px;
-    }
+    .intro-skip{ padding:14px 18px; font-size:16px; border-radius:16px; }
   }
 
   /* ===== Persona 5 style outro ===== */
@@ -135,7 +108,7 @@
     inset:0;
     pointer-events:none;
     opacity:0;
-    z-index:7;
+    z-index:6;
   }
   .intro.outro .intro-outro{
     opacity:1;
@@ -196,7 +169,6 @@
     padding:20px;
     overflow:hidden;
   }
-
   .title{
     font-size:clamp(50px,7vw,110px);
     font-weight:800;
@@ -206,7 +178,6 @@
     text-shadow:0 15px 40px rgba(0,0,0,0.8);
     z-index:2;
   }
-
   .subtitle{
     margin-top:20px;
     font-size:20px;
@@ -214,7 +185,6 @@
     max-width:900px;
     z-index:2;
   }
-
   .button{
     margin-top:40px;
     padding:16px 45px;
@@ -228,7 +198,6 @@
     display:inline-block;
     z-index:2;
   }
-
   .button:hover{
     transform:scale(1.07);
     box-shadow:0 0 45px rgba(255,0,60,0.8);
@@ -243,7 +212,6 @@
     z-index:1;
     pointer-events:none;
   }
-
   .joker{
     left:-60px;
     transform:scaleX(-1) rotate(-6deg);
@@ -251,7 +219,6 @@
       drop-shadow(0 0 30px rgba(0,140,255,0.6))
       drop-shadow(0 0 70px rgba(0,140,255,0.3));
   }
-
   .sumire{
     right:-40px;
     transform:rotate(6deg);
@@ -265,13 +232,11 @@
     padding:110px 20px 80px;
     background:rgba(0,0,0,0.90);
   }
-
   .section-title{
     font-size:clamp(32px,4vw,56px);
     font-weight:800;
     margin-bottom:40px;
   }
-
   .video-grid{
     max-width:2800px;
     margin:0 auto;
@@ -279,7 +244,6 @@
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:56px;
   }
-
   .video-card{
     border-radius:18px;
     overflow:hidden;
@@ -289,7 +253,6 @@
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     position:relative;
   }
-
   .video-card:hover{
     transform: translateY(-8px);
     border-color: rgba(255,0,60,0.35);
@@ -305,7 +268,6 @@
     flex-direction:column;
     min-height:0;
   }
-
   .p5-video{
     width:100%;
     flex:1;
@@ -315,7 +277,7 @@
     background:#000;
   }
 
-  /* ===== FULLSCREEN FIXES ===== */
+  /* FULLSCREEN FIXES */
   .p5-player:fullscreen{
     width:100vw !important;
     height:100vh !important;
@@ -328,11 +290,7 @@
     object-fit:contain !important;
     background:#000 !important;
   }
-  .p5-player:fullscreen .p5-controls{
-    left:16px;
-    right:16px;
-    bottom:14px;
-  }
+  .p5-player:fullscreen .p5-controls{ left:16px; right:16px; bottom:14px; }
 
   .p5-player:-webkit-full-screen{
     width:100vw !important;
@@ -346,11 +304,7 @@
     object-fit:contain !important;
     background:#000 !important;
   }
-  .p5-player:-webkit-full-screen .p5-controls{
-    left:16px;
-    right:16px;
-    bottom:14px;
-  }
+  .p5-player:-webkit-full-screen .p5-controls{ left:16px; right:16px; bottom:14px; }
 
   /* Mobile gesture overlay */
   .p5-gestures{
@@ -387,10 +341,7 @@
     transition: opacity .15s ease, transform .15s ease;
     z-index:5;
   }
-  .p5-hint.show{
-    opacity:1;
-    transform:translate(-50%,-55%);
-  }
+  .p5-hint.show{ opacity:1; transform:translate(-50%,-55%); }
 
   .p5-bigplay{
     position:absolute;
@@ -409,12 +360,7 @@
     z-index:6;
   }
   .p5-bigplay:hover{ transform:scale(1.05); }
-
-  .p5-bigplay img{
-    width:34px;
-    height:34px;
-    display:block;
-  }
+  .p5-bigplay img{ width:34px; height:34px; display:block; }
 
   /* Controls */
   .p5-controls{
@@ -431,7 +377,6 @@
     box-sizing:border-box;
     max-width:100%;
   }
-
   .p5-btn{
     background:#0b0b0b;
     border:1px solid rgba(255,255,255,0.12);
@@ -444,25 +389,13 @@
     place-items:center;
     user-select:none;
   }
-
   .p5-btn:hover{
     border-color: rgba(255,0,60,0.55);
     box-shadow:0 0 22px rgba(255,0,60,0.25);
   }
+  .p5-icon{ width:18px; height:18px; display:block; }
+  .p5-time{ min-width:54px; font-size:12px; opacity:0.9; }
 
-  .p5-icon{
-    width:18px;
-    height:18px;
-    display:block;
-  }
-
-  .p5-time{
-    min-width:54px;
-    font-size:12px;
-    opacity:0.9;
-  }
-
-  /* Progress */
   .p5-progress{
     flex:1;
     min-width:0;
@@ -473,7 +406,6 @@
     border-radius:999px;
     outline:none;
   }
-
   .p5-progress::-webkit-slider-thumb{
     -webkit-appearance:none;
     appearance:none;
@@ -485,7 +417,6 @@
     cursor:pointer;
   }
 
-  /* Label */
   .video-label{
     padding: 12px 14px;
     text-align:left;
@@ -502,7 +433,6 @@
     margin-top:4px;
   }
 
-  /* FOOTER */
   footer{
     padding:50px 20px;
     font-size:14px;
@@ -526,7 +456,6 @@
     border:1px solid rgba(255,0,60,0.25);
     box-shadow:0 0 25px rgba(255,0,60,0.25);
   }
-
   .music-btn{
     background:#0b0b0b;
     border:1px solid rgba(255,255,255,0.12);
@@ -536,18 +465,11 @@
     display:grid;
     place-items:center;
   }
-
   .music-btn:hover{
     border-color:rgba(255,0,60,0.6);
     box-shadow:0 0 20px rgba(255,0,60,0.4);
   }
-
-  .music-icon{
-    width:18px;
-    height:18px;
-    display:block;
-  }
-
+  .music-icon{ width:18px; height:18px; display:block; }
   #volumeSlider{
     width:100px;
     height:6px;
@@ -557,7 +479,6 @@
     border-radius:999px;
     outline:none;
   }
-
   #volumeSlider::-webkit-slider-thumb{
     -webkit-appearance:none;
     appearance:none;
@@ -585,7 +506,6 @@
       row-gap:8px;
       padding:12px 12px;
     }
-
     .p5-btn{
       padding:10px 12px;
       min-width:42px;
@@ -593,16 +513,8 @@
       border-radius:12px;
       font-size:16px;
     }
-
-    .p5-progress{
-      flex: 1 1 100%;
-      height:8px;
-    }
-    .p5-progress::-webkit-slider-thumb{
-      width:18px;
-      height:18px;
-    }
-
+    .p5-progress{ flex: 1 1 100%; height:8px; }
+    .p5-progress::-webkit-slider-thumb{ width:18px; height:18px; }
     .p5-time{ min-width:auto; }
   }
 </style>
@@ -612,19 +524,18 @@
 
 <!-- ===== INTRO OVERLAY ===== -->
 <div id="introOverlay" class="intro">
+  <!-- IMPORTANT: Using SUMIRE.webm (alpha video) -->
   <video id="introVideo" autoplay playsinline muted preload="auto">
-    <source src="SUMIRE.mp4" type="video/mp4">
+    <source src="SUMIRE.webm" type="video/webm">
   </video>
 
-  <canvas id="introCanvas" class="intro-canvas"></canvas>
-
-  <!-- needs umbrella.png with transparent background -->
-  <img id="umbrella" class="umbrella" src="umbrella.png" alt="">
-
   <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
-  <div id="tapSoundHint" class="tap-sound-hint" aria-hidden="true">Tap to enable sound</div>
 
-  <!-- Persona-style outro overlay -->
+  <!-- CLICKABLE overlay that guarantees a user gesture -->
+  <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
+    <button id="tapSoundBtn" class="tap-sound-btn" type="button">Tap to enable sound</button>
+  </div>
+
   <div class="intro-outro" aria-hidden="true"></div>
 </div>
 
@@ -805,150 +716,21 @@
 
 <audio id="bgMusic" preload="auto"></audio>
 
-<footer>
-© 2026 Luvie Edits
-</footer>
+<footer>© 2026 Luvie Edits</footer>
 
 <script>
   // =========================
-  // INTRO (Canvas green-screen key)
+  // INTRO + MOBILE AUDIO FIX
   // =========================
   const introOverlay = document.getElementById("introOverlay");
   const introVideo   = document.getElementById("introVideo");
-  const introCanvas  = document.getElementById("introCanvas");
-  const introCtx     = introCanvas.getContext("2d", { willReadFrequently:true });
   const skipIntroBtn = document.getElementById("skipIntro");
-  const tapSoundHint = document.getElementById("tapSoundHint");
-  const umbrella     = document.getElementById("umbrella");
 
-  let introUmbrellaTriggered = false;
-  let introHiding = false;
-
-  function resizeIntroCanvas(){
-    introCanvas.width = window.innerWidth;
-    introCanvas.height = window.innerHeight;
-  }
-  resizeIntroCanvas();
-  window.addEventListener("resize", resizeIntroCanvas);
-
-  // Detect when scene becomes mostly dark (so we trigger umbrella)
-  function isMostlyDark(data){
-    let dark = 0;
-    const total = data.length / 4;
-    const step = 16;
-    for(let i=0; i<data.length; i+=4*step){
-      const r = data[i], g = data[i+1], b = data[i+2];
-      if(r < 35 && g < 35 && b < 35) dark++;
-    }
-    const sampled = Math.ceil(total / step);
-    return (dark / sampled) > 0.85;
-  }
-
-  function throwUmbrella(){
-    if(introUmbrellaTriggered) return;
-    introUmbrellaTriggered = true;
-    umbrella?.classList.add("throw");
-  }
-
-  // Persona outro -> then fade overlay out
-  function hideIntro(){
-    if(introHiding) return;
-    introHiding = true;
-
-    introOverlay.classList.add("outro");
-    setTimeout(()=>{
-      introOverlay.classList.add("hide");
-      setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
-    }, 820);
-  }
-
-  // Green screen key:
-  // - removes pixels that are "very green" compared to red/blue
-  // - keeps dark/black details (umbrella dots) safe
-  function greenKey(data){
-
-  const EDGE_SHRINK = 0.72;   // aggressive halo removal
-  const DESPILL = 0.85;       // strong green removal
-
-  for(let i=0; i<data.length; i+=4){
-
-    let r = data[i];
-    let g = data[i+1];
-    let b = data[i+2];
-    let a = data[i+3];
-
-    const maxRB = Math.max(r, b);
-    const greenBoost = g - maxRB;
-
-    // --- HARD GREEN CUT ---
-    // if green strongly dominates, remove it fully
-    if(greenBoost > 35 && g > 90){
-      const strength = Math.min(1, (greenBoost - 35) / 80);
-      a = Math.round(255 * (1 - strength));
-    }
-
-    // --- DESPILL (kill yellow/green edge glow) ---
-    if(a > 0){
-      if(g > maxRB){
-        const spillAmount = (g - maxRB) * DESPILL;
-        g = g - spillAmount;
-
-        // push slightly toward red to neutralize yellow tint
-        r = Math.min(255, r + spillAmount * 0.45);
-      }
-    }
-
-    // --- EDGE SHRINK (halo killer) ---
-    if(a > 0 && a < 240){
-      a = Math.round(a * EDGE_SHRINK);
-    }
-
-    data[i]   = r;
-    data[i+1] = g;
-    data[i+2] = b;
-    data[i+3] = a;
-  }
-}
-
-  function drawKeyedFrame(){
-    if(introOverlay.classList.contains("outro")) return;
-    if(!introVideo || introVideo.paused || introVideo.ended) return;
-
-    introCtx.drawImage(introVideo, 0, 0, introCanvas.width, introCanvas.height);
-
-    const frame = introCtx.getImageData(0, 0, introCanvas.width, introCanvas.height);
-    const data = frame.data;
-
-    greenKey(data);
-
-    // Trigger umbrella when scene becomes mostly dark
-    if(!introUmbrellaTriggered && isMostlyDark(data)){
-      throwUmbrella();
-    }
-
-    introCtx.putImageData(frame, 0, 0);
-    requestAnimationFrame(drawKeyedFrame);
-  }
-
-  introVideo.addEventListener("play", ()=> requestAnimationFrame(drawKeyedFrame));
-
-  introVideo.addEventListener("ended", ()=>{
-    throwUmbrella();
-    hideIntro();
-  });
-
-  skipIntroBtn.addEventListener("click", ()=>{
-    tryStartMusic(); // user gesture -> works on mobile
-    throwUmbrella();
-    try{
-      introVideo.pause();
-      introVideo.currentTime = 0;
-    }catch(e){}
-    hideIntro();
-  });
+  const tapOverlay = document.getElementById("tapSoundOverlay");
+  const tapBtn = document.getElementById("tapSoundBtn");
 
   // =========================
-  // MUSIC (plays immediately if allowed)
+  // MUSIC (mobile-safe unlock)
   // =========================
   const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
@@ -957,9 +739,10 @@
   const volume = document.getElementById("volumeSlider");
 
   let current = 0;
-  music.volume = Number(volume.value);
   let userWantsMusic = true;
-  let musicStartedOnce = false;
+  let musicUnlocked = false;
+
+  music.volume = Number(volume.value);
 
   function setMusicIcon(isPlaying){
     musicIcon.src = isPlaying ? "pause.png" : "start.png";
@@ -969,9 +752,8 @@
   function playTrack(i){
     current = i;
     music.src = tracks[current];
-    if(userWantsMusic){
-      music.play().then(()=>{ setMusicIcon(true); musicStartedOnce = true; })
-                 .catch(()=> setMusicIcon(false));
+    if(userWantsMusic && musicUnlocked){
+      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
     }else{
       setMusicIcon(false);
     }
@@ -983,51 +765,73 @@
   }
   music.addEventListener("ended", nextTrack);
 
-  async function tryStartMusic(){
-    if(musicStartedOnce) return true;
-    if(!userWantsMusic) return false;
+  // Hard mobile unlock: MUST happen inside a click/tap handler
+  async function unlockAudioFromGesture(){
+    if(musicUnlocked) return true;
 
     try{
+      // prime audio with a play/pause inside gesture
       await music.play();
-      musicStartedOnce = true;
-      setMusicIcon(true);
-      tapSoundHint?.classList.remove("show");
+      music.pause();
+      music.currentTime = 0;
+      musicUnlocked = true;
+
+      tapOverlay.classList.remove("show");
+      if(userWantsMusic){
+        await music.play();
+        setMusicIcon(true);
+      }
       return true;
     }catch(e){
-      tapSoundHint?.classList.add("show");
+      // still blocked -> keep overlay visible
+      tapOverlay.classList.add("show");
       setMusicIcon(false);
       return false;
     }
   }
 
-  function enableMusicOnFirstInteraction(){
-    document.removeEventListener("pointerdown", enableMusicOnFirstInteraction);
-    document.removeEventListener("touchstart", enableMusicOnFirstInteraction);
-    document.removeEventListener("click", enableMusicOnFirstInteraction);
-    tryStartMusic();
+  // show overlay if autoplay fails
+  async function tryAutoplay(){
+    playTrack(0);
+    try{
+      await music.play();
+      musicUnlocked = true;
+      setMusicIcon(true);
+      tapOverlay.classList.remove("show");
+    }catch(e){
+      tapOverlay.classList.add("show");
+      setMusicIcon(false);
+    }
   }
 
+  tapBtn.addEventListener("click", unlockAudioFromGesture);
+  tapBtn.addEventListener("touchend", (e)=>{ e.preventDefault(); unlockAudioFromGesture(); }, {passive:false});
+
   window.addEventListener("load", () => {
-    playTrack(0);
-    tryStartMusic();
+    tryAutoplay();
 
-    // fallback: first user tap/click anywhere enables sound (mobile)
-    document.addEventListener("pointerdown", enableMusicOnFirstInteraction, { once:true });
-    document.addEventListener("touchstart", enableMusicOnFirstInteraction, { once:true, passive:true });
-    document.addEventListener("click", enableMusicOnFirstInteraction, { once:true });
-
-    // start intro video (muted autoplay)
+    // intro plays muted (allowed)
     introVideo.muted = true;
     introVideo.play().catch(()=>{});
   });
 
-  toggle.addEventListener("click", () => {
-    if(music.paused){
-      userWantsMusic = true;
-      music.play().then(()=>{ setMusicIcon(true); musicStartedOnce = true; }).catch(()=> setMusicIcon(false));
-    }else{
-      userWantsMusic = false;
+  toggle.addEventListener("click", async () => {
+    userWantsMusic = !userWantsMusic;
+    if(!userWantsMusic){
       music.pause();
+      setMusicIcon(false);
+      return;
+    }
+    // if user turns it on but we aren't unlocked yet, show overlay
+    if(!musicUnlocked){
+      tapOverlay.classList.add("show");
+      return;
+    }
+    try{
+      await music.play();
+      setMusicIcon(true);
+    }catch(e){
+      tapOverlay.classList.add("show");
       setMusicIcon(false);
     }
   });
@@ -1037,7 +841,35 @@
   });
 
   // =========================
+  // INTRO END / SKIP
+  // =========================
+  let introHiding = false;
+  function hideIntro(){
+    if(introHiding) return;
+    introHiding = true;
+    introOverlay.classList.add("outro");
+    setTimeout(()=>{
+      introOverlay.classList.add("hide");
+      setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
+    }, 820);
+  }
+
+  introVideo.addEventListener("ended", hideIntro);
+
+  skipIntroBtn.addEventListener("click", async () => {
+    // skipping is a gesture -> also try to unlock audio here
+    await unlockAudioFromGesture();
+
+    try{
+      introVideo.pause();
+      introVideo.currentTime = 0;
+    }catch(e){}
+    hideIntro();
+  });
+
+  // =========================
   // VIDEO PLAYER CONTROLS
+  // (same logic as yours, unchanged)
   // =========================
   function fmtTime(s){
     if(!isFinite(s)) return "0:00";
@@ -1186,20 +1018,19 @@
 
     video.addEventListener("play", ()=>{
       setActive(player);
-      music.pause();
-      setMusicIcon(false);
+      if(musicUnlocked){ music.pause(); setMusicIcon(false); }
       setPlayUI();
     });
 
     video.addEventListener("pause", ()=>{
-      if(userWantsMusic){
+      if(userWantsMusic && musicUnlocked){
         music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
       }
       setPlayUI();
     });
 
     video.addEventListener("ended", ()=>{
-      if(userWantsMusic){
+      if(userWantsMusic && musicUnlocked){
         music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
       }
       setPlayUI();
