@@ -32,6 +32,43 @@
     body { background-attachment: scroll; }
   }
 
+  /* =========================
+     ✅ CUSTOM CURSOR (GIF)
+     ========================= */
+  :root{
+    --cursor-size: 56px;         /* change if you want bigger/smaller */
+    --cursor-offset-x: 10px;     /* move cursor image away from pointer */
+    --cursor-offset-y: 10px;
+  }
+
+  /* Hide system cursor ONLY on non-touch devices */
+  @media (hover:hover) and (pointer:fine){
+    html, body { cursor: none !important; }
+    a, button, input, textarea, select, label, [role="button"] { cursor: none !important; }
+  }
+
+  .gif-cursor{
+    position:fixed;
+    left:0; top:0;
+    width:var(--cursor-size);
+    height:var(--cursor-size);
+    transform: translate(-9999px, -9999px);
+    pointer-events:none;
+    z-index:2147483647;
+    user-select:none;
+    -webkit-user-drag:none;
+    image-rendering:auto;
+    will-change: transform;
+    display:none; /* enabled by JS when mouse exists */
+  }
+  .gif-cursor img{
+    width:100%;
+    height:100%;
+    display:block;
+    user-select:none;
+    pointer-events:none;
+  }
+
   /* ===== INTRO (SUMIRE) ===== */
   .intro{
     position:fixed;
@@ -172,8 +209,6 @@
   /* HERO */
   .hero{
     position:relative;
-
-    /* ✅ iPhone/Android consistent viewport height */
     min-height:100svh;
     min-height:100dvh;
     height:auto;
@@ -285,7 +320,6 @@
     flex-direction:column;
     min-height:0;
   }
-  .p5-player:hover{ cursor: crosshair; }
 
   .p5-video{
     width:100%;
@@ -506,7 +540,6 @@
   }
 
   @media (max-width:768px){
-    /* ✅ keep your mobile look but still consistent with iOS */
     .hero{ min-height:92svh; min-height:92dvh; }
     .title{font-size:38px;letter-spacing:3px;}
     .subtitle{font-size:15px;max-width:320px;}
@@ -536,6 +569,11 @@
 </head>
 
 <body oncontextmenu="return false;">
+
+<!-- ✅ GIF CURSOR ELEMENT -->
+<div id="gifCursor" class="gif-cursor" aria-hidden="true">
+  <img id="gifCursorImg" src="NORMAL.gif" alt="">
+</div>
 
 <!-- ===== INTRO OVERLAY ===== -->
 <div id="introOverlay" class="intro">
@@ -568,7 +606,8 @@
   <div class="video-grid">
     <!-- ===== CARD 1 ===== -->
     <div class="video-card">
-      <div class="p5-player">
+      <!-- data-cursor lets you force a cursor state -->
+      <div class="p5-player" data-cursor="precision">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video1.mp4" type="video/mp4">
         </video>
@@ -581,30 +620,30 @@
 
         <div class="p5-hint">+10s</div>
 
-        <button class="p5-bigplay" type="button" aria-label="Play">
+        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
           <img src="start.png" alt="Play">
         </button>
 
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
+        <div class="p5-controls" data-cursor="normal">
+          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
             <img src="start.png" class="p5-icon" alt="Play">
           </button>
 
-          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds">⏪</button>
+          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">⏪</button>
 
           <div class="p5-time">
             <span class="p5-current">0:00</span>
           </div>
 
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
 
-          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds">⏩</button>
+          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">⏩</button>
 
-          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down">−</button>
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up">+</button>
+          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">−</button>
+          <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">🔊</button>
+          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">+</button>
 
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
+          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">⛶</button>
         </div>
       </div>
       <div class="video-label">Edit 1 <span>Persona-style player</span></div>
@@ -612,7 +651,7 @@
 
     <!-- ===== CARD 2 ===== -->
     <div class="video-card">
-      <div class="p5-player">
+      <div class="p5-player" data-cursor="precision">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video2.mp4" type="video/mp4">
         </video>
@@ -625,22 +664,22 @@
 
         <div class="p5-hint">+10s</div>
 
-        <button class="p5-bigplay" type="button" aria-label="Play">
+        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
           <img src="start.png" alt="Play">
         </button>
 
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
+        <div class="p5-controls" data-cursor="normal">
+          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
             <img src="start.png" class="p5-icon" alt="Play">
           </button>
-          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds">⏪</button>
+          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">⏪</button>
           <div class="p5-time"><span class="p5-current">0:00</span></div>
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds">⏩</button>
-          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down">−</button>
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up">+</button>
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
+          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">⏩</button>
+          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">−</button>
+          <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">🔊</button>
+          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">+</button>
+          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">⛶</button>
         </div>
       </div>
       <div class="video-label">Edit 2 <span>Persona-style player</span></div>
@@ -648,7 +687,7 @@
 
     <!-- ===== CARD 3 ===== -->
     <div class="video-card">
-      <div class="p5-player">
+      <div class="p5-player" data-cursor="precision">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video3.mp4" type="video/mp4">
         </video>
@@ -661,22 +700,22 @@
 
         <div class="p5-hint">+10s</div>
 
-        <button class="p5-bigplay" type="button" aria-label="Play">
+        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
           <img src="start.png" alt="Play">
         </button>
 
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
+        <div class="p5-controls" data-cursor="normal">
+          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
             <img src="start.png" class="p5-icon" alt="Play">
           </button>
-          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds">⏪</button>
+          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">⏪</button>
           <div class="p5-time"><span class="p5-current">0:00</span></div>
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds">⏩</button>
-          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down">−</button>
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up">+</button>
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
+          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">⏩</button>
+          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">−</button>
+          <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">🔊</button>
+          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">+</button>
+          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">⛶</button>
         </div>
       </div>
       <div class="video-label">Edit 3 <span>Persona-style player</span></div>
@@ -684,7 +723,7 @@
 
     <!-- ===== CARD 4 ===== -->
     <div class="video-card">
-      <div class="p5-player">
+      <div class="p5-player" data-cursor="precision">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video4.mp4" type="video/mp4">
         </video>
@@ -697,22 +736,22 @@
 
         <div class="p5-hint">+10s</div>
 
-        <button class="p5-bigplay" type="button" aria-label="Play">
+        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
           <img src="start.png" alt="Play">
         </button>
 
-        <div class="p5-controls">
-          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause">
+        <div class="p5-controls" data-cursor="normal">
+          <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
             <img src="start.png" class="p5-icon" alt="Play">
           </button>
-          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds">⏪</button>
+          <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">⏪</button>
           <div class="p5-time"><span class="p5-current">0:00</span></div>
-          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek">
-          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds">⏩</button>
-          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down">−</button>
-          <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
-          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up">+</button>
-          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
+          <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
+          <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">⏩</button>
+          <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">−</button>
+          <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">🔊</button>
+          <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">+</button>
+          <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">⛶</button>
         </div>
       </div>
       <div class="video-label">Edit 4 <span>Persona-style player</span></div>
@@ -721,11 +760,11 @@
 </section>
 
 <!-- MUSIC UI -->
-<div class="music-player">
-  <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music">
+<div class="music-player" data-cursor="normal">
+  <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music" data-cursor="link">
     <img src="start.png" id="musicIcon" class="music-icon" alt="Play">
   </button>
-  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume">
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume" data-cursor="h-resize">
 </div>
 
 <audio id="bgMusic" preload="auto"></audio>
@@ -733,6 +772,186 @@
 <footer>© 2026 Luvie Edits</footer>
 
 <script>
+  // =========================
+  // ✅ GIF CURSOR ENGINE
+  // =========================
+  const CURSOR_GIFS = {
+    normal: "NORMAL.gif",
+    link: "LINK_SELECT.gif",
+    text: "TEXT_SELECT.gif",
+    precision: "PRECISION.gif",
+    busy: "BUSY.gif",
+    help: "HELP.gif",
+    move: "MOVE.gif",
+    unavailable: "UNAVABIBLE.gif",
+    handwriting: "HANDWRITING.gif",
+    alternate: "ALTERNATE_SELECT.gif",
+    vib: "WIB.gif",
+    hResize: "H_RESIZE.gif",
+    vResize: "V_RESIZE.gif",
+    resize1: "RESIZE_1.gif",
+    resize2: "RESIZE_2.gif",
+  };
+
+  const gifCursor = document.getElementById("gifCursor");
+  const gifCursorImg = document.getElementById("gifCursorImg");
+
+  // only enable on real mouse devices
+  const CAN_HOVER = matchMedia("(hover:hover) and (pointer:fine)").matches;
+
+  // preload gifs (helps reduce flashing)
+  function preloadGifs(){
+    Object.values(CURSOR_GIFS).forEach(src=>{
+      const i = new Image();
+      i.src = src;
+    });
+  }
+  if(CAN_HOVER){
+    preloadGifs();
+    gifCursor.style.display = "block";
+  }
+
+  let mouseX = -9999, mouseY = -9999;
+  let rafOn = false;
+  let currentCursorKey = "normal";
+  let forceCursorKey = null;
+
+  function setCursor(key){
+    if(!CAN_HOVER) return;
+    if(!key) key = "normal";
+    if(key === currentCursorKey) return;
+    currentCursorKey = key;
+    const src = CURSOR_GIFS[key] || CURSOR_GIFS.normal;
+    if(gifCursorImg.getAttribute("src") !== src){
+      gifCursorImg.setAttribute("src", src);
+    }
+  }
+
+  function updateCursorPos(){
+    rafOn = false;
+    if(!CAN_HOVER) return;
+    gifCursor.style.transform =
+      `translate(${mouseX + parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-x"))}px,` +
+      `${mouseY + parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-y"))}px)`;
+  }
+
+  window.addEventListener("mousemove", (e)=>{
+    if(!CAN_HOVER) return;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if(!rafOn){
+      rafOn = true;
+      requestAnimationFrame(updateCursorPos);
+    }
+  }, {passive:true});
+
+  function closestAttr(el, attr){
+    while(el && el !== document.documentElement){
+      if(el.hasAttribute && el.hasAttribute(attr)) return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  function mapCssCursorToGif(cssCursor){
+    const c = (cssCursor || "").toLowerCase();
+
+    if(c.includes("not-allowed") || c.includes("no-drop")) return "unavailable";
+    if(c.includes("help")) return "help";
+    if(c.includes("text")) return "text";
+    if(c.includes("move") || c.includes("grab") || c.includes("grabbing")) return "move";
+    if(c.includes("crosshair")) return "precision";
+    if(c.includes("pointer")) return "link";
+
+    // resize mapping
+    if(c.includes("ew-resize") || c.includes("col-resize")) return "hResize";
+    if(c.includes("ns-resize") || c.includes("row-resize")) return "vResize";
+    if(c.includes("nwse-resize")) return "resize1";
+    if(c.includes("nesw-resize")) return "resize2";
+
+    return "normal";
+  }
+
+  function computeCursorFromTarget(target){
+    if(!CAN_HOVER) return "normal";
+    if(forceCursorKey) return forceCursorKey;
+
+    // 1) explicit override via data-cursor
+    const forcedEl = closestAttr(target, "data-cursor");
+    if(forcedEl){
+      const val = (forcedEl.getAttribute("data-cursor") || "").trim().toLowerCase();
+      // accepted values: normal, link, text, precision, busy, help, move, unavailable, handwriting, alternate, vib,
+      // h-resize, v-resize, resize-1, resize-2
+      if(val === "h-resize") return "hResize";
+      if(val === "v-resize") return "vResize";
+      if(val === "resize-1") return "resize1";
+      if(val === "resize-2") return "resize2";
+      if(CURSOR_GIFS[val]) return val;
+      // allow camel keys too
+      if(CURSOR_GIFS[val.replace(/-/g,"")]) return val.replace(/-/g,"");
+    }
+
+    // 2) common elements
+    if(target){
+      const tag = (target.tagName || "").toLowerCase();
+      if(tag === "a" || tag === "button") return "link";
+      if(tag === "input"){
+        const t = (target.getAttribute("type") || "").toLowerCase();
+        if(t === "text" || t === "email" || t === "password" || t === "search" || t === "url" || t === "tel") return "text";
+        if(t === "range") return "hResize";
+      }
+      if(tag === "textarea") return "text";
+      if(target.isContentEditable) return "text";
+    }
+
+    // 3) selection (if user is selecting text)
+    const sel = window.getSelection?.();
+    if(sel && sel.rangeCount && !sel.isCollapsed){
+      return "text";
+    }
+
+    // 4) CSS cursor fallback
+    const cssCursor = target ? getComputedStyle(target).cursor : "";
+    return mapCssCursorToGif(cssCursor);
+  }
+
+  // Update cursor on hover changes
+  document.addEventListener("mouseover", (e)=>{
+    if(!CAN_HOVER) return;
+    setCursor(computeCursorFromTarget(e.target));
+  }, {passive:true});
+
+  document.addEventListener("mousemove", (e)=>{
+    if(!CAN_HOVER) return;
+    setCursor(computeCursorFromTarget(e.target));
+  }, {passive:true});
+
+  // Optional: if you want an "alternate select" on mouse down
+  document.addEventListener("mousedown", (e)=>{
+    if(!CAN_HOVER) return;
+    // if clicking text-ish area, keep text cursor
+    const key = computeCursorFromTarget(e.target);
+    if(key === "text") setCursor("text");
+    else setCursor(key);
+  });
+
+  document.addEventListener("mouseup", (e)=>{
+    if(!CAN_HOVER) return;
+    setCursor(computeCursorFromTarget(e.target));
+  });
+
+  // Show BUSY when video is waiting/buffering
+  function attachBusyCursorToVideos(){
+    document.querySelectorAll("video").forEach(v=>{
+      v.addEventListener("waiting", ()=> { if(CAN_HOVER) setCursor("busy"); });
+      v.addEventListener("stalled", ()=> { if(CAN_HOVER) setCursor("busy"); });
+      v.addEventListener("playing", ()=> { if(CAN_HOVER) setCursor("precision"); });
+      v.addEventListener("pause", ()=> { if(CAN_HOVER) setCursor("precision"); });
+      v.addEventListener("canplay", ()=> { if(CAN_HOVER) setCursor("precision"); });
+    });
+  }
+  attachBusyCursorToVideos();
+
   // =========================
   // ALWAYS START AT TOP (no jump)
   // =========================
@@ -1002,11 +1221,13 @@
       isPointerInsidePlayer = true;
       hoveredPlayer = player;
       setActive(player);
+      if(CAN_HOVER) setCursor("precision");
     });
     player.addEventListener("mouseleave", () => {
       if(hoveredPlayer === player){
         isPointerInsidePlayer = false;
         hoveredPlayer = null;
+        if(CAN_HOVER) setCursor("normal");
       }
     });
 
