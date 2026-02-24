@@ -815,9 +815,32 @@
     introVideo.play().catch(()=>{});
   });
 
-  // tap button unlocks
-  tapBtn.addEventListener("click", unlockAudioFromGesture);
-  tapBtn.addEventListener("touchend", (e)=>{ e.preventDefault(); unlockAudioFromGesture(); }, {passive:false});
+  async function enableSoundAndStartMusic(){
+  const ok = await unlockAudioFromGesture();
+  if(!ok) return;
+
+  // ✅ behave like the intro button: user wants music ON
+  userWantsMusic = true;
+
+  if(!music.src) setTrack(0);
+
+  try{
+    await music.play();
+    setMusicIcon(true);
+    tapOverlay.classList.remove("show");
+  }catch(e){
+    // if it still fails, keep overlay visible
+    tapOverlay.classList.add("show");
+    userWantsMusic = false;
+    setMusicIcon(false);
+  }
+}
+
+tapBtn.addEventListener("click", enableSoundAndStartMusic);
+tapBtn.addEventListener("touchend", (e)=>{
+  e.preventDefault();
+  enableSoundAndStartMusic();
+}, {passive:false});
 
   // ✅ music toggle: try unlocking with THIS click, then toggle
   toggle.addEventListener("click", async () => {
