@@ -9,18 +9,27 @@
 
 <style>
   html{scroll-behavior:smooth;}
+
   body{
     margin:0;
     font-family:'Montserrat',sans-serif;
     color:#fff;
     text-align:center;
+
     background-image:
       linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
       url("Background.jpg");
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
+
+    /* ✅ Keep parallax on desktop/Android-ish browsers */
     background-attachment:fixed;
+  }
+
+  /* ✅ iOS Safari fix: background-attachment:fixed causes weird scaling/cropping */
+  @supports (-webkit-touch-callout: none) {
+    body { background-attachment: scroll; }
   }
 
   /* ===== INTRO (SUMIRE) ===== */
@@ -163,7 +172,12 @@
   /* HERO */
   .hero{
     position:relative;
-    height:100vh;
+
+    /* ✅ iPhone/Android consistent viewport height */
+    min-height:100svh;
+    min-height:100dvh;
+    height:auto;
+
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -171,6 +185,7 @@
     padding:20px;
     overflow:hidden;
   }
+
   .title{
     font-size:clamp(50px,7vw,110px);
     font-weight:800;
@@ -491,7 +506,8 @@
   }
 
   @media (max-width:768px){
-    .hero{height:92vh;}
+    /* ✅ keep your mobile look but still consistent with iOS */
+    .hero{ min-height:92svh; min-height:92dvh; }
     .title{font-size:38px;letter-spacing:3px;}
     .subtitle{font-size:15px;max-width:320px;}
     .button{padding:14px 28px;}
@@ -816,31 +832,31 @@
   });
 
   async function enableSoundAndStartMusic(){
-  const ok = await unlockAudioFromGesture();
-  if(!ok) return;
+    const ok = await unlockAudioFromGesture();
+    if(!ok) return;
 
-  // ✅ behave like the intro button: user wants music ON
-  userWantsMusic = true;
+    // ✅ behave like the intro button: user wants music ON
+    userWantsMusic = true;
 
-  if(!music.src) setTrack(0);
+    if(!music.src) setTrack(0);
 
-  try{
-    await music.play();
-    setMusicIcon(true);
-    tapOverlay.classList.remove("show");
-  }catch(e){
-    // if it still fails, keep overlay visible
-    tapOverlay.classList.add("show");
-    userWantsMusic = false;
-    setMusicIcon(false);
+    try{
+      await music.play();
+      setMusicIcon(true);
+      tapOverlay.classList.remove("show");
+    }catch(e){
+      // if it still fails, keep overlay visible
+      tapOverlay.classList.add("show");
+      userWantsMusic = false;
+      setMusicIcon(false);
+    }
   }
-}
 
-tapBtn.addEventListener("click", enableSoundAndStartMusic);
-tapBtn.addEventListener("touchend", (e)=>{
-  e.preventDefault();
-  enableSoundAndStartMusic();
-}, {passive:false});
+  tapBtn.addEventListener("click", enableSoundAndStartMusic);
+  tapBtn.addEventListener("touchend", (e)=>{
+    e.preventDefault();
+    enableSoundAndStartMusic();
+  }, {passive:false});
 
   // ✅ music toggle: try unlocking with THIS click, then toggle
   toggle.addEventListener("click", async () => {
