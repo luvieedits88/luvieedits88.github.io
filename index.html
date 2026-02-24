@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -528,14 +528,12 @@
 
 <!-- ===== INTRO OVERLAY ===== -->
 <div id="introOverlay" class="intro">
-  <!-- IMPORTANT: Using SUMIRE.webm (alpha video) -->
   <video id="introVideo" autoplay playsinline muted preload="auto">
     <source src="SUMIRE.webm" type="video/webm">
   </video>
 
   <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
 
-  <!-- CLICKABLE overlay that guarantees a user gesture -->
   <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
     <button id="tapSoundBtn" class="tap-sound-btn" type="button">Tap to enable sound</button>
   </div>
@@ -713,7 +711,7 @@
 <!-- MUSIC UI -->
 <div class="music-player">
   <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music">
-    <img src="pause.png" id="musicIcon" class="music-icon" alt="Pause">
+    <img src="start.png" id="musicIcon" class="music-icon" alt="Play">
   </button>
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume">
 </div>
@@ -724,17 +722,28 @@
 
 <script>
   // =========================
-  // INTRO + MOBILE AUDIO FIX
+  // ALWAYS START AT TOP (no jump)
+  // =========================
+  try { history.scrollRestoration = "manual"; } catch(e){}
+  window.addEventListener("load", () => {
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    window.scrollTo(0, 0);
+  });
+
+  // =========================
+  // INTRO + AUDIO GATE
   // =========================
   const introOverlay = document.getElementById("introOverlay");
   const introVideo   = document.getElementById("introVideo");
   const skipIntroBtn = document.getElementById("skipIntro");
+  const tapOverlay   = document.getElementById("tapSoundOverlay");
+  const tapBtn       = document.getElementById("tapSoundBtn");
 
-  const tapOverlay = document.getElementById("tapSoundOverlay");
-  const tapBtn = document.getElementById("tapSoundBtn");
+  // lock scroll while intro is visible (prevents "jump")
+  document.body.style.overflow = "hidden";
 
   // =========================
-  // MUSIC (mobile-safe unlock)
+  // MUSIC (starts PAUSED until user enables)
   // =========================
   const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
@@ -743,8 +752,8 @@
   const volume = document.getElementById("volumeSlider");
 
   let current = 0;
-  let userWantsMusic = true;
-  let musicUnlocked = false;
+  let userWantsMusic = false;     // ✅ start paused
+  let musicUnlocked = false;      // ✅ locked until gesture
 
   music.volume = Number(volume.value);
 
@@ -752,38 +761,37 @@
     musicIcon.src = isPlaying ? "pause.png" : "start.png";
     musicIcon.alt = isPlaying ? "Pause" : "Play";
   }
+  setMusicIcon(false);
 
-  function playTrack(i){
+  function setTrack(i){
     current = i;
     music.src = tracks[current];
-    if(userWantsMusic && musicUnlocked){
-      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
-    }else{
-      setMusicIcon(false);
-    }
   }
 
   function nextTrack(){
     current = (current + 1) % tracks.length;
-    playTrack(current);
+    setTrack(current);
+    if(userWantsMusic && musicUnlocked){
+      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+    }
   }
   music.addEventListener("ended", nextTrack);
 
-  // Hard mobile unlock: MUST happen inside a click/tap handler
+  // ✅ real unlock (does NOT auto-play music)
   async function unlockAudioFromGesture(){
     if(musicUnlocked) return true;
 
     try{
+      if(!music.src) setTrack(0);
+
+      // prime/unlock
       await music.play();
       music.pause();
       music.currentTime = 0;
-      musicUnlocked = true;
 
+      musicUnlocked = true;
       tapOverlay.classList.remove("show");
-      if(userWantsMusic){
-        await music.play();
-        setMusicIcon(true);
-      }
+      setMusicIcon(!music.paused && userWantsMusic);
       return true;
     }catch(e){
       tapOverlay.classList.add("show");
@@ -792,40 +800,35 @@
     }
   }
 
-  async function tryAutoplay(){
-    playTrack(0);
-    try{
-      await music.play();
-      musicUnlocked = true;
-      setMusicIcon(true);
-      tapOverlay.classList.remove("show");
-    }catch(e){
-      tapOverlay.classList.add("show");
-      setMusicIcon(false);
-    }
-  }
-
-  tapBtn.addEventListener("click", unlockAudioFromGesture);
-  tapBtn.addEventListener("touchend", (e)=>{ e.preventDefault(); unlockAudioFromGesture(); }, {passive:false});
-
+  // show overlay on load (fix "sometimes doesn't appear on PC")
   window.addEventListener("load", () => {
-    tryAutoplay();
+    tapOverlay.classList.add("show");
 
+    // intro plays muted (allowed)
     introVideo.muted = true;
     introVideo.play().catch(()=>{});
   });
 
+  // clicking tap button unlocks
+  tapBtn.addEventListener("click", unlockAudioFromGesture);
+  tapBtn.addEventListener("touchend", (e)=>{ e.preventDefault(); unlockAudioFromGesture(); }, {passive:false});
+
+  // music toggle button: if not unlocked -> show overlay; else toggle play/pause
   toggle.addEventListener("click", async () => {
+    if(!musicUnlocked){
+      tapOverlay.classList.add("show");
+      return;
+    }
+
     userWantsMusic = !userWantsMusic;
+
     if(!userWantsMusic){
       music.pause();
       setMusicIcon(false);
       return;
     }
-    if(!musicUnlocked){
-      tapOverlay.classList.add("show");
-      return;
-    }
+
+    if(!music.src) setTrack(0);
     try{
       await music.play();
       setMusicIcon(true);
@@ -840,29 +843,28 @@
   });
 
   // =========================
-  // INTRO END / SKIP
+  // INTRO END / SKIP (skip must ALWAYS work)
   // =========================
   let introHiding = false;
   function hideIntro(){
     if(introHiding) return;
     introHiding = true;
+
     introOverlay.classList.add("outro");
     setTimeout(()=>{
       introOverlay.classList.add("hide");
       setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
     }, 820);
+
+    // unlock scroll when intro is gone
+    document.body.style.overflow = "";
   }
 
   introVideo.addEventListener("ended", hideIntro);
 
-  skipIntroBtn.addEventListener("click", async () => {
-    // skipping is a gesture -> also try to unlock audio here
-    await unlockAudioFromGesture();
-
-    try{
-      introVideo.pause();
-      introVideo.currentTime = 0;
-    }catch(e){}
+  // ✅ Skip works even if sound not enabled
+  skipIntroBtn.addEventListener("click", () => {
+    try{ introVideo.pause(); introVideo.currentTime = 0; }catch(e){}
     hideIntro();
   });
 
@@ -947,6 +949,13 @@
       }
     });
 
+    // ✅ if they click play on video without unlocking audio, unlock it here
+    async function ensureUnlocked(){
+      if(!musicUnlocked){
+        await unlockAudioFromGesture();
+      }
+    }
+
     function setMuteIcon(){
       const muted = video.muted || video.volume === 0;
       muteBtn.textContent = muted ? "🔇" : "🔊";
@@ -986,8 +995,9 @@
 
     player.addEventListener("pointerdown", ()=> setActive(player));
 
-    bigPlay.addEventListener("click", ()=> { setActive(player); video.play(); });
-    playBtn.addEventListener("click", ()=> { setActive(player); video.paused ? video.play() : video.pause(); });
+    // ✅ play buttons unlock audio first (fix volume controls not working)
+    bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });
+    playBtn.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.paused ? video.play() : video.pause(); });
 
     video.addEventListener("timeupdate", ()=>{
       cur.textContent = fmtTime(video.currentTime);
@@ -1032,7 +1042,7 @@
     player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
-    // pause bg music when video starts, resume when paused/ended
+    // pause bg music when video starts, resume only if user wanted music
     video.addEventListener("play", ()=>{
       setActive(player);
       if(musicUnlocked){
@@ -1060,8 +1070,9 @@
       if(!isTouchDevice()){
         gestures.style.display = "none";
       }else{
-        mid?.addEventListener("click", ()=>{
+        mid?.addEventListener("click", async ()=>{
           setActive(player);
+          await ensureUnlocked();
           if(video.paused) video.play();
           else video.pause();
           showHint(player, video.paused ? "Paused" : "Play");
@@ -1140,22 +1151,28 @@
 
       // outside player -> toggle ONLY background music
       e.preventDefault();
-      userWantsMusic = !music.paused ? false : true;
 
-      if(!musicUnlocked && userWantsMusic){
+      // if not unlocked, we can't start music; show overlay and keep paused
+      if(!musicUnlocked){
         tapOverlay.classList.add("show");
+        userWantsMusic = false;
+        setMusicIcon(false);
         return;
       }
 
       if(music.paused){
+        userWantsMusic = true;
+        if(!music.src) setTrack(0);
         try{
           await music.play();
           setMusicIcon(true);
         }catch(e2){
           tapOverlay.classList.add("show");
+          userWantsMusic = false;
           setMusicIcon(false);
         }
       }else{
+        userWantsMusic = false;
         music.pause();
         setMusicIcon(false);
       }
@@ -1172,7 +1189,7 @@
       return;
     }
 
-    // optional: only allow arrows when hovered inside player
+    // only allow arrows when hovered inside player
     if(!isPointerInsidePlayer) return;
 
     if(k === "ArrowLeft"){
