@@ -333,9 +333,23 @@
     background:#000;
   }
 
-  /* ✅ Make the *SYSTEM* cursor crosshair inside player
-     (doesn't break your GIF cursor; GIF still shows because system cursor is hidden on desktop)
-  */
+ @media (hover:hover) and (pointer:fine){
+  .p5-player,
+  .p5-player *{
+    cursor: none !important;
+  }
+
+  .p5-player:fullscreen,
+  .p5-player:fullscreen *{
+    cursor: none !important;
+  }
+
+  .p5-player:-webkit-full-screen,
+  .p5-player:-webkit-full-screen *{
+    cursor: none !important;
+  }
+}
+  
   .p5-player, .p5-video { cursor: crosshair; }
 
   .p5-player:fullscreen{
