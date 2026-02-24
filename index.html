@@ -329,6 +329,11 @@
     display:block;
     background:#000;
   }
+    /* ✅ FORCE CROSSHAIR IN VIDEO */
+  .p5-player,
+  .p5-video{
+    cursor: crosshair;
+  }
 
   .p5-player:fullscreen{
     width:100vw !important;
@@ -482,7 +487,148 @@
     display:block;
     margin-top:4px;
   }
+  
+  /* =========================
+     ✅ CONTACT SECTION
+  ========================= */
+  .contact{
+    padding:110px 20px 120px;
+    background:rgba(0,0,0,0.94);
+  }
 
+  .contact-rect{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px 26px;
+    border-radius:22px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 22px 70px rgba(0,0,0,0.75);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:22px;
+  }
+
+  .contact-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+
+  .pfp-wrap{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    padding:4px;
+    border:2px solid rgba(255,0,60,0.9);
+    box-shadow:
+      0 0 25px rgba(255,0,60,0.40),
+      0 0 55px rgba(255,0,60,0.22);
+    animation:pfpGlow 2.5s infinite ease-in-out;
+  }
+
+  @keyframes pfpGlow{
+    0%,100%{ box-shadow:0 0 25px rgba(255,0,60,0.4),0 0 55px rgba(255,0,60,0.22); }
+    50%{ box-shadow:0 0 35px rgba(255,0,60,0.7),0 0 75px rgba(255,0,60,0.35); }
+  }
+
+  .pfp-img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+
+  .contact-text{
+    text-align:left;
+  }
+  .contact-text h3{
+    margin:0;
+    font-size:22px;
+    letter-spacing:1px;
+  }
+  .contact-text p{
+    margin:6px 0 0;
+    opacity:0.85;
+    font-size:14px;
+  }
+
+  .contact-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+
+  .contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 18px;
+    border-radius:16px;
+    text-decoration:none;
+    font-weight:900;
+    letter-spacing:0.5px;
+    color:#fff;
+    background:rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.16);
+    box-shadow:0 0 24px rgba(255,0,60,0.16);
+    position:relative;
+    overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+
+  .contact-btn::after{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    background:linear-gradient(115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 45%,
+      rgba(255,255,255,0.75) 50%,
+      rgba(255,255,255,0) 56%,
+      rgba(255,255,255,0) 100%);
+    transform:translateX(-70%) rotate(-10deg);
+    opacity:0.55;
+    transition:opacity .2s ease;
+  }
+
+  .contact-btn:hover{
+    transform:translateY(-3px) scale(1.02);
+    border-color:rgba(255,0,60,0.55);
+    box-shadow:0 0 35px rgba(255,0,60,0.32);
+  }
+  .contact-btn:hover::after{
+    opacity:0.95;
+    animation:shine 1.1s ease forwards;
+  }
+
+  @keyframes shine{
+    0%{ transform:translateX(-70%) rotate(-10deg); }
+    100%{ transform:translateX(85%) rotate(-10deg); }
+  }
+
+  .btn-ico{
+    width:22px;
+    height:22px;
+    display:block;
+    filter:drop-shadow(0 0 10px rgba(255,0,60,0.25));
+  }
+
+  @media (max-width:768px){
+    .contact-rect{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .contact-actions{
+      width:100%;
+      justify-content:flex-start;
+    }
+  }
+  
   footer{
     padding:50px 20px;
     font-size:14px;
@@ -597,6 +743,7 @@
   <h1 class="title">LUVIE EDITS</h1>
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
   <a href="#portfolio" class="button">Watch My Work</a>
+  <a href="#contact" class="button" style="margin-top:16px;">Contact Me</a>
 </section>
 
 <section id="portfolio" class="portfolio">
@@ -758,7 +905,39 @@
 
   </div>
 </section>
+  
+<section id="contact" class="contact">
+  <h2 class="section-title contact-title">Contact Me</h2>
 
+  <div class="contact-rect">
+    <div class="contact-left">
+      <div class="pfp-wrap" data-cursor="link" title="Luvie">
+        <img src="pfp.png" class="pfp-img" alt="Luvie Profile">
+      </div>
+
+      <div class="contact-text">
+        <h3>Luvie</h3>
+        <p>Commission / Business inquiries — fastest response on Discord.</p>
+      </div>
+    </div>
+
+    <div class="contact-actions">
+      <a class="contact-btn" data-cursor="link"
+         href="https://discord.com/users/YOUR_DISCORD_ID"
+         target="_blank" rel="noopener">
+        <img class="btn-ico" src="discord.png" alt="">
+        Discord
+      </a>
+
+      <a class="contact-btn" data-cursor="link"
+         href="mailto:YOUR_EMAIL@gmail.com?subject=Luvie%20Edits%20Inquiry">
+        <img class="btn-ico" src="mail.png" alt="">
+        Email
+      </a>
+    </div>
+  </div>
+</section>
+  
 <!-- MUSIC UI -->
 <div class="music-player" data-cursor="normal">
   <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music" data-cursor="link">
@@ -1390,8 +1569,17 @@
     setMuteIcon();
     setPlayUI();
   });
+  // ✅ Keep GIF cursor visible even in fullscreen
+  function ensureGifCursorVisible(){
+    if(!CAN_HOVER) return;
+    gifCursor.style.display = "block";
+    gifCursor.style.position = "fixed";
+    gifCursor.style.zIndex = "2147483647";
+   }
 
-  document.addEventListener("fullscreenchange", ()=>{
+    document.addEventListener("fullscreenchange", ensureGifCursorVisible);
+    document.addEventListener("webkitfullscreenchange", ensureGifCursorVisible);
+    document.addEventListener("fullscreenchange", ()=>{
     document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
   });
   document.addEventListener("webkitfullscreenchange", ()=>{
