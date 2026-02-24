@@ -66,7 +66,7 @@
   }
   .intro-skip:active{ transform:scale(0.98); }
 
-  /* Tap-to-enable-sound overlay (now actually clickable) */
+  /* Tap-to-enable-sound overlay (clickable) */
   .tap-sound-overlay{
     position:absolute;
     inset:0;
@@ -268,6 +268,10 @@
     flex-direction:column;
     min-height:0;
   }
+
+  /* ✅ Crosshair ONLY when inside player */
+  .p5-player:hover{ cursor: crosshair; }
+
   .p5-video{
     width:100%;
     flex:1;
@@ -770,7 +774,6 @@
     if(musicUnlocked) return true;
 
     try{
-      // prime audio with a play/pause inside gesture
       await music.play();
       music.pause();
       music.currentTime = 0;
@@ -783,14 +786,12 @@
       }
       return true;
     }catch(e){
-      // still blocked -> keep overlay visible
       tapOverlay.classList.add("show");
       setMusicIcon(false);
       return false;
     }
   }
 
-  // show overlay if autoplay fails
   async function tryAutoplay(){
     playTrack(0);
     try{
@@ -810,7 +811,6 @@
   window.addEventListener("load", () => {
     tryAutoplay();
 
-    // intro plays muted (allowed)
     introVideo.muted = true;
     introVideo.play().catch(()=>{});
   });
@@ -822,7 +822,6 @@
       setMusicIcon(false);
       return;
     }
-    // if user turns it on but we aren't unlocked yet, show overlay
     if(!musicUnlocked){
       tapOverlay.classList.add("show");
       return;
@@ -869,7 +868,6 @@
 
   // =========================
   // VIDEO PLAYER CONTROLS
-  // (same logic as yours, unchanged)
   // =========================
   function fmtTime(s){
     if(!isFinite(s)) return "0:00";
@@ -908,6 +906,12 @@
     if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
   }
 
+  // ✅ Space behavior:
+  // - if cursor is inside a player -> space controls that video
+  // - if outside -> space controls ONLY background music
+  let isPointerInsidePlayer = false;
+  let hoveredPlayer = null;
+
   document.querySelectorAll(".p5-player").forEach(player=>{
     const video = player.querySelector(".p5-video");
     const bigPlay = player.querySelector(".p5-bigplay");
@@ -929,6 +933,19 @@
 
     video.volume = 0.8;
     video.muted = false;
+
+    // ✅ hover tracking for "space only inside player"
+    player.addEventListener("mouseenter", () => {
+      isPointerInsidePlayer = true;
+      hoveredPlayer = player;
+      setActive(player);
+    });
+    player.addEventListener("mouseleave", () => {
+      if(hoveredPlayer === player){
+        isPointerInsidePlayer = false;
+        hoveredPlayer = null;
+      }
+    });
 
     function setMuteIcon(){
       const muted = video.muted || video.volume === 0;
@@ -968,7 +985,6 @@
     }
 
     player.addEventListener("pointerdown", ()=> setActive(player));
-    player.addEventListener("mouseenter", ()=> setActive(player));
 
     bigPlay.addEventListener("click", ()=> { setActive(player); video.play(); });
     playBtn.addEventListener("click", ()=> { setActive(player); video.paused ? video.play() : video.pause(); });
@@ -1016,9 +1032,13 @@
     player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
+    // pause bg music when video starts, resume when paused/ended
     video.addEventListener("play", ()=>{
       setActive(player);
-      if(musicUnlocked){ music.pause(); setMusicIcon(false); }
+      if(musicUnlocked){
+        music.pause();
+        setMusicIcon(false);
+      }
       setPlayUI();
     });
 
@@ -1100,16 +1120,49 @@
     if(first) setActive(first);
   }
 
-  document.addEventListener("keydown", (e) => {
+  // ✅ Keyboard controls:
+  // - Space: video only when hovered, otherwise bg music
+  document.addEventListener("keydown", async (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     if(tag === "input" || tag === "textarea") return;
-    if(!activeVideo) return;
 
+    // Space behavior fix
     if(e.code === "Space"){
+      // inside player -> toggle that video
+      if(isPointerInsidePlayer && hoveredPlayer){
+        const v = hoveredPlayer.querySelector(".p5-video");
+        if(v){
+          e.preventDefault();
+          v.paused ? v.play() : v.pause();
+        }
+        return;
+      }
+
+      // outside player -> toggle ONLY background music
       e.preventDefault();
-      activeVideo.paused ? activeVideo.play() : activeVideo.pause();
+      userWantsMusic = !music.paused ? false : true;
+
+      if(!musicUnlocked && userWantsMusic){
+        tapOverlay.classList.add("show");
+        return;
+      }
+
+      if(music.paused){
+        try{
+          await music.play();
+          setMusicIcon(true);
+        }catch(e2){
+          tapOverlay.classList.add("show");
+          setMusicIcon(false);
+        }
+      }else{
+        music.pause();
+        setMusicIcon(false);
+      }
       return;
     }
+
+    if(!activeVideo || !activePlayer) return;
 
     const k = e.key;
 
@@ -1118,6 +1171,9 @@
       activePlayer?.querySelector(".p5-full")?.click();
       return;
     }
+
+    // optional: only allow arrows when hovered inside player
+    if(!isPointerInsidePlayer) return;
 
     if(k === "ArrowLeft"){
       e.preventDefault();
