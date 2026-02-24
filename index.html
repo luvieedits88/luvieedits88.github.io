@@ -1281,7 +1281,9 @@
   const skipIntroBtn = document.getElementById("skipIntro");
   const tapOverlay   = document.getElementById("tapSoundOverlay");
   const tapBtn       = document.getElementById("tapSoundBtn");
-
+  // Show tap button only while intro is visible
+tapOverlay.classList.add("show");
+  
   // lock scroll while intro is visible
   document.body.style.overflow = "hidden";
 
@@ -1356,7 +1358,6 @@
 
   // show overlay on load
   window.addEventListener("load", () => {
-    tapOverlay.classList.add("show"); // always available
     restartIntroVideo();
     introVideo.play().catch(()=>{});
     ensureGifCursorInRightPlace();
@@ -1451,6 +1452,7 @@
     }, 820);
 
     document.body.style.overflow = "";
+    tapOverlay.remove();
   }
 
   introVideo.addEventListener("ended", hideIntro);
