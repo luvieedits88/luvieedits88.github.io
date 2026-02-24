@@ -32,7 +32,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:transparent;            /* overlay has no black */
+    background:transparent; /* overlay has no black */
     opacity:1;
     transition:opacity .55s ease;
     pointer-events:auto;
@@ -42,9 +42,7 @@
     pointer-events:none;
   }
 
-  .intro video{
-    display:none; /* hidden source video (we draw it to canvas) */
-  }
+  .intro video{ display:none; } /* hidden source video (we draw it to canvas) */
 
   .intro-canvas{
     width:100%;
@@ -123,6 +121,62 @@
       font-size:16px;
       border-radius:16px;
     }
+  }
+
+  /* ===== Persona 5 style outro ===== */
+  .intro-outro{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:0;
+    z-index:7; /* above umbrella (6) + skip (5) */
+  }
+  .intro.outro .intro-outro{
+    opacity:1;
+    animation:p5Outro 820ms ease forwards;
+  }
+  .intro-outro::before{
+    content:"";
+    position:absolute;
+    inset:-20%;
+    background:
+      radial-gradient(circle at 35% 55%, rgba(255,0,60,0.65), rgba(0,0,0,0) 55%),
+      linear-gradient(135deg, rgba(255,0,60,0.15), rgba(0,0,0,0) 60%);
+    mix-blend-mode:screen;
+    opacity:0;
+    animation:p5Flash 820ms ease forwards;
+  }
+  .intro-outro::after{
+    content:"";
+    position:absolute;
+    inset:-30%;
+    background: linear-gradient(115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 45%,
+      rgba(255,255,255,0.95) 50%,
+      rgba(255,255,255,0) 56%,
+      rgba(255,255,255,0) 100%);
+    transform:translateX(-70%) rotate(-8deg);
+    opacity:0.85;
+    filter: blur(0.2px);
+    animation:p5Slash 820ms cubic-bezier(.2,.9,.2,1) forwards;
+  }
+  @keyframes p5Flash{
+    0%{ opacity:0; transform:scale(1); }
+    18%{ opacity:1; transform:scale(1.02); }
+    55%{ opacity:0.15; transform:scale(1.05); }
+    100%{ opacity:0; transform:scale(1.08); }
+  }
+  @keyframes p5Slash{
+    0%{ transform:translateX(-75%) rotate(-10deg); }
+    40%{ transform:translateX(15%) rotate(-8deg); }
+    100%{ transform:translateX(85%) rotate(-6deg); }
+  }
+  @keyframes p5Outro{
+    0%{ opacity:0; }
+    10%{ opacity:1; }
+    70%{ opacity:1; }
+    100%{ opacity:0; }
   }
 
   /* HERO */
@@ -563,6 +617,9 @@
 
   <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
   <div id="tapSoundHint" class="tap-sound-hint" aria-hidden="true">Tap to enable sound</div>
+
+  <!-- Persona-style outro overlay -->
+  <div class="intro-outro" aria-hidden="true"></div>
 </div>
 
 <section class="hero">
@@ -778,8 +835,7 @@
   function isMostlyDark(data){
     let dark = 0;
     const total = data.length / 4;
-    // sample step for performance (skip pixels)
-    const step = 16; // higher = faster, lower = more accurate
+    const step = 16;
     for(let i=0; i<data.length; i+=4*step){
       const r = data[i], g = data[i+1], b = data[i+2];
       if(r < 35 && g < 35 && b < 35) dark++;
@@ -788,15 +844,19 @@
     return (dark / sampled) > 0.85;
   }
 
+  // Persona outro -> then fade overlay out
   function hideIntro(){
     if(introHiding) return;
     introHiding = true;
 
-    // allow umbrella to show a bit
+    // stop further canvas updates and play persona outro
+    introOverlay.classList.add("outro");
+
+    // let umbrella be visible a bit, then hide the overlay
     setTimeout(()=>{
       introOverlay.classList.add("hide");
       setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
-    }, 350);
+    }, 820);
   }
 
   function throwUmbrella(){
@@ -806,7 +866,9 @@
   }
 
   // Chroma-key style removal: make near-black transparent
+  // NOTE: this will only remove near-black, red stays.
   function drawKeyedFrame(){
+    if(introOverlay.classList.contains("outro")) return;
     if(!introVideo || introVideo.paused || introVideo.ended) return;
 
     introCtx.drawImage(introVideo, 0, 0, introCanvas.width, introCanvas.height);
@@ -814,11 +876,12 @@
     const frame = introCtx.getImageData(0, 0, introCanvas.width, introCanvas.height);
     const data = frame.data;
 
-    const threshold = 40; // adjust 30-60 if needed
+    // tighter threshold to avoid eating umbrella details/dots
+    const threshold = 26; // was 40; lower = safer for details
     for(let i=0; i<data.length; i+=4){
       const r = data[i], g = data[i+1], b = data[i+2];
       if(r < threshold && g < threshold && b < threshold){
-        data[i+3] = 0; // transparent
+        data[i+3] = 0;
       }
     }
 
@@ -831,9 +894,7 @@
     requestAnimationFrame(drawKeyedFrame);
   }
 
-  introVideo.addEventListener("play", ()=>{
-    requestAnimationFrame(drawKeyedFrame);
-  });
+  introVideo.addEventListener("play", ()=> requestAnimationFrame(drawKeyedFrame));
 
   introVideo.addEventListener("ended", ()=>{
     throwUmbrella();
@@ -841,7 +902,7 @@
   });
 
   skipIntroBtn.addEventListener("click", ()=>{
-    tryStartMusic(); // user gesture -> will work
+    tryStartMusic(); // user gesture -> will work on mobile
     throwUmbrella();
     try{
       introVideo.pause();
@@ -884,7 +945,6 @@
     current = (current + 1) % tracks.length;
     playTrack(current);
   }
-
   music.addEventListener("ended", nextTrack);
 
   async function tryStartMusic(){
@@ -898,7 +958,6 @@
       tapSoundHint?.classList.remove("show");
       return true;
     }catch(e){
-      // autoplay blocked (common on mobile)
       tapSoundHint?.classList.add("show");
       setMusicIcon(false);
       return false;
@@ -913,8 +972,9 @@
   }
 
   window.addEventListener("load", () => {
-    playTrack(0);         // sets src
-    tryStartMusic();      // try immediate autoplay
+    playTrack(0);
+    tryStartMusic();
+
     // fallback: first user tap/click anywhere enables sound
     document.addEventListener("pointerdown", enableMusicOnFirstInteraction, { once:true });
     document.addEventListener("touchstart", enableMusicOnFirstInteraction, { once:true, passive:true });
@@ -1161,7 +1221,6 @@
     setPlayUI();
   });
 
-  // fullscreen icon updates ONCE (avoid adding 4 listeners)
   document.addEventListener("fullscreenchange", ()=>{
     document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
   });
@@ -1174,7 +1233,6 @@
     if(first) setActive(first);
   }
 
-  // Keyboard shortcuts (desktop)
   document.addEventListener("keydown", (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     if(tag === "input" || tag === "textarea") return;
