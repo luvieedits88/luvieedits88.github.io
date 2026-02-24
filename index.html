@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -65,21 +65,24 @@
   }
   .intro-skip:active{ transform:scale(0.98); }
 
-  /* Tap-to-enable-sound overlay (GLOBAL, works during + after intro) */
+  /* ✅ Tap-to-enable-sound overlay (GLOBAL, visible during + after intro)
+     ✅ IMPORTANT: DOES NOT BLOCK SKIP / PLAY BUTTONS
+  */
   .tap-sound-overlay{
-    position:fixed;              /* ✅ was absolute */
+    position:fixed;
     inset:0;
-    z-index:100000;              /* ✅ above intro + everything */
+    z-index:100000;
     display:none;
     align-items:flex-end;
     justify-content:center;
     padding-bottom:calc(22px + env(safe-area-inset-bottom));
     background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
-    pointer-events:auto;
+    pointer-events:none; /* ✅ overlay can't steal clicks */
   }
   .tap-sound-overlay.show{ display:flex; }
 
   .tap-sound-btn{
+    pointer-events:auto; /* ✅ only the button is clickable */
     padding:14px 18px;
     border-radius:16px;
     background:rgba(0,0,0,0.65);
@@ -529,7 +532,7 @@
   <div class="intro-outro" aria-hidden="true"></div>
 </div>
 
-<!-- ✅ MOVED OUTSIDE INTRO so it works after intro too -->
+<!-- ✅ GLOBAL SOUND BUTTON (doesn't block clicks) -->
 <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
   <button id="tapSoundBtn" class="tap-sound-btn" type="button">Tap to enable sound</button>
 </div>
@@ -722,7 +725,6 @@
     if (location.hash) history.replaceState(null, "", location.pathname + location.search);
     window.scrollTo(0, 0);
   });
-  // ✅ some browsers restore scroll on pageshow (bfcache)
   window.addEventListener("pageshow", () => window.scrollTo(0,0));
 
   // =========================
@@ -809,7 +811,6 @@
   // show overlay on load (fix "sometimes doesn't appear on PC")
   window.addEventListener("load", () => {
     tapOverlay.classList.add("show"); // always available
-
     restartIntroVideo();
     introVideo.play().catch(()=>{});
   });
@@ -886,7 +887,9 @@
 
   introVideo.addEventListener("ended", hideIntro);
 
-  skipIntroBtn.addEventListener("click", () => {
+  // ✅ Skip ALWAYS works + tries to unlock audio using this click
+  skipIntroBtn.addEventListener("click", async () => {
+    await unlockAudioFromGesture();
     restartIntroVideo();
     hideIntro();
   });
@@ -1013,6 +1016,7 @@
 
     player.addEventListener("pointerdown", ()=> setActive(player));
 
+    // ✅ Clicking play also counts as the "gesture" to unlock bg music (so controls won't be broken)
     bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });
     playBtn.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.paused ? video.play() : video.pause(); });
 
@@ -1059,6 +1063,7 @@
     player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
+    // pause bg music when video starts, resume when paused/ended
     video.addEventListener("play", ()=>{
       setActive(player);
       if(musicUnlocked){
@@ -1147,6 +1152,8 @@
     if(first) setActive(first);
   }
 
+  // ✅ Keyboard controls:
+  // - Space: video only when hovered, otherwise bg music
   document.addEventListener("keydown", async (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     if(tag === "input" || tag === "textarea") return;
