@@ -118,18 +118,39 @@
   /* ✅ Tap-to-enable-sound overlay (GLOBAL, visible during + after intro)
      ✅ IMPORTANT: DOES NOT BLOCK SKIP / PLAY BUTTONS
   */
-  .tap-sound-overlay{
-    position:fixed;
-    inset:0;
-    z-index:100000;
-    display:none;
-    align-items:flex-end;
-    justify-content:center;
-    padding-bottom:calc(22px + env(safe-area-inset-bottom));
-    background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
-    pointer-events:none;
-  }
-  .tap-sound-overlay.show{ display:flex; }
+.tap-sound-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+
+  display:flex;                 /* ✅ keep it rendered so transitions work */
+  align-items:flex-end;
+  justify-content:center;
+  padding-bottom:calc(22px + env(safe-area-inset-bottom));
+  background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
+
+  /* ✅ hidden by default */
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+
+  transition: opacity .55s ease, transform .55s ease, visibility 0s linear .55s;
+  pointer-events:none;
+}
+
+.tap-sound-overlay.show{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  transition: opacity .55s ease, transform .55s ease, visibility 0s;
+}
+
+.tap-sound-overlay.hide{
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+  transition: opacity .55s ease, transform .55s ease, visibility 0s linear .55s;
+}
 
   .tap-sound-btn{
     pointer-events:auto;
@@ -1447,9 +1468,20 @@ tapOverlay.classList.add("show");
 
     introOverlay.classList.add("outro");
     setTimeout(()=>{
-      introOverlay.classList.add("hide");
-      setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
-    }, 820);
+  introOverlay.classList.add("hide");
+
+  // ✅ fade tap overlay at the same time as intro fade
+  tapOverlay.classList.add("hide");
+  tapOverlay.classList.remove("show");
+
+  setTimeout(()=>{
+    introOverlay.style.display="none";
+
+    // ✅ remove tap overlay from DOM after fade completes
+    tapOverlay.remove();
+  }, 560);
+
+}, 820);
 
     document.body.style.overflow = "";
     tapOverlay.remove();
