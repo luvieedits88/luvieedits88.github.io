@@ -37,8 +37,8 @@
      ✅ CUSTOM CURSOR (GIF)
      ========================= */
   :root{
-    --cursor-size: 56px;         /* change if you want bigger/smaller */
-    --cursor-offset-x: 10px;     /* move cursor image away from pointer */
+    --cursor-size: 56px;
+    --cursor-offset-x: 10px;
     --cursor-offset-y: 10px;
   }
 
@@ -124,12 +124,12 @@
     justify-content:center;
     padding-bottom:calc(22px + env(safe-area-inset-bottom));
     background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0));
-    pointer-events:none; /* ✅ overlay can't steal clicks */
+    pointer-events:none;
   }
   .tap-sound-overlay.show{ display:flex; }
 
   .tap-sound-btn{
-    pointer-events:auto; /* ✅ only the button is clickable */
+    pointer-events:auto;
     padding:14px 18px;
     border-radius:16px;
     background:rgba(0,0,0,0.65);
@@ -213,7 +213,6 @@
     min-height:100svh;
     min-height:100dvh;
     height:auto;
-
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -583,7 +582,6 @@
   </video>
 
   <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
-
   <div class="intro-outro" aria-hidden="true"></div>
 </div>
 
@@ -605,9 +603,9 @@
   <h2 class="section-title">Portfolio</h2>
 
   <div class="video-grid">
+
     <!-- ===== CARD 1 ===== -->
     <div class="video-card">
-      <!-- data-cursor lets you force a cursor state -->
       <div class="p5-player" data-cursor="precision">
         <video class="p5-video" preload="metadata" playsinline>
           <source src="video1.mp4" type="video/mp4">
@@ -757,6 +755,7 @@
       </div>
       <div class="video-label">Edit 4 <span>Persona-style player</span></div>
     </div>
+
   </div>
 </section>
 
@@ -881,14 +880,11 @@
     const forcedEl = closestAttr(target, "data-cursor");
     if(forcedEl){
       const val = (forcedEl.getAttribute("data-cursor") || "").trim().toLowerCase();
-      // accepted values: normal, link, text, precision, busy, help, move, unavailable, handwriting, alternate, vib,
-      // h-resize, v-resize, resize-1, resize-2
       if(val === "h-resize") return "hResize";
       if(val === "v-resize") return "vResize";
       if(val === "resize-1") return "resize1";
       if(val === "resize-2") return "resize2";
       if(CURSOR_GIFS[val]) return val;
-      // allow camel keys too
       if(CURSOR_GIFS[val.replace(/-/g,"")]) return val.replace(/-/g,"");
     }
 
@@ -927,10 +923,8 @@
     setCursor(computeCursorFromTarget(e.target));
   }, {passive:true});
 
-  // Optional: if you want an "alternate select" on mouse down
   document.addEventListener("mousedown", (e)=>{
     if(!CAN_HOVER) return;
-    // if clicking text-ish area, keep text cursor
     const key = computeCursorFromTarget(e.target);
     if(key === "text") setCursor("text");
     else setCursor(key);
@@ -1044,7 +1038,7 @@
     }
   }
 
-  // show overlay on load (fix "sometimes doesn't appear on PC")
+  // show overlay on load
   window.addEventListener("load", () => {
     tapOverlay.classList.add("show"); // always available
     restartIntroVideo();
@@ -1055,7 +1049,6 @@
     const ok = await unlockAudioFromGesture();
     if(!ok) return;
 
-    // ✅ behave like the intro button: user wants music ON
     userWantsMusic = true;
 
     if(!music.src) setTrack(0);
@@ -1065,7 +1058,6 @@
       setMusicIcon(true);
       tapOverlay.classList.remove("show");
     }catch(e){
-      // if it still fails, keep overlay visible
       tapOverlay.classList.add("show");
       userWantsMusic = false;
       setMusicIcon(false);
@@ -1078,7 +1070,7 @@
     enableSoundAndStartMusic();
   }, {passive:false});
 
-  // ✅ music toggle: try unlocking with THIS click, then toggle
+  // ✅ music toggle
   toggle.addEventListener("click", async () => {
     if(!musicUnlocked){
       await unlockAudioFromGesture();
@@ -1109,7 +1101,7 @@
     }
   });
 
-  // ✅ volume slider also tries to unlock (prevents "slider does nothing")
+  // ✅ volume slider also tries to unlock
   volume.addEventListener("pointerdown", async () => {
     if(!musicUnlocked){
       await unlockAudioFromGesture();
@@ -1146,7 +1138,6 @@
 
   introVideo.addEventListener("ended", hideIntro);
 
-  // ✅ Skip ALWAYS works + tries to unlock audio using this click
   skipIntroBtn.addEventListener("click", async () => {
     await unlockAudioFromGesture();
     restartIntroVideo();
@@ -1277,7 +1268,6 @@
 
     player.addEventListener("pointerdown", ()=> setActive(player));
 
-    // ✅ Clicking play also counts as the "gesture" to unlock bg music (so controls won't be broken)
     bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });
     playBtn.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.paused ? video.play() : video.pause(); });
 
