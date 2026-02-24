@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Luvie Edits</title>
 <link rel="icon" type="image/png" href="sumireyoshizawa.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -40,6 +39,10 @@
     --cursor-size: 56px;
     --cursor-offset-x: 10px;
     --cursor-offset-y: 10px;
+
+    --p5-red: #ff003c;
+    --p5-red2:#ff2a5c;
+    --p5-dark:#07070a;
   }
 
   /* Hide system cursor ONLY on non-touch devices */
@@ -240,7 +243,7 @@
   .button{
     margin-top:40px;
     padding:16px 45px;
-    background:#ff003c;
+    background:var(--p5-red);
     color:#fff;
     text-decoration:none;
     border-radius:12px;
@@ -253,7 +256,7 @@
   .button:hover{
     transform:scale(1.07);
     box-shadow:0 0 45px rgba(255,0,60,0.8);
-    background:#ff2a5c;
+    background:var(--p5-red2);
   }
 
   /* CHARACTERS */
@@ -329,6 +332,11 @@
     display:block;
     background:#000;
   }
+
+  /* ✅ Make the *SYSTEM* cursor crosshair inside player
+     (doesn't break your GIF cursor; GIF still shows because system cursor is hidden on desktop)
+  */
+  .p5-player, .p5-video { cursor: crosshair; }
 
   .p5-player:fullscreen{
     width:100vw !important;
@@ -438,11 +446,15 @@
     display:grid;
     place-items:center;
     user-select:none;
+    transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
   }
   .p5-btn:hover{
     border-color: rgba(255,0,60,0.55);
     box-shadow:0 0 22px rgba(255,0,60,0.25);
+    transform: translateY(-1px);
   }
+  .p5-btn:active{ transform: translateY(0px) scale(0.98); }
+
   .p5-icon{ width:18px; height:18px; display:block; }
   .p5-time{ min-width:54px; font-size:12px; opacity:0.9; }
 
@@ -462,7 +474,7 @@
     width:14px;
     height:14px;
     border-radius:999px;
-    background:#ff003c;
+    background:var(--p5-red);
     box-shadow:0 0 20px rgba(255,0,60,0.7);
     cursor:pointer;
   }
@@ -481,6 +493,228 @@
     font-size: 12px;
     display:block;
     margin-top:4px;
+  }
+
+  /* =========================
+     ✅ CONTACT SECTION (NEW)
+     Separate after portfolio + Persona style
+     ========================= */
+  .contact{
+    padding:110px 20px 120px;
+    background: rgba(0,0,0,0.92);
+  }
+
+  .contact-wrap{
+    max-width:1100px;
+    margin:0 auto;
+    border-radius:26px;
+    position:relative;
+    overflow:hidden;
+    padding:0;
+  }
+
+  /* Outer red stroke + glow */
+  .contact-wrap::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:26px;
+    padding:2px;
+    background: linear-gradient(180deg, rgba(255,0,60,1), rgba(255,0,60,0.35));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    box-shadow:
+      0 0 28px rgba(255,0,60,0.35),
+      0 0 70px rgba(255,0,60,0.18);
+    pointer-events:none;
+    z-index:1;
+  }
+
+  /* Persona-ish inside colors */
+  .contact-inner{
+    position:relative;
+    z-index:2;
+    border-radius:26px;
+    padding:34px 30px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,0,60,0.22), rgba(0,0,0,0) 55%),
+      radial-gradient(circle at 70% 65%, rgba(255,255,255,0.08), rgba(0,0,0,0) 55%),
+      linear-gradient(180deg, rgba(12,12,16,0.92), rgba(0,0,0,0.85));
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.7);
+  }
+
+  .contact-kicker{
+    margin:0 0 10px;
+    letter-spacing:1px;
+    opacity:0.9;
+    font-weight:800;
+    text-transform:uppercase;
+    font-size:14px;
+    color: rgba(255,255,255,0.78);
+  }
+
+  .contact-title{
+    margin:0;
+    font-weight:900;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-size:clamp(34px,4.6vw,64px);
+    text-shadow:0 12px 34px rgba(0,0,0,0.7);
+  }
+
+  .contact-sub{
+    margin:14px auto 0;
+    max-width:820px;
+    opacity:0.82;
+    line-height:1.55;
+    font-size:14px;
+  }
+
+  .contact-row{
+    margin-top:26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+
+  .contact-profile{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    text-align:left;
+    min-width:260px;
+  }
+
+  .pfp-ring{
+    width:98px;
+    height:98px;
+    border-radius:50%;
+    padding:4px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0) 45%);
+    border:2px solid rgba(255,0,60,0.95);
+    box-shadow:
+      0 0 26px rgba(255,0,60,0.45),
+      0 0 65px rgba(255,0,60,0.22);
+    animation:pfpPulse 2.6s ease-in-out infinite;
+    flex:0 0 auto;
+  }
+  @keyframes pfpPulse{
+    0%,100%{ transform: translateY(0); box-shadow:0 0 26px rgba(255,0,60,0.45),0 0 65px rgba(255,0,60,0.22); }
+    50%{ transform: translateY(-2px); box-shadow:0 0 36px rgba(255,0,60,0.70),0 0 85px rgba(255,0,60,0.32); }
+  }
+
+  .pfp-img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+
+  .contact-name{
+    margin:0;
+    font-weight:900;
+    font-size:20px;
+    letter-spacing:0.6px;
+  }
+  .contact-note{
+    margin:6px 0 0;
+    font-size:13px;
+    opacity:0.85;
+  }
+
+  .contact-actions{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    margin-left:auto;
+  }
+
+  .contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 18px;
+    border-radius:16px;
+    text-decoration:none;
+    font-weight:900;
+    letter-spacing:0.4px;
+    color:#fff;
+
+    background: rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.14);
+
+    box-shadow:
+      0 0 24px rgba(255,0,60,0.18),
+      inset 0 0 0 1px rgba(255,255,255,0.04);
+
+    position:relative;
+    overflow:hidden;
+    transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+
+  /* glow/shine sweep */
+  .contact-btn::after{
+    content:"";
+    position:absolute;
+    inset:-45%;
+    background: linear-gradient(115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 44%,
+      rgba(255,255,255,0.80) 50%,
+      rgba(255,255,255,0) 56%,
+      rgba(255,255,255,0) 100%);
+    transform: translateX(-70%) rotate(-10deg);
+    opacity:0.35;
+  }
+
+  .contact-btn:hover{
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(255,0,60,0.60);
+    box-shadow:
+      0 0 36px rgba(255,0,60,0.34),
+      0 0 80px rgba(255,0,60,0.12),
+      inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .contact-btn:hover::after{
+    opacity:0.95;
+    animation: btnShine 1.05s ease forwards;
+  }
+  @keyframes btnShine{
+    0%{ transform: translateX(-70%) rotate(-10deg); }
+    100%{ transform: translateX(85%) rotate(-10deg); }
+  }
+  .contact-btn:active{ transform: translateY(-1px) scale(0.98); }
+
+  .btn-ico{
+    width:22px;
+    height:22px;
+    display:block;
+    /* ✅ icon glow */
+    filter:
+      drop-shadow(0 0 8px rgba(255,0,60,0.30))
+      drop-shadow(0 0 18px rgba(255,0,60,0.22));
+    transition: transform .18s ease, filter .2s ease;
+  }
+  .contact-btn:hover .btn-ico{
+    transform: rotate(-4deg) scale(1.05);
+    filter:
+      drop-shadow(0 0 10px rgba(255,0,60,0.55))
+      drop-shadow(0 0 26px rgba(255,0,60,0.32));
+  }
+
+  @media (max-width:768px){
+    .contact-inner{ padding:30px 18px; }
+    .contact-row{ justify-content:flex-start; }
+    .contact-actions{ width:100%; justify-content:flex-start; }
   }
 
   footer{
@@ -534,7 +768,7 @@
     width:14px;
     height:14px;
     border-radius:999px;
-    background:#ff003c;
+    background:var(--p5-red);
     box-shadow:0 0 20px rgba(255,0,60,0.7);
     cursor:pointer;
   }
@@ -581,13 +815,13 @@
     <source src="SUMIRE.webm" type="video/webm">
   </video>
 
-  <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
+  <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro" data-cursor="link">Skip</button>
   <div class="intro-outro" aria-hidden="true"></div>
 </div>
 
 <!-- ✅ GLOBAL SOUND BUTTON (doesn't block clicks) -->
 <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
-  <button id="tapSoundBtn" class="tap-sound-btn" type="button">Tap to enable sound</button>
+  <button id="tapSoundBtn" class="tap-sound-btn" type="button" data-cursor="link">Tap to enable sound</button>
 </div>
 
 <section class="hero">
@@ -596,7 +830,8 @@
 
   <h1 class="title">LUVIE EDITS</h1>
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
-  <a href="#portfolio" class="button">Watch My Work</a>
+  <a href="#portfolio" class="button" data-cursor="link">Watch My Work</a>
+  <a href="#contact" class="button" style="margin-top:16px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.16);box-shadow:0 0 24px rgba(255,0,60,0.18);" data-cursor="link">Contact Me</a>
 </section>
 
 <section id="portfolio" class="portfolio">
@@ -759,6 +994,41 @@
   </div>
 </section>
 
+<!-- ✅ CONTACT SECTION (SEPARATE AFTER PORTFOLIO) -->
+<section id="contact" class="contact">
+  <div class="contact-wrap">
+    <div class="contact-inner">
+      <div class="contact-kicker">Business / Commissions</div>
+      <h2 class="contact-title">Let’s make something insane.</h2>
+      <p class="contact-sub">Fastest response on Discord. Email is always open for brands, long-term work, and serious inquiries.</p>
+
+      <div class="contact-row">
+        <div class="contact-profile">
+          <div class="pfp-ring" data-cursor="link" title="Luvie">
+            <img src="Profilepic.jpg" class="pfp-img" alt="Luvie Profile">
+          </div>
+          <div>
+            <p class="contact-name">Luvie</p>
+            <p class="contact-note">Discord for quick replies • Email for business</p>
+          </div>
+        </div>
+
+        <div class="contact-actions">
+          <a class="contact-btn" href="https://discord.com/users/1461961683110072431" target="_blank" rel="noopener" data-cursor="link">
+            <img class="btn-ico" src="Discord.png" alt="">
+            Discord
+          </a>
+
+          <a class="contact-btn" href="mailto:luvieedits88@gmail.com?subject=Luvie%20Edits%20Inquiry" data-cursor="link">
+            <img class="btn-ico" src="email.png" alt="">
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- MUSIC UI -->
 <div class="music-player" data-cursor="normal">
   <button id="musicToggle" class="music-btn" type="button" aria-label="Toggle music" data-cursor="link">
@@ -830,12 +1100,13 @@
   function updateCursorPos(){
     rafOn = false;
     if(!CAN_HOVER) return;
-    gifCursor.style.transform =
-      `translate(${mouseX + parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-x"))}px,` +
-      `${mouseY + parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-y"))}px)`;
+    const ox = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-x")) || 0;
+    const oy = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-y")) || 0;
+    gifCursor.style.transform = `translate(${mouseX + ox}px, ${mouseY + oy}px)`;
   }
 
-  window.addEventListener("mousemove", (e)=>{
+  // use document (more reliable in fullscreen)
+  document.addEventListener("mousemove", (e)=>{
     if(!CAN_HOVER) return;
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -948,6 +1219,37 @@
   attachBusyCursorToVideos();
 
   // =========================
+  // ✅ FULLSCREEN FIX: keep GIF cursor visible
+  // In fullscreen, ONLY the fullscreen element + its children render.
+  // So we MOVE gifCursor inside the fullscreen player while fullscreen is active.
+  // =========================
+  let gifHomeParent = gifCursor.parentNode; // body
+  function getFsEl(){
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+  function ensureGifCursorInRightPlace(){
+    if(!CAN_HOVER) return;
+    const fs = getFsEl();
+    if(fs){
+      if(gifCursor.parentNode !== fs){
+        fs.appendChild(gifCursor);
+      }
+      gifCursor.style.display = "block";
+      gifCursor.style.position = "fixed";
+      gifCursor.style.zIndex = "2147483647";
+    }else{
+      if(gifCursor.parentNode !== gifHomeParent){
+        gifHomeParent.appendChild(gifCursor);
+      }
+      gifCursor.style.display = "block";
+      gifCursor.style.position = "fixed";
+      gifCursor.style.zIndex = "2147483647";
+    }
+  }
+  document.addEventListener("fullscreenchange", ensureGifCursorInRightPlace);
+  document.addEventListener("webkitfullscreenchange", ensureGifCursorInRightPlace);
+
+  // =========================
   // ALWAYS START AT TOP (no jump)
   // =========================
   try { history.scrollRestoration = "manual"; } catch(e){}
@@ -1043,6 +1345,7 @@
     tapOverlay.classList.add("show"); // always available
     restartIntroVideo();
     introVideo.play().catch(()=>{});
+    ensureGifCursorInRightPlace();
   });
 
   async function enableSoundAndStartMusic(){
@@ -1175,10 +1478,6 @@
     activeVideo = player ? player.querySelector(".p5-video") : null;
   }
 
-  function getFsEl(){
-    return document.fullscreenElement || document.webkitFullscreenElement || null;
-  }
-
   function exitFs(){
     if(document.exitFullscreen) return document.exitFullscreen();
     if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
@@ -1264,6 +1563,8 @@
         else if(player.webkitRequestFullscreen) await player.webkitRequestFullscreen();
         else if(video.requestFullscreen) await video.requestFullscreen();
       }catch(e){}
+      // after request, browser will fire fullscreenchange; we also nudge:
+      setTimeout(ensureGifCursorInRightPlace, 50);
     }
 
     player.addEventListener("pointerdown", ()=> setActive(player));
@@ -1322,6 +1623,7 @@
         setMusicIcon(false);
       }
       setPlayUI();
+      if(CAN_HOVER) setCursor("precision");
     });
 
     video.addEventListener("pause", ()=>{
@@ -1329,6 +1631,7 @@
         music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
       }
       setPlayUI();
+      if(CAN_HOVER) setCursor("precision");
     });
 
     video.addEventListener("ended", ()=>{
@@ -1336,6 +1639,7 @@
         music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
       }
       setPlayUI();
+      if(CAN_HOVER) setCursor("precision");
     });
 
     if(gestures){
@@ -1393,9 +1697,11 @@
 
   document.addEventListener("fullscreenchange", ()=>{
     document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
+    ensureGifCursorInRightPlace();
   });
   document.addEventListener("webkitfullscreenchange", ()=>{
     document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
+    ensureGifCursorInRightPlace();
   });
 
   if(!activePlayer){
