@@ -24,6 +24,107 @@
     background-attachment:fixed;
   }
 
+  /* ===== INTRO (SUMIRE) ===== */
+  .intro{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:transparent;            /* overlay has no black */
+    opacity:1;
+    transition:opacity .55s ease;
+    pointer-events:auto;
+  }
+  .intro.hide{
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .intro video{
+    display:none; /* hidden source video (we draw it to canvas) */
+  }
+
+  .intro-canvas{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+
+  .intro-skip{
+    position:absolute;
+    top:calc(16px + env(safe-area-inset-top));
+    right:calc(16px + env(safe-area-inset-right));
+    padding:12px 16px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.18);
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+    z-index:5;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .intro-skip:hover{
+    border-color: rgba(255,0,60,0.55);
+    box-shadow:0 0 20px rgba(255,0,60,0.25);
+  }
+  .intro-skip:active{ transform:scale(0.98); }
+
+  .tap-sound-hint{
+    position:absolute;
+    left:50%;
+    bottom:calc(20px + env(safe-area-inset-bottom));
+    transform:translateX(-50%);
+    padding:10px 14px;
+    border-radius:14px;
+    background:rgba(0,0,0,0.55);
+    border:1px solid rgba(255,255,255,0.14);
+    font-weight:800;
+    font-size:14px;
+    letter-spacing:.4px;
+    opacity:0;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:5;
+    pointer-events:none;
+  }
+  .tap-sound-hint.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(-6px);
+  }
+
+  /* Umbrella overlay animation (needs umbrella.png with transparent bg) */
+  .umbrella{
+    position:absolute;
+    left:50%;
+    bottom:-20%;
+    width:min(260px,40vw);
+    transform:translateX(-50%) rotate(-10deg) scale(0.92);
+    opacity:0;
+    z-index:6;
+    pointer-events:none;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.55));
+  }
+  .umbrella.throw{
+    opacity:1;
+    animation:umbrellaThrow 1.2s ease-in-out forwards;
+  }
+  @keyframes umbrellaThrow{
+    0%{ transform:translateX(-50%) translateY(0) rotate(-15deg) scale(0.85); opacity:0; }
+    18%{ opacity:1; }
+    70%{ transform:translateX(-50%) translateY(-60vh) rotate(10deg) scale(1); }
+    100%{ transform:translateX(-50%) translateY(-105vh) rotate(20deg) scale(0.9); opacity:0; }
+  }
+
+  @media (max-width:768px){
+    .intro-skip{
+      padding:14px 18px;
+      font-size:16px;
+      border-radius:16px;
+    }
+  }
+
   /* HERO */
   .hero{
     position:relative;
@@ -142,21 +243,19 @@
     background:#000;
     display:flex;
     flex-direction:column;
-
-    /* ✅ helps fullscreen sizing */
     min-height:0;
   }
 
   .p5-video{
     width:100%;
     flex:1;
-    height:100%; /* ✅ helps fullscreen sizing */
+    height:100%;
     object-fit:contain;
     display:block;
     background:#000;
   }
 
-  /* ===== FULLSCREEN FIXES (desktop + mobile) ===== */
+  /* ===== FULLSCREEN FIXES ===== */
   .p5-player:fullscreen{
     width:100vw !important;
     height:100vh !important;
@@ -175,7 +274,6 @@
     bottom:14px;
   }
 
-  /* Safari / older */
   .p5-player:-webkit-full-screen{
     width:100vw !important;
     height:100vh !important;
@@ -264,12 +362,10 @@
     left:12px;
     right:12px;
     bottom:10px;
-
     display:flex;
     align-items:center;
     gap:10px;
     padding:10px 12px;
-
     background:linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0.20));
     z-index:7;
     box-sizing:border-box;
@@ -454,6 +550,21 @@
 
 <body oncontextmenu="return false;">
 
+<!-- ===== INTRO OVERLAY ===== -->
+<div id="introOverlay" class="intro">
+  <video id="introVideo" autoplay playsinline muted preload="auto">
+    <source src="SUMIRE.mp4" type="video/mp4">
+  </video>
+
+  <canvas id="introCanvas" class="intro-canvas"></canvas>
+
+  <!-- needs umbrella.png with transparent background -->
+  <img id="umbrella" class="umbrella" src="umbrella.png" alt="">
+
+  <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
+  <div id="tapSoundHint" class="tap-sound-hint" aria-hidden="true">Tap to enable sound</div>
+</div>
+
 <section class="hero">
   <img src="joker.png" class="character joker" alt="Joker">
   <img src="sumire.png" class="character sumire" alt="Sumire">
@@ -506,7 +617,6 @@
           <button class="p5-btn p5-mute" type="button" aria-label="Mute">🔊</button>
           <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up">+</button>
 
-          <!-- ✅ icon will switch when in fullscreen -->
           <button class="p5-btn p5-full" type="button" aria-label="Fullscreen">⛶</button>
         </div>
       </div>
@@ -636,14 +746,113 @@
   <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Music volume">
 </div>
 
-<audio id="bgMusic"></audio>
+<audio id="bgMusic" preload="auto"></audio>
 
 <footer>
 © 2026 Luvie Edits
 </footer>
 
 <script>
-  // ===== Background Music =====
+  // =========================
+  // INTRO (Canvas chroma key)
+  // =========================
+  const introOverlay = document.getElementById("introOverlay");
+  const introVideo   = document.getElementById("introVideo");
+  const introCanvas  = document.getElementById("introCanvas");
+  const introCtx     = introCanvas.getContext("2d", { willReadFrequently:true });
+  const skipIntroBtn = document.getElementById("skipIntro");
+  const tapSoundHint = document.getElementById("tapSoundHint");
+  const umbrella     = document.getElementById("umbrella");
+
+  let introUmbrellaTriggered = false;
+  let introHiding = false;
+
+  function resizeIntroCanvas(){
+    introCanvas.width = window.innerWidth;
+    introCanvas.height = window.innerHeight;
+  }
+  resizeIntroCanvas();
+  window.addEventListener("resize", resizeIntroCanvas);
+
+  // Detect when scene becomes mostly dark (so we trigger umbrella)
+  function isMostlyDark(data){
+    let dark = 0;
+    const total = data.length / 4;
+    // sample step for performance (skip pixels)
+    const step = 16; // higher = faster, lower = more accurate
+    for(let i=0; i<data.length; i+=4*step){
+      const r = data[i], g = data[i+1], b = data[i+2];
+      if(r < 35 && g < 35 && b < 35) dark++;
+    }
+    const sampled = Math.ceil(total / step);
+    return (dark / sampled) > 0.85;
+  }
+
+  function hideIntro(){
+    if(introHiding) return;
+    introHiding = true;
+
+    // allow umbrella to show a bit
+    setTimeout(()=>{
+      introOverlay.classList.add("hide");
+      setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
+    }, 350);
+  }
+
+  function throwUmbrella(){
+    if(introUmbrellaTriggered) return;
+    introUmbrellaTriggered = true;
+    umbrella?.classList.add("throw");
+  }
+
+  // Chroma-key style removal: make near-black transparent
+  function drawKeyedFrame(){
+    if(!introVideo || introVideo.paused || introVideo.ended) return;
+
+    introCtx.drawImage(introVideo, 0, 0, introCanvas.width, introCanvas.height);
+
+    const frame = introCtx.getImageData(0, 0, introCanvas.width, introCanvas.height);
+    const data = frame.data;
+
+    const threshold = 40; // adjust 30-60 if needed
+    for(let i=0; i<data.length; i+=4){
+      const r = data[i], g = data[i+1], b = data[i+2];
+      if(r < threshold && g < threshold && b < threshold){
+        data[i+3] = 0; // transparent
+      }
+    }
+
+    // Trigger umbrella when scene becomes mostly dark
+    if(!introUmbrellaTriggered && isMostlyDark(data)){
+      throwUmbrella();
+    }
+
+    introCtx.putImageData(frame, 0, 0);
+    requestAnimationFrame(drawKeyedFrame);
+  }
+
+  introVideo.addEventListener("play", ()=>{
+    requestAnimationFrame(drawKeyedFrame);
+  });
+
+  introVideo.addEventListener("ended", ()=>{
+    throwUmbrella();
+    hideIntro();
+  });
+
+  skipIntroBtn.addEventListener("click", ()=>{
+    tryStartMusic(); // user gesture -> will work
+    throwUmbrella();
+    try{
+      introVideo.pause();
+      introVideo.currentTime = 0;
+    }catch(e){}
+    hideIntro();
+  });
+
+  // =========================
+  // MUSIC (plays immediately if allowed)
+  // =========================
   const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
   const toggle = document.getElementById("musicToggle");
@@ -652,8 +861,8 @@
 
   let current = 0;
   music.volume = Number(volume.value);
-
   let userWantsMusic = true;
+  let musicStartedOnce = false;
 
   function setMusicIcon(isPlaying){
     musicIcon.src = isPlaying ? "pause.png" : "start.png";
@@ -664,7 +873,8 @@
     current = i;
     music.src = tracks[current];
     if(userWantsMusic){
-      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+      music.play().then(()=>{ setMusicIcon(true); musicStartedOnce = true; })
+                 .catch(()=> setMusicIcon(false));
     }else{
       setMusicIcon(false);
     }
@@ -677,14 +887,48 @@
 
   music.addEventListener("ended", nextTrack);
 
+  async function tryStartMusic(){
+    if(musicStartedOnce) return true;
+    if(!userWantsMusic) return false;
+
+    try{
+      await music.play();
+      musicStartedOnce = true;
+      setMusicIcon(true);
+      tapSoundHint?.classList.remove("show");
+      return true;
+    }catch(e){
+      // autoplay blocked (common on mobile)
+      tapSoundHint?.classList.add("show");
+      setMusicIcon(false);
+      return false;
+    }
+  }
+
+  function enableMusicOnFirstInteraction(){
+    document.removeEventListener("pointerdown", enableMusicOnFirstInteraction);
+    document.removeEventListener("touchstart", enableMusicOnFirstInteraction);
+    document.removeEventListener("click", enableMusicOnFirstInteraction);
+    tryStartMusic();
+  }
+
   window.addEventListener("load", () => {
-    playTrack(0);
+    playTrack(0);         // sets src
+    tryStartMusic();      // try immediate autoplay
+    // fallback: first user tap/click anywhere enables sound
+    document.addEventListener("pointerdown", enableMusicOnFirstInteraction, { once:true });
+    document.addEventListener("touchstart", enableMusicOnFirstInteraction, { once:true, passive:true });
+    document.addEventListener("click", enableMusicOnFirstInteraction, { once:true });
+
+    // start intro video (muted autoplay)
+    introVideo.muted = true;
+    introVideo.play().catch(()=>{});
   });
 
   toggle.addEventListener("click", () => {
     if(music.paused){
       userWantsMusic = true;
-      music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
+      music.play().then(()=>{ setMusicIcon(true); musicStartedOnce = true; }).catch(()=> setMusicIcon(false));
     }else{
       userWantsMusic = false;
       music.pause();
@@ -696,7 +940,9 @@
     music.volume = Number(volume.value);
   });
 
-  // ===== Video Player Controls =====
+  // =========================
+  // VIDEO PLAYER CONTROLS
+  // =========================
   function fmtTime(s){
     if(!isFinite(s)) return "0:00";
     const m = Math.floor(s/60);
@@ -717,7 +963,6 @@
     hint._t = setTimeout(()=> hint.classList.remove("show"), 450);
   }
 
-  // Active video tracking (keyboard)
   let activePlayer = null;
   let activeVideo = null;
 
@@ -726,12 +971,10 @@
     activeVideo = player ? player.querySelector(".p5-video") : null;
   }
 
-  // ✅ helper: cross-browser fullscreen element getter
   function getFsEl(){
     return document.fullscreenElement || document.webkitFullscreenElement || null;
   }
 
-  // ✅ helper: exit fullscreen cross-browser
   function exitFs(){
     if(document.exitFullscreen) return document.exitFullscreen();
     if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
@@ -756,7 +999,6 @@
     const mid = player.querySelector(".p5-mid");
     const right = player.querySelector(".p5-right");
 
-    // init volume
     video.volume = 0.8;
     video.muted = false;
 
@@ -783,19 +1025,13 @@
       showHint(player, `Vol ${Math.round(video.volume * 100)}%`);
     }
 
-    // ✅ FULLSCREEN button should toggle (enter/exit)
     async function togglePlayerFullscreen(){
       setActive(player);
-
       const fsEl = getFsEl();
-
-      // If ANY element is fullscreen, exit first
       if(fsEl){
         await exitFs();
         return;
       }
-
-      // Enter fullscreen on the player (keeps your custom controls)
       try{
         if(player.requestFullscreen) await player.requestFullscreen();
         else if(player.webkitRequestFullscreen) await player.webkitRequestFullscreen();
@@ -803,15 +1039,12 @@
       }catch(e){}
     }
 
-    // Set active on interaction
     player.addEventListener("pointerdown", ()=> setActive(player));
     player.addEventListener("mouseenter", ()=> setActive(player));
 
-    // play/pause
     bigPlay.addEventListener("click", ()=> { setActive(player); video.play(); });
     playBtn.addEventListener("click", ()=> { setActive(player); video.paused ? video.play() : video.pause(); });
 
-    // time updates
     video.addEventListener("timeupdate", ()=>{
       cur.textContent = fmtTime(video.currentTime);
       if(video.duration){
@@ -819,14 +1052,12 @@
       }
     });
 
-    // seek slider
     prog.addEventListener("input", ()=>{
       if(video.duration){
         video.currentTime = (Number(prog.value)/100) * video.duration;
       }
     });
 
-    // seek buttons
     backBtn?.addEventListener("click", ()=>{
       setActive(player);
       video.currentTime = Math.max(0, video.currentTime - 10);
@@ -839,30 +1070,24 @@
       showHint(player, "⏩ +10s");
     });
 
-    // volume buttons
     volUp?.addEventListener("click", ()=> bumpVolume(0.1));
     volDown?.addEventListener("click", ()=> bumpVolume(-0.1));
 
-    // mute
     muteBtn.addEventListener("click", ()=>{
       video.muted = !video.muted;
       setMuteIcon();
     });
 
-    // fullscreen toggle
     fullBtn.addEventListener("click", togglePlayerFullscreen);
 
-    // optional: update fullscreen button icon when fullscreen changes
     function updateFsIcon(){
       const fs = !!getFsEl();
-      fullBtn.textContent = fs ? "⤢" : "⛶"; // exit / enter symbols
+      fullBtn.textContent = fs ? "⤢" : "⛶";
       fullBtn.setAttribute("aria-label", fs ? "Exit fullscreen" : "Fullscreen");
     }
-    document.addEventListener("fullscreenchange", updateFsIcon);
-    document.addEventListener("webkitfullscreenchange", updateFsIcon);
+    player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
-    // UI events
     video.addEventListener("play", ()=>{
       setActive(player);
       music.pause();
@@ -884,7 +1109,6 @@
       setPlayUI();
     });
 
-    // ===== Mobile gestures =====
     if(gestures){
       if(!isTouchDevice()){
         gestures.style.display = "none";
@@ -920,7 +1144,6 @@
           lastTapR = now;
         });
 
-        // Long press middle = fullscreen toggle
         let pressTimer = null;
         mid?.addEventListener("touchstart", ()=>{
           pressTimer = setTimeout(()=>{
@@ -934,12 +1157,18 @@
       }
     }
 
-    // initial
     setMuteIcon();
     setPlayUI();
   });
 
-  // Fallback active
+  // fullscreen icon updates ONCE (avoid adding 4 listeners)
+  document.addEventListener("fullscreenchange", ()=>{
+    document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
+  });
+  document.addEventListener("webkitfullscreenchange", ()=>{
+    document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
+  });
+
   if(!activePlayer){
     const first = document.querySelector(".p5-player");
     if(first) setActive(first);
@@ -961,12 +1190,7 @@
 
     if(k === "f" || k === "F"){
       e.preventDefault();
-      // toggle fullscreen for active player
-      const p = activePlayer;
-      if(p){
-        const btn = p.querySelector(".p5-full");
-        btn?.click();
-      }
+      activePlayer?.querySelector(".p5-full")?.click();
       return;
     }
 
