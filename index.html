@@ -1569,8 +1569,34 @@
     setMuteIcon();
     setPlayUI();
   });
-  // ✅ Keep GIF cursor visible even in fullscreen
+  
+   // ✅ Keep GIF cursor visible even in fullscreen
   function ensureGifCursorVisible(){
+    if(!CAN_HOVER) return;
+
+    // force visible + on top
+    gifCursor.style.display = "block";
+    gifCursor.style.opacity = "1";
+    gifCursor.style.position = "fixed";
+    gifCursor.style.pointerEvents = "none";
+    gifCursor.style.zIndex = "2147483647";
+
+    // re-append so fullscreen never "loses" it
+    if(gifCursor.parentNode !== document.body){
+      document.body.appendChild(gifCursor);
+    }
+  }
+
+  document.addEventListener("fullscreenchange", () => {
+    ensureGifCursorVisible();
+    document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
+  });
+
+  document.addEventListener("webkitfullscreenchange", () => {
+    ensureGifCursorVisible();
+    document.querySelectorAll(".p5-player").forEach(p=> p._updateFsIcon?.());
+  });
+  
     if(!CAN_HOVER) return;
     gifCursor.style.display = "block";
     gifCursor.style.position = "fixed";
