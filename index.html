@@ -38,7 +38,6 @@
   }
   .intro.hide{ opacity:0; pointer-events:none; }
 
-  /* SUMIRE webm with alpha (no canvas needed) */
   #introVideo{
     width:100%;
     height:100%;
@@ -66,11 +65,11 @@
   }
   .intro-skip:active{ transform:scale(0.98); }
 
-  /* Tap-to-enable-sound overlay (clickable) */
+  /* Tap-to-enable-sound overlay (GLOBAL, works during + after intro) */
   .tap-sound-overlay{
-    position:absolute;
+    position:fixed;              /* ✅ was absolute */
     inset:0;
-    z-index:8;
+    z-index:100000;              /* ✅ above intro + everything */
     display:none;
     align-items:flex-end;
     justify-content:center;
@@ -268,8 +267,6 @@
     flex-direction:column;
     min-height:0;
   }
-
-  /* ✅ Crosshair ONLY when inside player */
   .p5-player:hover{ cursor: crosshair; }
 
   .p5-video{
@@ -281,7 +278,6 @@
     background:#000;
   }
 
-  /* FULLSCREEN FIXES */
   .p5-player:fullscreen{
     width:100vw !important;
     height:100vh !important;
@@ -310,7 +306,6 @@
   }
   .p5-player:-webkit-full-screen .p5-controls{ left:16px; right:16px; bottom:14px; }
 
-  /* Mobile gesture overlay */
   .p5-gestures{
     position:absolute;
     inset:0;
@@ -366,7 +361,6 @@
   .p5-bigplay:hover{ transform:scale(1.05); }
   .p5-bigplay img{ width:34px; height:34px; display:block; }
 
-  /* Controls */
   .p5-controls{
     position:absolute;
     left:12px;
@@ -444,7 +438,6 @@
     opacity:0.9;
   }
 
-  /* MUSIC PLAYER */
   .music-player{
     position:fixed;
     bottom:20px;
@@ -494,7 +487,6 @@
     cursor:pointer;
   }
 
-  /* MOBILE */
   @media (max-width:768px){
     .hero{height:92vh;}
     .title{font-size:38px;letter-spacing:3px;}
@@ -534,11 +526,12 @@
 
   <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro">Skip</button>
 
-  <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
-    <button id="tapSoundBtn" class="tap-sound-btn" type="button">Tap to enable sound</button>
-  </div>
-
   <div class="intro-outro" aria-hidden="true"></div>
+</div>
+
+<!-- ✅ MOVED OUTSIDE INTRO so it works after intro too -->
+<div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
+  <button id="tapSoundBtn" class="tap-sound-btn" type="button">Tap to enable sound</button>
 </div>
 
 <section class="hero">
@@ -729,6 +722,8 @@
     if (location.hash) history.replaceState(null, "", location.pathname + location.search);
     window.scrollTo(0, 0);
   });
+  // ✅ some browsers restore scroll on pageshow (bfcache)
+  window.addEventListener("pageshow", () => window.scrollTo(0,0));
 
   // =========================
   // INTRO + AUDIO GATE
@@ -739,8 +734,20 @@
   const tapOverlay   = document.getElementById("tapSoundOverlay");
   const tapBtn       = document.getElementById("tapSoundBtn");
 
-  // lock scroll while intro is visible (prevents "jump")
+  // lock scroll while intro is visible
   document.body.style.overflow = "hidden";
+
+  // ✅ force intro to start at 0 (prevents "starts in middle")
+  function restartIntroVideo(){
+    try{
+      introVideo.pause();
+      introVideo.currentTime = 0;
+      introVideo.muted = true;
+    }catch(e){}
+  }
+  introVideo.addEventListener("loadedmetadata", () => {
+    try{ introVideo.currentTime = 0; }catch(e){}
+  });
 
   // =========================
   // MUSIC (starts PAUSED until user enables)
@@ -752,8 +759,8 @@
   const volume = document.getElementById("volumeSlider");
 
   let current = 0;
-  let userWantsMusic = false;     // ✅ start paused
-  let musicUnlocked = false;      // ✅ locked until gesture
+  let userWantsMusic = false;     // start paused
+  let musicUnlocked = false;      // locked until gesture
 
   music.volume = Number(volume.value);
 
@@ -777,14 +784,13 @@
   }
   music.addEventListener("ended", nextTrack);
 
-  // ✅ real unlock (does NOT auto-play music)
+  // ✅ unlock without auto-playing music (prime play -> pause)
   async function unlockAudioFromGesture(){
     if(musicUnlocked) return true;
 
     try{
       if(!music.src) setTrack(0);
 
-      // prime/unlock
       await music.play();
       music.pause();
       music.currentTime = 0;
@@ -802,21 +808,25 @@
 
   // show overlay on load (fix "sometimes doesn't appear on PC")
   window.addEventListener("load", () => {
-    tapOverlay.classList.add("show");
+    tapOverlay.classList.add("show"); // always available
 
-    // intro plays muted (allowed)
-    introVideo.muted = true;
+    restartIntroVideo();
     introVideo.play().catch(()=>{});
   });
 
-  // clicking tap button unlocks
+  // tap button unlocks
   tapBtn.addEventListener("click", unlockAudioFromGesture);
   tapBtn.addEventListener("touchend", (e)=>{ e.preventDefault(); unlockAudioFromGesture(); }, {passive:false});
 
-  // music toggle button: if not unlocked -> show overlay; else toggle play/pause
+  // ✅ music toggle: try unlocking with THIS click, then toggle
   toggle.addEventListener("click", async () => {
     if(!musicUnlocked){
+      await unlockAudioFromGesture();
+    }
+    if(!musicUnlocked){
       tapOverlay.classList.add("show");
+      userWantsMusic = false;
+      setMusicIcon(false);
       return;
     }
 
@@ -834,16 +844,31 @@
       setMusicIcon(true);
     }catch(e){
       tapOverlay.classList.add("show");
+      userWantsMusic = false;
       setMusicIcon(false);
     }
   });
+
+  // ✅ volume slider also tries to unlock (prevents "slider does nothing")
+  volume.addEventListener("pointerdown", async () => {
+    if(!musicUnlocked){
+      await unlockAudioFromGesture();
+      if(!musicUnlocked) tapOverlay.classList.add("show");
+    }
+  });
+  volume.addEventListener("touchstart", async () => {
+    if(!musicUnlocked){
+      await unlockAudioFromGesture();
+      if(!musicUnlocked) tapOverlay.classList.add("show");
+    }
+  }, {passive:true});
 
   volume.addEventListener("input", () => {
     music.volume = Number(volume.value);
   });
 
   // =========================
-  // INTRO END / SKIP (skip must ALWAYS work)
+  // INTRO END / SKIP
   // =========================
   let introHiding = false;
   function hideIntro(){
@@ -856,15 +881,13 @@
       setTimeout(()=>{ introOverlay.style.display="none"; }, 560);
     }, 820);
 
-    // unlock scroll when intro is gone
     document.body.style.overflow = "";
   }
 
   introVideo.addEventListener("ended", hideIntro);
 
-  // ✅ Skip works even if sound not enabled
   skipIntroBtn.addEventListener("click", () => {
-    try{ introVideo.pause(); introVideo.currentTime = 0; }catch(e){}
+    restartIntroVideo();
     hideIntro();
   });
 
@@ -908,9 +931,6 @@
     if(document.webkitExitFullscreen) return document.webkitExitFullscreen();
   }
 
-  // ✅ Space behavior:
-  // - if cursor is inside a player -> space controls that video
-  // - if outside -> space controls ONLY background music
   let isPointerInsidePlayer = false;
   let hoveredPlayer = null;
 
@@ -936,7 +956,6 @@
     video.volume = 0.8;
     video.muted = false;
 
-    // ✅ hover tracking for "space only inside player"
     player.addEventListener("mouseenter", () => {
       isPointerInsidePlayer = true;
       hoveredPlayer = player;
@@ -949,7 +968,6 @@
       }
     });
 
-    // ✅ if they click play on video without unlocking audio, unlock it here
     async function ensureUnlocked(){
       if(!musicUnlocked){
         await unlockAudioFromGesture();
@@ -995,7 +1013,6 @@
 
     player.addEventListener("pointerdown", ()=> setActive(player));
 
-    // ✅ play buttons unlock audio first (fix volume controls not working)
     bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });
     playBtn.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.paused ? video.play() : video.pause(); });
 
@@ -1042,7 +1059,6 @@
     player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
-    // pause bg music when video starts, resume only if user wanted music
     video.addEventListener("play", ()=>{
       setActive(player);
       if(musicUnlocked){
@@ -1131,15 +1147,11 @@
     if(first) setActive(first);
   }
 
-  // ✅ Keyboard controls:
-  // - Space: video only when hovered, otherwise bg music
   document.addEventListener("keydown", async (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     if(tag === "input" || tag === "textarea") return;
 
-    // Space behavior fix
     if(e.code === "Space"){
-      // inside player -> toggle that video
       if(isPointerInsidePlayer && hoveredPlayer){
         const v = hoveredPlayer.querySelector(".p5-video");
         if(v){
@@ -1149,10 +1161,8 @@
         return;
       }
 
-      // outside player -> toggle ONLY background music
       e.preventDefault();
 
-      // if not unlocked, we can't start music; show overlay and keep paused
       if(!musicUnlocked){
         tapOverlay.classList.add("show");
         userWantsMusic = false;
@@ -1189,7 +1199,6 @@
       return;
     }
 
-    // only allow arrows when hovered inside player
     if(!isPointerInsidePlayer) return;
 
     if(k === "ArrowLeft"){
