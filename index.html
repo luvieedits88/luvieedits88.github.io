@@ -22,19 +22,13 @@
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
-
-    /* ✅ Keep parallax on desktop/Android-ish browsers */
     background-attachment:fixed;
   }
 
-  /* ✅ iOS Safari fix: background-attachment:fixed causes weird scaling/cropping */
   @supports (-webkit-touch-callout: none) {
     body { background-attachment: scroll; }
   }
 
-  /* =========================
-     ✅ CUSTOM CURSOR (GIF)
-     ========================= */
   :root{
     --cursor-size: 56px;
     --cursor-offset-x: 10px;
@@ -45,7 +39,6 @@
     --p5-dark:#07070a;
   }
 
-  /* Hide system cursor ONLY on non-touch devices */
   @media (hover:hover) and (pointer:fine){
     html, body { cursor: none !important; }
     a, button, input, textarea, select, label, [role="button"] { cursor: none !important; }
@@ -61,9 +54,8 @@
     z-index:2147483647;
     user-select:none;
     -webkit-user-drag:none;
-    image-rendering:auto;
     will-change: transform;
-    display:none; /* enabled by JS when mouse exists */
+    display:none;
   }
   .gif-cursor img{
     width:100%;
@@ -73,7 +65,7 @@
     pointer-events:none;
   }
 
-  /* ===== INTRO (SUMIRE) ===== */
+  /* ===== INTRO ===== */
   .intro{
     position:fixed;
     inset:0;
@@ -108,14 +100,16 @@
     cursor:pointer;
     z-index:7;
     -webkit-tap-highlight-color: transparent;
+    transition: opacity .22s ease, transform .22s ease;
   }
   .intro-skip:hover{
     border-color: rgba(255,0,60,0.55);
     box-shadow:0 0 20px rgba(255,0,60,0.25);
   }
   .intro-skip:active{ transform:scale(0.98); }
+  .intro.outro .intro-skip{ opacity:0; pointer-events:none; }
 
-  /* ✅ Tap-to-enable-sound overlay */
+  /* Tap to enable sound overlay */
   .tap-sound-overlay{
     position:fixed;
     inset:0;
@@ -146,7 +140,6 @@
     transform:translateY(10px);
     transition: opacity .55s ease, transform .55s ease, visibility 0s linear .55s;
   }
-
   .tap-sound-btn{
     pointer-events:auto;
     padding:14px 18px;
@@ -170,7 +163,7 @@
     .intro-skip{ padding:14px 18px; font-size:16px; border-radius:16px; }
   }
 
-  /* ===== Persona 5 style outro ===== */
+  /* Persona 5 style outro */
   .intro-outro{
     position:absolute;
     inset:0;
@@ -231,7 +224,6 @@
     position:relative;
     min-height:100svh;
     min-height:100dvh;
-    height:auto;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -275,7 +267,6 @@
     background:var(--p5-red2);
   }
 
-  /* CHARACTERS */
   .character{
     position:absolute;
     bottom:0;
@@ -286,16 +277,12 @@
   .joker{
     left:-60px;
     transform:scaleX(-1) rotate(-6deg);
-    filter:
-      drop-shadow(0 0 30px rgba(0,140,255,0.6))
-      drop-shadow(0 0 70px rgba(0,140,255,0.3));
+    filter:drop-shadow(0 0 30px rgba(0,140,255,0.6)) drop-shadow(0 0 70px rgba(0,140,255,0.3));
   }
   .sumire{
     right:-40px;
     transform:rotate(6deg);
-    filter:
-      drop-shadow(0 0 30px rgba(255,0,60,0.6))
-      drop-shadow(0 0 70px rgba(255,0,60,0.3));
+    filter:drop-shadow(0 0 30px rgba(255,0,60,0.6)) drop-shadow(0 0 70px rgba(255,0,60,0.3));
   }
 
   /* PORTFOLIO */
@@ -330,7 +317,7 @@
     box-shadow: 0 24px 70px rgba(0,0,0,0.75);
   }
 
-  /* ===== Persona 5 Custom Player ===== */
+  /* ===== Persona 5 Custom Player (PORTFOLIO) ===== */
   .p5-player{
     position:relative;
     width:100%;
@@ -338,7 +325,6 @@
     display:flex;
     flex-direction:column;
     min-height:0;
-    isolation:isolate;
   }
 
   .p5-video{
@@ -348,118 +334,6 @@
     object-fit:contain;
     display:block;
     background:#000;
-  }
-
-  /* ✅ cover overlay (thumbnail + animation) */
-  .p5-cover{
-    position:absolute;
-    inset:0;
-    z-index:6;
-    display:grid;
-    place-items:center;
-    overflow:hidden;
-    background:#000;
-    opacity:1;
-    transform:scale(1);
-    transition: opacity .28s ease, transform .35s ease;
-    pointer-events:auto;
-  }
-  .p5-cover.hide{
-    opacity:0;
-    transform:scale(1.02);
-    pointer-events:none;
-  }
-  .p5-cover-img{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    filter: contrast(1.05) saturate(1.05) brightness(0.78);
-    transform:scale(1.02);
-  }
-  .p5-cover-vignette{
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(circle at 50% 40%, rgba(255,0,60,0.18), rgba(0,0,0,0) 55%),
-      linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0.15));
-  }
-  .p5-cover-meta{
-    position:relative;
-    z-index:2;
-    width:min(92%, 560px);
-    padding:18px 18px;
-    border-radius:18px;
-    text-align:left;
-    background:rgba(0,0,0,0.50);
-    border:1px solid rgba(255,255,255,0.12);
-    box-shadow:0 18px 55px rgba(0,0,0,0.7);
-  }
-  .p5-cover-title{
-    margin:0;
-    font-weight:900;
-    letter-spacing:0.8px;
-    text-transform:uppercase;
-    font-size:16px;
-  }
-  .p5-cover-sub{
-    margin:8px 0 0;
-    opacity:0.82;
-    font-size:12px;
-    line-height:1.4;
-  }
-  .p5-cover-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    margin-top:12px;
-    padding:10px 12px;
-    border-radius:14px;
-    background:rgba(0,0,0,0.55);
-    border:1px solid rgba(255,255,255,0.12);
-    font-weight:900;
-    letter-spacing:.4px;
-    box-shadow:0 0 34px rgba(255,0,60,0.18);
-  }
-  .p5-cover-badge img{ width:18px; height:18px; display:block; }
-
-  /* Persona "slash" when starting video */
-  .p5-slash{
-    position:absolute;
-    inset:0;
-    z-index:8;
-    pointer-events:none;
-    opacity:0;
-  }
-  .p5-player.slash .p5-slash{
-    opacity:1;
-    animation:p5Outro 520ms ease forwards;
-  }
-  .p5-slash::before{
-    content:"";
-    position:absolute;
-    inset:-25%;
-    background:
-      radial-gradient(circle at 35% 55%, rgba(255,0,60,0.65), rgba(0,0,0,0) 55%),
-      linear-gradient(135deg, rgba(255,0,60,0.15), rgba(0,0,0,0) 60%);
-    mix-blend-mode:screen;
-    opacity:0;
-    animation:p5Flash 520ms ease forwards;
-  }
-  .p5-slash::after{
-    content:"";
-    position:absolute;
-    inset:-35%;
-    background: linear-gradient(115deg,
-      rgba(255,255,255,0) 0%,
-      rgba(255,255,255,0) 45%,
-      rgba(255,255,255,0.92) 50%,
-      rgba(255,255,255,0) 56%,
-      rgba(255,255,255,0) 100%);
-    transform:translateX(-70%) rotate(-8deg);
-    opacity:0.85;
-    animation:p5Slash 520ms cubic-bezier(.2,.9,.2,1) forwards;
   }
 
   @media (hover:hover) and (pointer:fine){
@@ -476,36 +350,27 @@
       cursor: none !important;
     }
   }
+
   .p5-player, .p5-video { cursor: crosshair; }
 
-  .p5-player:fullscreen{
-    width:100vw !important;
-    height:100vh !important;
-    background:#000 !important;
-    border-radius:0 !important;
-  }
-  .p5-player:fullscreen .p5-video{
-    width:100% !important;
-    height:100% !important;
-    object-fit:contain !important;
-    background:#000 !important;
-  }
-  .p5-player:fullscreen .p5-controls{ left:16px; right:16px; bottom:14px; }
-  .p5-player:fullscreen .p5-cover-meta{ font-size:16px; }
-
+  .p5-player:fullscreen,
   .p5-player:-webkit-full-screen{
     width:100vw !important;
     height:100vh !important;
     background:#000 !important;
     border-radius:0 !important;
   }
+  .p5-player:fullscreen .p5-video,
   .p5-player:-webkit-full-screen .p5-video{
     width:100% !important;
     height:100% !important;
     object-fit:contain !important;
     background:#000 !important;
   }
-  .p5-player:-webkit-full-screen .p5-controls{ left:16px; right:16px; bottom:14px; }
+  .p5-player:fullscreen .p5-controls,
+  .p5-player:-webkit-full-screen .p5-controls{
+    left:16px; right:16px; bottom:14px;
+  }
 
   .p5-gestures{
     position:absolute;
@@ -539,7 +404,7 @@
     opacity:0;
     pointer-events:none;
     transition: opacity .15s ease, transform .15s ease;
-    z-index:9;
+    z-index:5;
   }
   .p5-hint.show{ opacity:1; transform:translate(-50%,-55%); }
 
@@ -556,8 +421,8 @@
     display:grid;
     place-items:center;
     box-shadow:0 0 40px rgba(255,0,60,0.35);
-    transition:0.2s ease, opacity .22s ease, transform .22s ease;
-    z-index:7;
+    transition:0.2s ease;
+    z-index:6;
   }
   .p5-bigplay:hover{ transform:scale(1.05); }
   .p5-bigplay img{ width:34px; height:34px; display:block; }
@@ -572,21 +437,10 @@
     gap:10px;
     padding:10px 12px;
     background:linear-gradient(to top, rgba(0,0,0,0.88), rgba(0,0,0,0.20));
-    z-index:10;
+    z-index:7;
     box-sizing:border-box;
     max-width:100%;
-
-    opacity:1;
-    transform:translateY(0);
-    transition: opacity .22s ease, transform .22s ease;
   }
-  /* ✅ auto-hide controls while playing */
-  .p5-player.ui-hidden .p5-controls{
-    opacity:0;
-    transform:translateY(8px);
-    pointer-events:none;
-  }
-
   .p5-btn{
     background:#0b0b0b;
     border:1px solid rgba(255,255,255,0.12);
@@ -782,14 +636,11 @@
     font-weight:900;
     letter-spacing:0.4px;
     color:#fff;
-
     background: rgba(0,0,0,0.55);
     border:1px solid rgba(255,255,255,0.14);
-
     box-shadow:
       0 0 24px rgba(255,0,60,0.18),
       inset 0 0 0 1px rgba(255,255,255,0.04);
-
     position:relative;
     overflow:hidden;
     transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease;
@@ -829,22 +680,12 @@
     width:22px;
     height:22px;
     display:block;
-    filter:
-      drop-shadow(0 0 8px rgba(255,0,60,0.30))
-      drop-shadow(0 0 18px rgba(255,0,60,0.22));
+    filter:drop-shadow(0 0 8px rgba(255,0,60,0.30)) drop-shadow(0 0 18px rgba(255,0,60,0.22));
     transition: transform .18s ease, filter .2s ease;
   }
   .contact-btn:hover .btn-ico{
     transform: rotate(-4deg) scale(1.05);
-    filter:
-      drop-shadow(0 0 10px rgba(255,0,60,0.55))
-      drop-shadow(0 0 26px rgba(255,0,60,0.32));
-  }
-
-  @media (max-width:768px){
-    .contact-inner{ padding:30px 18px; }
-    .contact-row{ justify-content:flex-start; }
-    .contact-actions{ width:100%; justify-content:flex-start; }
+    filter:drop-shadow(0 0 10px rgba(255,0,60,0.55)) drop-shadow(0 0 26px rgba(255,0,60,0.32));
   }
 
   footer{
@@ -934,12 +775,12 @@
 
 <body oncontextmenu="return false;">
 
-<!-- ✅ GIF CURSOR ELEMENT -->
+<!-- GIF CURSOR -->
 <div id="gifCursor" class="gif-cursor" aria-hidden="true">
   <img id="gifCursorImg" src="NORMAL.gif" alt="">
 </div>
 
-<!-- ===== INTRO OVERLAY ===== -->
+<!-- INTRO OVERLAY -->
 <div id="introOverlay" class="intro">
   <video id="introVideo" autoplay playsinline muted preload="auto">
     <source src="SUMIRE.webm" type="video/webm">
@@ -949,7 +790,7 @@
   <div class="intro-outro" aria-hidden="true"></div>
 </div>
 
-<!-- ✅ GLOBAL SOUND BUTTON (doesn't block clicks) -->
+<!-- SOUND BUTTON -->
 <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
   <button id="tapSoundBtn" class="tap-sound-btn" type="button" data-cursor="link">Tap to enable sound</button>
 </div>
@@ -968,28 +809,12 @@
   <h2 class="section-title">Portfolio</h2>
 
   <div class="video-grid">
-
-    <!-- ===== CARD 1 ===== -->
+    <!-- CARD 1 -->
     <div class="video-card">
-      <div class="p5-player" data-cursor="precision" data-title="Edit 1" data-sub="Persona-style player" data-cover="cover1.jpg">
-        <video class="p5-video" preload="metadata" playsinline poster="cover1.jpg">
+      <div class="p5-player" data-cursor="precision">
+        <video class="p5-video" preload="metadata" playsinline>
           <source src="video1.mp4" type="video/mp4">
         </video>
-
-        <div class="p5-slash" aria-hidden="true"></div>
-
-        <div class="p5-cover" data-cursor="link" role="button" aria-label="Play video (cover)">
-          <img class="p5-cover-img" src="cover1.jpg" alt="">
-          <div class="p5-cover-vignette"></div>
-          <div class="p5-cover-meta">
-            <p class="p5-cover-title">Edit 1</p>
-            <p class="p5-cover-sub">Click to play • Persona cover animation</p>
-            <div class="p5-cover-badge">
-              <img src="start.png" alt="">
-              PLAY
-            </div>
-          </div>
-        </div>
 
         <div class="p5-gestures" aria-hidden="true">
           <button class="p5-zone p5-left" type="button"></button>
@@ -1007,48 +832,25 @@
           <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
             <img src="start.png" class="p5-icon" alt="Play">
           </button>
-
           <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">⏪</button>
-
-          <div class="p5-time">
-            <span class="p5-current">0:00</span>
-          </div>
-
+          <div class="p5-time"><span class="p5-current">0:00</span></div>
           <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
-
           <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">⏩</button>
-
           <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">−</button>
           <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">🔊</button>
           <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">+</button>
-
           <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">⛶</button>
         </div>
       </div>
       <div class="video-label">Edit 1 <span>Persona-style player</span></div>
     </div>
 
-    <!-- ===== CARD 2 ===== -->
+    <!-- CARD 2 -->
     <div class="video-card">
-      <div class="p5-player" data-cursor="precision" data-title="Edit 2" data-sub="Persona-style player" data-cover="cover2.jpg">
-        <video class="p5-video" preload="metadata" playsinline poster="cover2.jpg">
+      <div class="p5-player" data-cursor="precision">
+        <video class="p5-video" preload="metadata" playsinline>
           <source src="video2.mp4" type="video/mp4">
         </video>
-
-        <div class="p5-slash" aria-hidden="true"></div>
-
-        <div class="p5-cover" data-cursor="link" role="button" aria-label="Play video (cover)">
-          <img class="p5-cover-img" src="cover2.jpg" alt="">
-          <div class="p5-cover-vignette"></div>
-          <div class="p5-cover-meta">
-            <p class="p5-cover-title">Edit 2</p>
-            <p class="p5-cover-sub">Click to play • Persona cover animation</p>
-            <div class="p5-cover-badge">
-              <img src="start.png" alt="">
-              PLAY
-            </div>
-          </div>
-        </div>
 
         <div class="p5-gestures" aria-hidden="true">
           <button class="p5-zone p5-left" type="button"></button>
@@ -1079,27 +881,12 @@
       <div class="video-label">Edit 2 <span>Persona-style player</span></div>
     </div>
 
-    <!-- ===== CARD 3 ===== -->
+    <!-- CARD 3 -->
     <div class="video-card">
-      <div class="p5-player" data-cursor="precision" data-title="Edit 3" data-sub="Persona-style player" data-cover="cover3.jpg">
-        <video class="p5-video" preload="metadata" playsinline poster="cover3.jpg">
+      <div class="p5-player" data-cursor="precision">
+        <video class="p5-video" preload="metadata" playsinline>
           <source src="video3.mp4" type="video/mp4">
         </video>
-
-        <div class="p5-slash" aria-hidden="true"></div>
-
-        <div class="p5-cover" data-cursor="link" role="button" aria-label="Play video (cover)">
-          <img class="p5-cover-img" src="cover3.jpg" alt="">
-          <div class="p5-cover-vignette"></div>
-          <div class="p5-cover-meta">
-            <p class="p5-cover-title">Edit 3</p>
-            <p class="p5-cover-sub">Click to play • Persona cover animation</p>
-            <div class="p5-cover-badge">
-              <img src="start.png" alt="">
-              PLAY
-            </div>
-          </div>
-        </div>
 
         <div class="p5-gestures" aria-hidden="true">
           <button class="p5-zone p5-left" type="button"></button>
@@ -1130,27 +917,12 @@
       <div class="video-label">Edit 3 <span>Persona-style player</span></div>
     </div>
 
-    <!-- ===== CARD 4 ===== -->
+    <!-- CARD 4 -->
     <div class="video-card">
-      <div class="p5-player" data-cursor="precision" data-title="Edit 4" data-sub="Persona-style player" data-cover="cover4.jpg">
-        <video class="p5-video" preload="metadata" playsinline poster="cover4.jpg">
+      <div class="p5-player" data-cursor="precision">
+        <video class="p5-video" preload="metadata" playsinline>
           <source src="video4.mp4" type="video/mp4">
         </video>
-
-        <div class="p5-slash" aria-hidden="true"></div>
-
-        <div class="p5-cover" data-cursor="link" role="button" aria-label="Play video (cover)">
-          <img class="p5-cover-img" src="cover4.jpg" alt="">
-          <div class="p5-cover-vignette"></div>
-          <div class="p5-cover-meta">
-            <p class="p5-cover-title">Edit 4</p>
-            <p class="p5-cover-sub">Click to play • Persona cover animation</p>
-            <div class="p5-cover-badge">
-              <img src="start.png" alt="">
-              PLAY
-            </div>
-          </div>
-        </div>
 
         <div class="p5-gestures" aria-hidden="true">
           <button class="p5-zone p5-left" type="button"></button>
@@ -1180,7 +952,6 @@
       </div>
       <div class="video-label">Edit 4 <span>Persona-style player</span></div>
     </div>
-
   </div>
 </section>
 
@@ -1232,7 +1003,7 @@
 
 <script>
   // =========================
-  // ✅ GIF CURSOR ENGINE
+  // GIF CURSOR ENGINE
   // =========================
   const CURSOR_GIFS = {
     normal: "NORMAL.gif",
@@ -1311,16 +1082,19 @@
 
   function mapCssCursorToGif(cssCursor){
     const c = (cssCursor || "").toLowerCase();
+
     if(c.includes("not-allowed") || c.includes("no-drop")) return "unavailable";
     if(c.includes("help")) return "help";
     if(c.includes("text")) return "text";
     if(c.includes("move") || c.includes("grab") || c.includes("grabbing")) return "move";
     if(c.includes("crosshair")) return "precision";
     if(c.includes("pointer")) return "link";
+
     if(c.includes("ew-resize") || c.includes("col-resize")) return "hResize";
     if(c.includes("ns-resize") || c.includes("row-resize")) return "vResize";
     if(c.includes("nwse-resize")) return "resize1";
     if(c.includes("nesw-resize")) return "resize2";
+
     return "normal";
   }
 
@@ -1352,7 +1126,9 @@
     }
 
     const sel = window.getSelection?.();
-    if(sel && sel.rangeCount && !sel.isCollapsed) return "text";
+    if(sel && sel.rangeCount && !sel.isCollapsed){
+      return "text";
+    }
 
     const cssCursor = target ? getComputedStyle(target).cursor : "";
     return mapCssCursorToGif(cssCursor);
@@ -1362,15 +1138,18 @@
     if(!CAN_HOVER) return;
     setCursor(computeCursorFromTarget(e.target));
   }, {passive:true});
+
   document.addEventListener("mousemove", (e)=>{
     if(!CAN_HOVER) return;
     setCursor(computeCursorFromTarget(e.target));
   }, {passive:true});
+
   document.addEventListener("mousedown", (e)=>{
     if(!CAN_HOVER) return;
     const key = computeCursorFromTarget(e.target);
     setCursor(key === "text" ? "text" : key);
   });
+
   document.addEventListener("mouseup", (e)=>{
     if(!CAN_HOVER) return;
     setCursor(computeCursorFromTarget(e.target));
@@ -1388,7 +1167,7 @@
   attachBusyCursorToVideos();
 
   // =========================
-  // ✅ FULLSCREEN FIX: keep GIF cursor visible
+  // FULLSCREEN FIX: keep GIF cursor visible
   // =========================
   let gifHomeParent = gifCursor.parentNode;
   function getFsEl(){
@@ -1420,7 +1199,7 @@
   window.addEventListener("pageshow", () => window.scrollTo(0,0));
 
   // =========================
-  // INTRO + AUDIO GATE
+  // INTRO + AUDIO GATE  ✅ FIXED SKIP (NO JUMP TO 0)
   // =========================
   const introOverlay = document.getElementById("introOverlay");
   const introVideo   = document.getElementById("introVideo");
@@ -1431,7 +1210,14 @@
   tapOverlay.classList.add("show");
   document.body.style.overflow = "hidden";
 
-  // ✅ start intro from 0 (but DO NOT reset on skip — you wanted exact frame)
+  // Ensure intro starts at 0 ONLY on load, not on skip
+  function restartIntroVideo(){
+    try{
+      introVideo.pause();
+      introVideo.currentTime = 0;
+      introVideo.muted = true;
+    }catch(e){}
+  }
   introVideo.addEventListener("loadedmetadata", () => {
     try{ introVideo.currentTime = 0; }catch(e){}
   });
@@ -1461,6 +1247,7 @@
     current = i;
     music.src = tracks[current];
   }
+
   function nextTrack(){
     current = (current + 1) % tracks.length;
     setTrack(current);
@@ -1489,6 +1276,7 @@
   }
 
   window.addEventListener("load", () => {
+    restartIntroVideo();
     introVideo.play().catch(()=>{});
     ensureGifCursorInRightPlace();
   });
@@ -1527,6 +1315,7 @@
     }
 
     userWantsMusic = !userWantsMusic;
+
     if(!userWantsMusic){
       music.pause();
       setMusicIcon(false);
@@ -1556,51 +1345,50 @@
       if(!musicUnlocked) tapOverlay.classList.add("show");
     }
   }, {passive:true});
+
   volume.addEventListener("input", () => {
     music.volume = Number(volume.value);
   });
 
   // =========================
-  // INTRO END / SKIP (✅ fixed: keeps exact frame, no jumping to start)
+  // INTRO END / SKIP ✅ FREEZE FRAME + FADE OUT
   // =========================
   let introHiding = false;
+
   function hideIntro(){
     if(introHiding) return;
     introHiding = true;
 
+    // ✅ Freeze on exact frame (no jump to beginning)
+    try { introVideo.pause(); } catch(e){}
+
     introOverlay.classList.add("outro");
 
-    // after the Persona slash, start fading both overlays together
     setTimeout(()=>{
       introOverlay.classList.add("hide");
 
+      // fade tap overlay alongside intro
       tapOverlay.classList.add("hide");
       tapOverlay.classList.remove("show");
 
-      // after fade completes, remove
       setTimeout(()=>{
         introOverlay.style.display="none";
         if(tapOverlay && tapOverlay.parentNode) tapOverlay.remove();
-        document.body.style.overflow = "";
       }, 560);
-
     }, 820);
+
+    document.body.style.overflow = "";
   }
 
-  introVideo.addEventListener("ended", () => {
-    try{ introVideo.pause(); }catch(e){}
-    hideIntro();
-  });
+  introVideo.addEventListener("ended", hideIntro);
 
   skipIntroBtn.addEventListener("click", async () => {
-    await unlockAudioFromGesture();
-    // ✅ freeze on the exact current frame before fading out
-    try{ introVideo.pause(); }catch(e){}
-    hideIntro();
+    await unlockAudioFromGesture(); // optional but fine
+    hideIntro(); // ✅ does NOT restart video
   });
 
   // =========================
-  // VIDEO PLAYER CONTROLS + COVER + UI AUTOHIDE
+  // PORTFOLIO VIDEO PLAYER CONTROLS
   // =========================
   function fmtTime(s){
     if(!isFinite(s)) return "0:00";
@@ -1608,9 +1396,11 @@
     const sec = Math.floor(s%60).toString().padStart(2,"0");
     return `${m}:${sec}`;
   }
+
   function isTouchDevice(){
     return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
   }
+
   function showHint(player, text){
     const hint = player.querySelector(".p5-hint");
     if(!hint) return;
@@ -1655,8 +1445,6 @@
     const mid = player.querySelector(".p5-mid");
     const right = player.querySelector(".p5-right");
 
-    const cover = player.querySelector(".p5-cover");
-
     video.volume = 0.8;
     video.muted = false;
 
@@ -1665,7 +1453,6 @@
       hoveredPlayer = player;
       setActive(player);
       if(CAN_HOVER) setCursor("precision");
-      showUI();
     });
     player.addEventListener("mouseleave", () => {
       if(hoveredPlayer === player){
@@ -1688,10 +1475,7 @@
 
     function setPlayUI(){
       const playing = !video.paused && !video.ended;
-      bigPlay.style.opacity = playing ? "0" : "1";
-      bigPlay.style.pointerEvents = playing ? "none" : "auto";
-      bigPlay.style.transform = playing ? "scale(0.98)" : "scale(1)";
-
+      bigPlay.style.display = playing ? "none" : "grid";
       playBtn.innerHTML = playing
         ? '<img src="pause.png" class="p5-icon" alt="Pause">'
         : '<img src="start.png" class="p5-icon" alt="Play">';
@@ -1722,38 +1506,10 @@
       setTimeout(ensureGifCursorInRightPlace, 50);
     }
 
-    // ✅ Persona slash helper
-    function doSlash(){
-      player.classList.add("slash");
-      clearTimeout(player._slashT);
-      player._slashT = setTimeout(()=> player.classList.remove("slash"), 560);
-    }
-
-    // ✅ cover click plays
-    async function startFromCover(){
-      setActive(player);
-      await ensureUnlocked();
-      doSlash();
-      cover?.classList.add("hide");
-      try{ await video.play(); }catch(e){}
-    }
-    cover?.addEventListener("click", startFromCover);
-    cover?.addEventListener("touchend", (e)=>{ e.preventDefault(); startFromCover(); }, {passive:false});
-
     player.addEventListener("pointerdown", ()=> setActive(player));
 
-    bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); doSlash(); cover?.classList.add("hide"); video.play(); });
-    playBtn.addEventListener("click", async ()=> {
-      setActive(player);
-      await ensureUnlocked();
-      if(video.paused){
-        doSlash();
-        cover?.classList.add("hide");
-        video.play();
-      }else{
-        video.pause();
-      }
-    });
+    bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });
+    playBtn.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.paused ? video.play() : video.pause(); });
 
     video.addEventListener("timeupdate", ()=>{
       cur.textContent = fmtTime(video.currentTime);
@@ -1772,23 +1528,20 @@
       setActive(player);
       video.currentTime = Math.max(0, video.currentTime - 10);
       showHint(player, "⏪ -10s");
-      showUI();
     });
 
     fwdBtn?.addEventListener("click", ()=>{
       setActive(player);
       video.currentTime = Math.min(video.duration || Infinity, video.currentTime + 10);
       showHint(player, "⏩ +10s");
-      showUI();
     });
 
-    volUp?.addEventListener("click", ()=> { bumpVolume(0.1); showUI(); });
-    volDown?.addEventListener("click", ()=> { bumpVolume(-0.1); showUI(); });
+    volUp?.addEventListener("click", ()=> bumpVolume(0.1));
+    volDown?.addEventListener("click", ()=> bumpVolume(-0.1));
 
     muteBtn.addEventListener("click", ()=>{
       video.muted = !video.muted;
       setMuteIcon();
-      showUI();
     });
 
     fullBtn.addEventListener("click", togglePlayerFullscreen);
@@ -1801,29 +1554,13 @@
     player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
-    // ✅ auto-hide UI while playing (mouse idle)
-    let uiTimer = null;
-    function showUI(){
-      player.classList.remove("ui-hidden");
-      clearTimeout(uiTimer);
-      if(!video.paused && !video.ended){
-        uiTimer = setTimeout(()=> player.classList.add("ui-hidden"), 1400);
-      }
-    }
-    player.addEventListener("mousemove", showUI, {passive:true});
-    player.addEventListener("pointermove", showUI, {passive:true});
-    player.addEventListener("touchstart", showUI, {passive:true});
-
-    // pause bg music when video starts, resume when paused/ended
     video.addEventListener("play", ()=>{
       setActive(player);
       if(musicUnlocked){
         music.pause();
         setMusicIcon(false);
       }
-      cover?.classList.add("hide");
       setPlayUI();
-      showUI();
       if(CAN_HOVER) setCursor("precision");
     });
 
@@ -1832,10 +1569,6 @@
         music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
       }
       setPlayUI();
-      player.classList.remove("ui-hidden");
-      if(video.currentTime <= 0.08 || video.ended){
-        cover?.classList.remove("hide");
-      }
       if(CAN_HOVER) setCursor("precision");
     });
 
@@ -1844,12 +1577,9 @@
         music.play().then(()=> setMusicIcon(true)).catch(()=> setMusicIcon(false));
       }
       setPlayUI();
-      player.classList.remove("ui-hidden");
-      cover?.classList.remove("hide");
       if(CAN_HOVER) setCursor("precision");
     });
 
-    // Touch gestures
     if(gestures){
       if(!isTouchDevice()){
         gestures.style.display = "none";
@@ -1857,16 +1587,9 @@
         mid?.addEventListener("click", async ()=>{
           setActive(player);
           await ensureUnlocked();
-          if(video.paused){
-            doSlash();
-            cover?.classList.add("hide");
-            video.play();
-            showHint(player, "Play");
-          }else{
-            video.pause();
-            showHint(player, "Paused");
-          }
-          showUI();
+          if(video.paused) video.play();
+          else video.pause();
+          showHint(player, video.paused ? "Paused" : "Play");
         });
 
         let lastTapL = 0;
@@ -1881,7 +1604,6 @@
             showHint(player, "⏪ -10s");
           }
           lastTapL = now;
-          showUI();
         });
 
         right?.addEventListener("click", ()=>{
@@ -1892,7 +1614,6 @@
             showHint(player, "⏩ +10s");
           }
           lastTapR = now;
-          showUI();
         });
 
         let pressTimer = null;
@@ -1900,7 +1621,6 @@
           pressTimer = setTimeout(()=>{
             togglePlayerFullscreen();
             showHint(player, "Fullscreen");
-            showUI();
           }, 520);
         }, {passive:true});
 
@@ -1909,10 +1629,8 @@
       }
     }
 
-    // init UI
     setMuteIcon();
     setPlayUI();
-    player.classList.remove("ui-hidden");
   });
 
   document.addEventListener("fullscreenchange", ()=>{
@@ -1929,8 +1647,8 @@
     if(first) setActive(first);
   }
 
-  // ✅ Keyboard controls:
-  // - Space: video only when hovered, otherwise bg music
+  // Keyboard controls:
+  // Space: video only when hovered, otherwise bg music
   document.addEventListener("keydown", async (e) => {
     const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
     if(tag === "input" || tag === "textarea") return;
@@ -1938,15 +1656,9 @@
     if(e.code === "Space"){
       if(isPointerInsidePlayer && hoveredPlayer){
         const v = hoveredPlayer.querySelector(".p5-video");
-        const cover = hoveredPlayer.querySelector(".p5-cover");
         if(v){
           e.preventDefault();
-          if(v.paused){
-            hoveredPlayer.classList.add("slash");
-            setTimeout(()=> hoveredPlayer.classList.remove("slash"), 560);
-            cover?.classList.add("hide");
-            v.play();
-          }else v.pause();
+          v.paused ? v.play() : v.pause();
         }
         return;
       }
