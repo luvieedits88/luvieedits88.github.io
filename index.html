@@ -504,97 +504,115 @@
   footer{ padding:50px 20px; font-size:14px; background:rgba(0,0,0,0.92); opacity:0.9; }
 
   /* =========================
-     ✅ NEW MUSIC PLAYER (NO PLAY/PAUSE, NO VOLUME SLIDER)
-     "comes with you" while you scroll
+     ✅ BIG P5 HERO MUSIC PLAYER
+     - 3 tracks + covers
+     - shuffle + loop
+     - animated white progress fill
+     - dark red volume button + bright knob
+     - auto mute icon change
+     - fades in on load
+     - fades out synced with intro
+     - respects unlock system
      ========================= */
-  .music-dock{
-    position:fixed;
-    left:50%;
-    bottom:18px;
-    transform:translateX(-50%);
-    z-index:9999;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    width:min(560px, calc(100% - 24px));
-    padding:12px 14px;
-
-    border-radius:18px;
-    background:rgba(0,0,0,0.68);
-    border:1px solid rgba(255,0,60,0.28);
-    box-shadow: 0 0 28px rgba(255,0,60,0.18);
-
-    backdrop-filter: blur(8px);
+  .p5-music-hero{
+    margin-top:34px;
+    width:min(980px, calc(100% - 28px));
+    z-index:3;
 
     opacity:0;
+    transform: translateY(10px);
     pointer-events:none;
-    transform-origin:center;
-    transition: opacity .25s ease, transform .25s ease;
+    transition: opacity .55s ease, transform .55s ease;
   }
-  .music-dock.show{
+  .p5-music-hero.show{
     opacity:1;
+    transform: translateY(0);
     pointer-events:auto;
-    transform:translateX(-50%) translateY(0);
+  }
+  .p5-music-hero.hide{
+    opacity:0;
+    transform: translateY(10px);
+    pointer-events:none;
   }
 
-  .music-chip{
-    flex:1;
+  .p5-music-frame{
+    display:flex;
+    gap:18px;
+    align-items:stretch;
+
+    padding:16px;
+    border-radius:26px;
+
+    background:
+      radial-gradient(circle at 18% 35%, rgba(255,0,60,0.18), rgba(0,0,0,0) 52%),
+      radial-gradient(circle at 72% 60%, rgba(255,255,255,0.06), rgba(0,0,0,0) 55%),
+      linear-gradient(180deg, rgba(12,12,16,0.86), rgba(0,0,0,0.72));
+
+    border:1px solid rgba(255,255,255,0.10);
+    box-shadow:
+      0 30px 90px rgba(0,0,0,0.65),
+      0 0 45px rgba(255,0,60,0.12);
+    backdrop-filter: blur(8px);
+  }
+
+  .p5-music-left{ display:flex; align-items:center; justify-content:center; }
+  .p5-cover-wrap{
+    position:relative;
+    width:122px; height:122px;
+    border-radius:22px;
+    overflow:hidden;
+    border:2px solid rgba(255,0,60,0.65);
+    box-shadow: 0 0 26px rgba(255,0,60,0.30);
+  }
+  .p5-cover{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    transform: scale(1.02);
+  }
+  .p5-cover-glow{
+    position:absolute; inset:-40%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,0,60,0.55), rgba(0,0,0,0) 55%);
+    mix-blend-mode:screen;
+    opacity:0.35;
+    pointer-events:none;
+  }
+
+  .p5-music-right{ flex:1; min-width:0; display:flex; flex-direction:column; gap:10px; }
+
+  .p5-music-top{
     display:flex;
     align-items:center;
-    gap:10px;
-    text-align:left;
-    min-width:0;
+    justify-content:space-between;
+    gap:14px;
   }
-
-  .eq{
-    width:18px;
-    height:18px;
-    display:grid;
-    grid-auto-flow:column;
-    gap:2px;
-    align-items:end;
-    filter: drop-shadow(0 0 12px rgba(255,0,60,0.18));
-  }
-  .eq span{
-    width:3px;
-    border-radius:3px;
-    background: var(--p5-red);
-    height: 6px;
-    animation:eq 850ms ease-in-out infinite;
-    opacity:0.9;
-  }
-  .eq span:nth-child(2){ animation-delay:120ms; }
-  .eq span:nth-child(3){ animation-delay:240ms; }
-  .eq span:nth-child(4){ animation-delay:360ms; }
-  @keyframes eq{
-    0%,100%{ height:5px; opacity:.65; }
-    50%{ height:16px; opacity:1; }
-  }
-  .eq.paused span{ animation-play-state: paused; opacity:.35; }
-
-  .nowplaying{
-    min-width:0;
-  }
-  .nowplaying .top{
+  .p5-track-meta{ text-align:left; min-width:0; }
+  .p5-track-kicker{
     font-weight:900;
-    letter-spacing:.3px;
-    font-size:13px;
+    letter-spacing:1px;
     text-transform:uppercase;
-    opacity:0.9;
-  }
-  .nowplaying .track{
-    font-size:13px;
+    font-size:12px;
     opacity:0.85;
+  }
+  .p5-track-title{
+    margin-top:4px;
+    font-weight:900;
+    font-size:16px;
+    letter-spacing:.3px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
     max-width:100%;
-    margin-top:2px;
   }
 
-  .mute-btn{
+  .p5-top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex:0 0 auto;
+  }
+
+  .p5-mbtn{
     background:#0b0b0b;
     border:1px solid rgba(255,255,255,0.12);
     color:#fff;
@@ -602,14 +620,135 @@
     padding:10px 12px;
     cursor:pointer;
     font-weight:900;
-    transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease;
+    user-select:none;
   }
-  .mute-btn:hover{
-    border-color: rgba(255,0,60,0.55);
-    box-shadow:0 0 22px rgba(255,0,60,0.25);
+  .p5-mbtn:hover{
+    border-color: rgba(255,0,60,0.60);
+    box-shadow:0 0 24px rgba(255,0,60,0.22);
     transform: translateY(-1px);
   }
-  .mute-btn:active{ transform: translateY(0px) scale(0.98); }
+  .p5-mbtn:active{ transform: translateY(0) scale(0.98); }
+  .p5-mbtn.active{
+    border-color: rgba(255,0,60,0.85);
+    box-shadow:0 0 30px rgba(255,0,60,0.30);
+  }
+
+  .p5-vol-box{ position:relative; }
+  .p5-vol-btn{
+    background: rgba(140,0,25,0.55);
+    border-color: rgba(255,0,60,0.50);
+  }
+  .p5-vol-btn:hover{
+    border-color: rgba(255,0,60,0.95);
+    box-shadow:0 0 30px rgba(255,0,60,0.35);
+  }
+
+  .p5-vol-popup{
+    position:absolute;
+    right:0;
+    top: calc(100% + 10px);
+    width: 170px;
+    padding:12px 12px;
+    border-radius:16px;
+
+    background: rgba(0,0,0,0.78);
+    border:1px solid rgba(255,0,60,0.30);
+    box-shadow: 0 0 28px rgba(255,0,60,0.18);
+    backdrop-filter: blur(8px);
+
+    opacity:0;
+    transform: translateY(-6px);
+    pointer-events:none;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .p5-vol-popup.show{
+    opacity:1;
+    transform: translateY(0);
+    pointer-events:auto;
+  }
+
+  .p5-vol-slider{
+    width:100%;
+    height:8px;
+    -webkit-appearance:none;
+    appearance:none;
+    border-radius:999px;
+    outline:none;
+    background: rgba(255,0,60,0.25);
+  }
+  .p5-vol-slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:18px;
+    height:18px;
+    border-radius:999px;
+    background:#fff;
+    box-shadow: 0 0 22px rgba(255,255,255,0.35), 0 0 28px rgba(255,0,60,0.25);
+    cursor:pointer;
+  }
+
+  .p5-music-mid{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-top:2px;
+  }
+  .p5-skip{ padding:10px 14px; }
+
+  .p5-playhero{
+    width:58px;
+    height:58px;
+    border-radius:18px;
+    border:2px solid rgba(255,255,255,0.20);
+    background: rgba(0,0,0,0.50);
+    box-shadow: 0 0 40px rgba(255,0,60,0.26);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .p5-playhero:hover{
+    transform: scale(1.04);
+    border-color: rgba(255,0,60,0.65);
+    box-shadow: 0 0 54px rgba(255,0,60,0.34);
+  }
+  .p5-playhero:active{ transform: scale(0.99); }
+  .p5-playhero img{ width:26px; height:26px; display:block; }
+
+  .p5-music-bottom{ display:flex; flex-direction:column; gap:8px; }
+  .p5-time-row{
+    display:flex;
+    justify-content:space-between;
+    opacity:0.9;
+    font-size:12px;
+    font-weight:800;
+  }
+
+  .p5-seek{
+    width:100%;
+    height:8px;
+    -webkit-appearance:none;
+    appearance:none;
+    border-radius:999px;
+    outline:none;
+    background: rgba(255,0,60,0.22);
+    transition: background .12s linear;
+  }
+  .p5-seek::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:18px;
+    height:18px;
+    border-radius:999px;
+    background: var(--p5-red);
+    box-shadow: 0 0 22px rgba(255,0,60,0.55);
+    cursor:pointer;
+  }
+
+  /* ✅ remove the old dock entirely */
+  .music-dock{ display:none !important; }
 
   @media (max-width:768px){
     .hero{ min-height:92svh; min-height:92dvh; }
@@ -624,6 +763,11 @@
     .p5-progress{ flex: 1 1 100%; height:8px; }
     .p5-progress::-webkit-slider-thumb{ width:18px; height:18px; }
     .p5-time{ min-width:auto; }
+
+    .p5-music-frame{ padding:14px; border-radius:22px; }
+    .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
+    .p5-track-title{ font-size:14px; }
+    .p5-playhero{ width:54px; height:54px; border-radius:16px; }
   }
 </style>
 </head>
@@ -657,6 +801,58 @@
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
   <a href="#portfolio" class="button" data-cursor="link">Watch My Work</a>
   <a href="#contact" class="button" style="margin-top:16px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.16);box-shadow:0 0 24px rgba(255,0,60,0.18);" data-cursor="link">Contact Me</a>
+
+  <!-- ✅ BIG P5 HERO MUSIC PLAYER -->
+  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">
+    <div class="p5-music-frame">
+      <div class="p5-music-left">
+        <div class="p5-cover-wrap">
+          <img id="p5Cover" class="p5-cover" src="cover1.jpg" alt="Cover">
+          <div class="p5-cover-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="p5-music-right">
+        <div class="p5-music-top">
+          <div class="p5-track-meta">
+            <div class="p5-track-kicker">Now Playing</div>
+            <div id="p5TrackTitle" class="p5-track-title">—</div>
+          </div>
+
+          <div class="p5-top-actions">
+            <button id="p5Shuffle" class="p5-mbtn" type="button" data-cursor="link" aria-label="Shuffle">🔀</button>
+            <button id="p5Loop" class="p5-mbtn" type="button" data-cursor="link" aria-label="Loop">🔁</button>
+
+            <div class="p5-vol-box">
+              <button id="p5Mute" class="p5-mbtn p5-vol-btn" type="button" data-cursor="link" aria-label="Mute/unmute">🔊</button>
+              <div id="p5VolPopup" class="p5-vol-popup" aria-hidden="true">
+                <input id="p5Volume" class="p5-vol-slider" type="range" min="0" max="1" step="0.01" value="0.5" data-cursor="h-resize" aria-label="Volume">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p5-music-mid">
+          <button id="p5Prev" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Previous">⏮</button>
+
+          <button id="p5Play" class="p5-playhero" type="button" data-cursor="link" aria-label="Play/Pause">
+            <img id="p5PlayIcon" src="start.png" alt="Play">
+          </button>
+
+          <button id="p5Next" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Next">⏭</button>
+        </div>
+
+        <div class="p5-music-bottom">
+          <div class="p5-time-row">
+            <span id="p5Cur" class="p5-time">0:00</span>
+            <span id="p5Dur" class="p5-time">0:00</span>
+          </div>
+
+          <input id="p5Seek" class="p5-seek" type="range" min="0" max="100" value="0" step="0.1" data-cursor="h-resize" aria-label="Seek">
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="portfolio" class="portfolio">
@@ -830,20 +1026,6 @@
     </div>
   </div>
 </section>
-
-<!-- ✅ NEW MUSIC DOCK (STICKY WHILE YOU SCROLL) -->
-<div id="musicDock" class="music-dock" data-cursor="normal" aria-live="polite">
-  <div class="music-chip">
-    <div id="eq" class="eq paused" aria-hidden="true">
-      <span></span><span></span><span></span><span></span>
-    </div>
-    <div class="nowplaying">
-      <div class="top">Now Playing</div>
-      <div id="trackLabel" class="track">—</div>
-    </div>
-  </div>
-  <button id="muteBtn" class="mute-btn" type="button" data-cursor="link" aria-label="Mute/unmute music">🔊</button>
-</div>
 
 <audio id="bgMusic" preload="auto"></audio>
 
@@ -1043,56 +1225,125 @@
   });
 
   // =========================
-  // ✅ NEW MUSIC SYSTEM (NO PLAY/PAUSE BUTTON, NO VOLUME SLIDER)
-  // Music follows you via the dock (sticky UI)
+  // ✅ P5 HERO MUSIC PLAYER LOGIC
   // =========================
-  const tracks = ["music1.mp3", "music2.mp3", "music3.mp3"];
   const music = document.getElementById("bgMusic");
 
-  const musicDock = document.getElementById("musicDock");
-  const trackLabel = document.getElementById("trackLabel");
-  const muteBtn = document.getElementById("muteBtn");
-  const eq = document.getElementById("eq");
+  const TRACKS = [
+    { src: "music1.mp3", title: "Track 1", cover: "cover1.jpg" },
+    { src: "music2.mp3", title: "Track 2", cover: "cover2.jpg" },
+    { src: "music3.mp3", title: "Track 3", cover: "cover3.jpg" },
+  ];
 
-  let current = 0;
+  const heroPlayer = document.getElementById("p5MusicHero");
+  const coverImg   = document.getElementById("p5Cover");
+  const titleEl    = document.getElementById("p5TrackTitle");
+
+  const playBtnH   = document.getElementById("p5Play");
+  const playIcon   = document.getElementById("p5PlayIcon");
+  const prevBtn    = document.getElementById("p5Prev");
+  const nextBtn    = document.getElementById("p5Next");
+
+  const shuffleBtn = document.getElementById("p5Shuffle");
+  const loopBtn    = document.getElementById("p5Loop");
+
+  const muteBtnH   = document.getElementById("p5Mute");
+  const volBox     = document.querySelector(".p5-vol-box");
+  const volPopup   = document.getElementById("p5VolPopup");
+  const volSlider  = document.getElementById("p5Volume");
+
+  const seek       = document.getElementById("p5Seek");
+  const curEl      = document.getElementById("p5Cur");
+  const durEl      = document.getElementById("p5Dur");
+
+  let currentIndex = 0;
+  let shuffleOn = false;
+  let loopMode = "off"; // "off" | "all" | "one"
+
   let musicUnlocked = false;
-  let userWantsMusic = false; // becomes true only after tap-to-enable
+  let userWantsMusic = false;
 
-  function niceTrackName(src){
-    if(!src) return "—";
-    const file = src.split("/").pop();
-    return file.replace(/\.(mp3|wav|ogg)$/i, "");
+  music.preload = "auto";
+  music.volume = Number(volSlider.value);
+  music.muted = false;
+
+  function fmtTime(s){
+    if(!isFinite(s)) return "0:00";
+    const m = Math.floor(s/60);
+    const sec = Math.floor(s%60).toString().padStart(2,"0");
+    return `${m}:${sec}`;
   }
 
-  function updateDock(){
-    trackLabel.textContent = niceTrackName(music.currentSrc || music.src);
-    muteBtn.textContent = music.muted ? "🔇" : "🔊";
-    if(!music.paused && !music.muted) eq.classList.remove("paused");
-    else eq.classList.add("paused");
+  function setPlayIcon(playing){
+    playIcon.src = playing ? "pause.png" : "start.png";
+    playIcon.alt = playing ? "Pause" : "Play";
   }
 
-  function showDock(){
-    musicDock.classList.add("show");
-    updateDock();
+  function setMuteIcon(){
+    const muted = music.muted || music.volume === 0;
+    muteBtnH.textContent = muted ? "🔇" : "🔊";
+  }
+
+  function setShuffleUI(){
+    shuffleBtn.classList.toggle("active", shuffleOn);
+  }
+
+  function setLoopUI(){
+    loopBtn.classList.toggle("active", loopMode !== "off");
+    loopBtn.textContent = loopMode === "one" ? "🔂" : "🔁";
+    loopBtn.setAttribute(
+      "aria-label",
+      loopMode === "off" ? "Loop off" : (loopMode === "all" ? "Loop all" : "Loop one")
+    );
+  }
+
+  function applySeekFill(percent){
+    const p = Math.max(0, Math.min(100, percent));
+    seek.style.background =
+      `linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.95) ${p}%, rgba(255,0,60,0.22) ${p}%, rgba(255,0,60,0.22) 100%)`;
+  }
+
+  function showHero(){
+    heroPlayer.classList.add("show");
+    heroPlayer.classList.remove("hide");
+  }
+
+  function hideHero(){
+    heroPlayer.classList.add("hide");
+    heroPlayer.classList.remove("show");
   }
 
   function setTrack(i){
-    current = i;
-    music.src = tracks[current];
-    updateDock();
+    currentIndex = (i + TRACKS.length) % TRACKS.length;
+    const t = TRACKS[currentIndex];
+
+    music.src = t.src;
+    titleEl.textContent = t.title || t.src;
+    coverImg.src = t.cover;
+
+    seek.value = 0;
+    applySeekFill(0);
+    curEl.textContent = "0:00";
+    durEl.textContent = "0:00";
   }
 
-  function nextTrack(){
-    current = (current + 1) % tracks.length;
-    setTrack(current);
-    if(userWantsMusic && musicUnlocked){
-      music.play().then(updateDock).catch(updateDock);
+  function pickNextIndex(){
+    if(shuffleOn && TRACKS.length > 1){
+      let n = currentIndex;
+      while(n === currentIndex) n = Math.floor(Math.random() * TRACKS.length);
+      return n;
     }
+    return currentIndex + 1;
   }
-  music.addEventListener("ended", nextTrack);
-  music.addEventListener("play", updateDock);
-  music.addEventListener("pause", updateDock);
-  music.addEventListener("volumechange", updateDock);
+
+  function pickPrevIndex(){
+    if(shuffleOn && TRACKS.length > 1){
+      let n = currentIndex;
+      while(n === currentIndex) n = Math.floor(Math.random() * TRACKS.length);
+      return n;
+    }
+    return currentIndex - 1;
+  }
 
   async function unlockAudioFromGesture(){
     if(musicUnlocked) return true;
@@ -1102,53 +1353,184 @@
       music.pause();
       music.currentTime = 0;
       musicUnlocked = true;
-      tapOverlay.classList.remove("show");
-      showDock();
-      updateDock();
+      setMuteIcon();
       return true;
     }catch(e){
-      tapOverlay.classList.add("show");
       return false;
     }
   }
 
+  async function safePlay(){
+    if(!musicUnlocked){
+      const ok = await unlockAudioFromGesture();
+      if(!ok) return false;
+    }
+    try{
+      await music.play();
+      setPlayIcon(true);
+      setMuteIcon();
+      return true;
+    }catch(e){
+      setPlayIcon(false);
+      return false;
+    }
+  }
+
+  function safePause(){
+    music.pause();
+    setPlayIcon(false);
+  }
+
+  // ✅ Hook tap button to unlock + start music
   async function enableSoundAndStartMusic(){
     const ok = await unlockAudioFromGesture();
     if(!ok) return;
 
     userWantsMusic = true;
-
     if(!music.src) setTrack(0);
 
-    try{
-      music.muted = false;
-      await music.play();
-      showDock();
-      updateDock();
+    music.muted = false;
+    const played = await safePlay();
+    if(played){
+      showHero();
       tapOverlay.classList.remove("show");
-    }catch(e){
-      tapOverlay.classList.add("show");
+      volPopup.classList.remove("show");
+      volPopup.setAttribute("aria-hidden","true");
     }
   }
 
-  // Mute/unmute only (no pause)
-  muteBtn.addEventListener("click", async ()=>{
+  tapBtn.addEventListener("click", enableSoundAndStartMusic);
+  tapBtn.addEventListener("touchend", (e)=>{
+    e.preventDefault();
+    enableSoundAndStartMusic();
+  }, {passive:false});
+
+  // Buttons
+  playBtnH.addEventListener("click", async ()=>{
     if(!musicUnlocked){
-      const ok = await unlockAudioFromGesture();
-      if(!ok) return;
+      tapOverlay.classList.add("show");
+      userWantsMusic = false;
+      setPlayIcon(false);
+      return;
     }
-    music.muted = !music.muted;
-    showDock();
-    updateDock();
+    userWantsMusic = true;
+
+    if(music.paused){
+      if(!music.src) setTrack(0);
+      await safePlay();
+    }else{
+      safePause();
+    }
   });
 
-  tapBtn.addEventListener("click", enableSoundAndStartMusic);
-  tapBtn.addEventListener("touchend", (e)=>{ e.preventDefault(); enableSoundAndStartMusic(); }, {passive:false});
+  prevBtn.addEventListener("click", async ()=>{
+    if(!musicUnlocked){
+      tapOverlay.classList.add("show");
+      return;
+    }
+    userWantsMusic = true;
+    setTrack(pickPrevIndex());
+    await safePlay();
+  });
 
-  window.addEventListener("load", () => {
-    restartIntroVideo();
-    introVideo.play().catch(()=>{});
-    ensureGifCursorInRightPlace();
+  nextBtn.addEventListener("click", async ()=>{
+    if(!musicUnlocked){
+      tapOverlay.classList.add("show");
+      return;
+    }
+    userWantsMusic = true;
+    setTrack(pickNextIndex());
+    await safePlay();
+  });
+
+  shuffleBtn.addEventListener("click", ()=>{
+    shuffleOn = !shuffleOn;
+    setShuffleUI();
+  });
+
+  loopBtn.addEventListener("click", ()=>{
+    loopMode = (loopMode === "off") ? "all" : (loopMode === "all" ? "one" : "off");
+    setLoopUI();
+  });
+
+  muteBtnH.addEventListener("click", async ()=>{
+    if(!musicUnlocked){
+      tapOverlay.classList.add("show");
+      return;
+    }
+    music.muted = !music.muted;
+    setMuteIcon();
+  });
+
+  // Volume popup toggle (clicking button toggles popup)
+  muteBtnH.addEventListener("dblclick", (e)=>{ e.preventDefault(); });
+  volBox.addEventListener("click", (e)=>{
+    if(e.target === volSlider) return;
+    const open = volPopup.classList.toggle("show");
+    volPopup.setAttribute("aria-hidden", open ? "false" : "true");
+  });
+
+  document.addEventListener("pointerdown", (e)=>{
+    if(!volBox.contains(e.target)){
+      volPopup.classList.remove("show");
+      volPopup.setAttribute("aria-hidden","true");
+    }
+  });
+
+  volSlider.addEventListener("input", ()=>{
+    music.volume = Number(volSlider.value);
+    if(music.volume === 0) music.muted = true;
+    else music.muted = false;
+    setMuteIcon();
+  });
+
+  // Seek/progress
+  seek.addEventListener("input", ()=>{
+    if(!music.duration) return;
+    const pct = Number(seek.value);
+    applySeekFill(pct);
+    music.currentTime = (pct/100) * music.duration;
+  });
+
+  music.addEventListener("loadedmetadata", ()=>{
+    durEl.textContent = fmtTime(music.duration);
+  });
+
+  music.addEventListener("timeupdate", ()=>{
+    curEl.textContent = fmtTime(music.currentTime);
+    if(music.duration){
+      const pct = (music.currentTime / music.duration) * 100;
+      seek.value = pct;
+      applySeekFill(pct);
+    }
+  });
+
+  // Ended logic (shuffle + loop)
+  music.addEventListener("ended", async ()=>{
+    if(loopMode === "one"){
+      music.currentTime = 0;
+      if(userWantsMusic) await safePlay();
+      return;
+    }
+    if(loopMode === "all"){
+      setTrack(pickNextIndex());
+      if(userWantsMusic) await safePlay();
+      return;
+    }
+    safePause();
+  });
+
+  // Default UI
+  setTrack(0);
+  setPlayIcon(false);
+  setMuteIcon();
+  setShuffleUI();
+  setLoopUI();
+  applySeekFill(0);
+
+  // ✅ Fade in when site loads (still behind intro)
+  window.addEventListener("load", ()=>{
+    showHero();
   });
 
   // =========================
@@ -1158,6 +1540,9 @@
   function hideIntro(){
     if(introHiding) return;
     introHiding = true;
+
+    // ✅ fade OUT hero player synced with intro outro start
+    hideHero();
 
     try{ introVideo.pause(); }catch(e){}
     introOverlay.classList.add("outro");
@@ -1178,15 +1563,15 @@
   introVideo.addEventListener("ended", hideIntro);
   skipIntroBtn.addEventListener("click", async () => { await unlockAudioFromGesture(); hideIntro(); });
 
+  window.addEventListener("load", () => {
+    restartIntroVideo();
+    introVideo.play().catch(()=>{});
+    ensureGifCursorInRightPlace();
+  });
+
   // =========================
   // VIDEO PLAYER CONTROLS (same as before)
   // =========================
-  function fmtTime(s){
-    if(!isFinite(s)) return "0:00";
-    const m = Math.floor(s/60);
-    const sec = Math.floor(s%60).toString().padStart(2,"0");
-    return `${m}:${sec}`;
-  }
   function isTouchDevice(){ return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0); }
 
   function showHint(player, text){
@@ -1254,7 +1639,7 @@
       if(!musicUnlocked) await unlockAudioFromGesture();
     }
 
-    function setMuteIcon(){
+    function setMuteIconV(){
       const muted = video.muted || video.volume === 0;
       muteBtnV.textContent = muted ? "🔇" : "🔊";
     }
@@ -1272,7 +1657,7 @@
       setActive(player);
       video.muted = false;
       video.volume = clamp01((video.volume ?? 0.8) + delta);
-      setMuteIcon();
+      setMuteIconV();
       showHint(player, `Vol ${Math.round(video.volume * 100)}%`);
     }
 
@@ -1318,7 +1703,7 @@
 
     muteBtnV.addEventListener("click", ()=>{
       video.muted = !video.muted;
-      setMuteIcon();
+      setMuteIconV();
     });
 
     fullBtn.addEventListener("click", togglePlayerFullscreen);
@@ -1331,12 +1716,12 @@
     player._updateFsIcon = updateFsIcon;
     updateFsIcon();
 
-    // pause bg music when video plays, resume after pause/ended (only if user enabled music)
+    // ✅ pause bg music when video plays, resume after pause/ended (only if user enabled music)
     video.addEventListener("play", ()=>{
       setActive(player);
       if(musicUnlocked && userWantsMusic){
         music.pause();
-        updateDock();
+        setPlayIcon(false);
       }
       setPlayUI();
       if(CAN_HOVER) setCursor("precision");
@@ -1344,7 +1729,7 @@
 
     video.addEventListener("pause", ()=>{
       if(userWantsMusic && musicUnlocked){
-        music.play().then(updateDock).catch(updateDock);
+        safePlay();
       }
       setPlayUI();
       if(CAN_HOVER) setCursor("precision");
@@ -1352,7 +1737,7 @@
 
     video.addEventListener("ended", ()=>{
       if(userWantsMusic && musicUnlocked){
-        music.play().then(updateDock).catch(updateDock);
+        safePlay();
       }
       setPlayUI();
       if(CAN_HOVER) setCursor("precision");
@@ -1406,7 +1791,7 @@
       }
     }
 
-    setMuteIcon();
+    setMuteIconV();
     setPlayUI();
   });
 
@@ -1423,27 +1808,6 @@
     const first = document.querySelector(".p5-player");
     if(first) setActive(first);
   }
-
-  // Optional keyboard: press "m" to mute/unmute bg music (no pause)
-  document.addEventListener("keydown", async (e)=>{
-    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
-    if(tag === "input" || tag === "textarea") return;
-
-    if(e.key === "m" || e.key === "M"){
-      if(!musicUnlocked){
-        const ok = await unlockAudioFromGesture();
-        if(!ok) return;
-      }
-      music.muted = !music.muted;
-      userWantsMusic = true;
-      if(!music.src) setTrack(0);
-      if(music.muted){
-        updateDock();
-      }else{
-        music.play().then(updateDock).catch(updateDock);
-      }
-    }
-  });
 </script>
 
 </body>
