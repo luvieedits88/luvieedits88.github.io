@@ -762,61 +762,69 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
- /* ===== MOBILE HERO FIX (PROPER LAYOUT) ===== */
+/* ===== SMALL COMPACT HERO PLAYER (MOBILE ONLY) ===== */
 
 .p5-music-hero{
-  width:calc(100% - 16px) !important;
+  width:92% !important;
+  max-width:420px !important;
   left:50% !important;
   transform:translateX(-50%) !important;
 }
 
-/* Keep horizontal layout but allow wrapping */
-.p5-music-top{
-  flex-wrap:wrap !important;
+/* tighter frame */
+.p5-music-frame{
+  padding:10px 12px !important;
   gap:10px !important;
-  align-items:flex-start !important;
 }
 
-/* Title section must take full row */
-.p5-track-meta{
-  flex:1 1 100% !important;
-  min-width:0 !important;
+/* smaller cover */
+.p5-cover-wrap{
+  width:68px !important;
+  height:68px !important;
+  border-radius:16px !important;
 }
 
-/* Make title + artist readable */
+/* shrink title section */
 .p5-track-title{
-  font-size:14px !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
+  font-size:13px !important;
 }
 
 .p5-track-artist{
-  font-size:12px !important;
+  font-size:11px !important;
   opacity:0.8 !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
 }
 
-/* Actions go to next row */
-.p5-top-actions{
-  flex:1 1 100% !important;
-  justify-content:flex-start !important;
-  flex-wrap:wrap !important;
-  gap:8px !important;
+/* shrink NOW PLAYING */
+.p5-nowplaying{
+  font-size:11px !important;
+  letter-spacing:1px !important;
 }
 
-/* Volume slider stays contained */
+/* shrink buttons */
+.p5-mbtn{
+  padding:6px 8px !important;
+}
+
+.p5-ico{
+  width:14px !important;
+  height:14px !important;
+}
+
+/* shrink main play button */
+.p5-playhero{
+  width:42px !important;
+  height:42px !important;
+}
+
+/* smaller progress bar */
+.p5-progress{
+  height:6px !important;
+}
+
+/* smaller volume slider */
 .p5-vol-slider{
-  width:100px !important;
-  max-width:100px !important;
-}
-
-/* Slightly smaller cover */
-.p5-cover-wrap{
-  width:75px !important;
-  height:75px !important;
+  width:85px !important;
+  max-width:85px !important;
 }
   }
 </style>
