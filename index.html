@@ -763,70 +763,40 @@
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
 /* ===== SMALL COMPACT HERO PLAYER (MOBILE ONLY) ===== */
+/* keep it small WITHOUT clipping */
+  .p5-music-hero{
+    width:80% !important;
+    max-width:320px !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+  }
 
-.p5-music-hero{
-  width:80% !important;
-  max-width:320px !important;
-  left:50% !important;
-  transform:translateX(-50%) !important;
-  height:150px !important; /* exact height */
-  overflow:hidden !important;
-}
+  /* shrink everything inside instead of cutting height */
+  .p5-music-frame{
+    padding:6px 8px !important;
+    gap:6px !important;
+    overflow:visible !important; /* important: no clipping */
+  }
 
-/* tighter frame */
-.p5-music-frame{
-  padding:6px 8px !important;
-  gap:6px !important;
-}
+  /* ✅ make layout shorter naturally */
+  .p5-music-bottom{ gap:5px !important; }
+  .p5-time-row{ font-size:11px !important; }
 
-/* smaller cover */
-.p5-cover-wrap{
-  width:68px !important;
-  height:68px !important;
-  border-radius:68px !important;
-}
+  /* make cover smaller */
+  .p5-cover-wrap{
+    width:62px !important;
+    height:62px !important;
+    border-radius:18px !important;
+  }
 
-/* shrink title section */
-.p5-track-title{
-  font-size:13px !important;
-}
+  /* shrink text */
+  .p5-track-kicker{ font-size:11px !important; }
+  .p5-track-title{ font-size:13px !important; }
+  .p5-track-artist{ font-size:11px !important; opacity:0.8 !important; }
 
-.p5-track-artist{
-  font-size:11px !important;
-  opacity:0.8 !important;
-}
-
-/* shrink NOW PLAYING */
-.p5-nowplaying{
-  font-size:11px !important;
-  letter-spacing:1px !important;
-}
-
-/* shrink buttons */
-.p5-mbtn{
-  padding:6px 8px !important;
-}
-
-.p5-ico{
-  width:14px !important;
-  height:14px !important;
-}
-
-/* shrink main play button */
-.p5-playhero{
-  width:42px !important;
-  height:42px !important;
-}
-
-/* smaller progress bar */
-.p5-progress{
-  height:6px !important;
-}
-
-/* smaller volume slider */
-.p5-vol-slider{
-  width:85px !important;
-  max-width:85px !important;
+  /* shrink slider + controls a bit */
+  .p5-vol-slider{ width:85px !important; max-width:85px !important; }
+  .p5-seek{ height:7px !important; }
 }
   }
 </style>
