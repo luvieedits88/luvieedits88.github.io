@@ -762,62 +762,61 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
- /* ===== MOBILE HERO TOP SECTION COMPACT ===== */
+ /* ===== MOBILE HERO FIX (PROPER LAYOUT) ===== */
 
 .p5-music-hero{
+  width:calc(100% - 16px) !important;
   left:50% !important;
-  transform:translateX(-50%) scale(0.82) !important;
-  transform-origin:top center !important;
-}
-    
-/* reduce overall padding */
-.p5-music-frame{
-  padding:10px 12px !important;
-  gap:8px !important;
+  transform:translateX(-50%) !important;
 }
 
-/* make cover smaller */
-.p5-cover-wrap{
-  width:70px !important;
-  height:70px !important;
-}
-
-/* tighten top row */
+/* Keep horizontal layout but allow wrapping */
 .p5-music-top{
-  gap:8px !important;
-  align-items:center !important;
+  flex-wrap:wrap !important;
+  gap:10px !important;
+  align-items:flex-start !important;
 }
 
-/* make NOW PLAYING text smaller */
-.p5-nowplaying{
-  font-size:12px !important;
-  letter-spacing:1px !important;
+/* Title section must take full row */
+.p5-track-meta{
+  flex:1 1 100% !important;
+  min-width:0 !important;
 }
 
-/* shrink title + artist */
+/* Make title + artist readable */
 .p5-track-title{
-  font-size:13px !important;
+  font-size:14px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
 }
 
 .p5-track-artist{
-  font-size:11px !important;
+  font-size:12px !important;
   opacity:0.8 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
 }
 
-/* compress action buttons */
-.p5-mbtn{
-  padding:6px 8px !important;
+/* Actions go to next row */
+.p5-top-actions{
+  flex:1 1 100% !important;
+  justify-content:flex-start !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
 }
 
-.p5-ico{
-  width:15px !important;
-  height:15px !important;
-}
-
-/* shrink volume slider */
+/* Volume slider stays contained */
 .p5-vol-slider{
-  width:90px !important;
-  max-width:90px !important;
+  width:100px !important;
+  max-width:100px !important;
+}
+
+/* Slightly smaller cover */
+.p5-cover-wrap{
+  width:75px !important;
+  height:75px !important;
 }
   }
 </style>
