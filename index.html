@@ -504,34 +504,31 @@
   footer{ padding:50px 20px; font-size:14px; background:rgba(0,0,0,0.92); opacity:0.9; }
 
   /* =========================
-     ✅ BIG P5 HERO MUSIC PLAYER
-     - 3 tracks + covers
-     - shuffle + loop
-     - animated white progress fill
-     - dark red volume button + bright knob
-     - auto mute icon change
-     - fades in on load
-     - fades out synced with intro
-     - respects unlock system
+     ✅ BIG P5 HERO MUSIC PLAYER (TOP BAR)
+     - fixed at top
+     - ONLY shows when music is playing
      ========================= */
   .p5-music-hero{
-    margin-top:34px;
-    width:min(980px, calc(100% - 28px));
-    z-index:3;
+    position:fixed;
+    top:calc(12px + env(safe-area-inset-top));
+    left:50%;
+    transform:translateX(-50%) translateY(10px);
+
+    width:min(760px, calc(100% - 18px));
+    z-index:99998;
 
     opacity:0;
-    transform: translateY(10px);
     pointer-events:none;
     transition: opacity .55s ease, transform .55s ease;
   }
   .p5-music-hero.show{
     opacity:1;
-    transform: translateY(0);
+    transform:translateX(-50%) translateY(0);
     pointer-events:auto;
   }
   .p5-music-hero.hide{
     opacity:0;
-    transform: translateY(10px);
+    transform:translateX(-50%) translateY(10px);
     pointer-events:none;
   }
 
@@ -774,6 +771,58 @@
 
 <body oncontextmenu="return false;">
 
+<!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->
+<div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">
+  <div class="p5-music-frame">
+    <div class="p5-music-left">
+      <div class="p5-cover-wrap">
+        <img id="p5Cover" class="p5-cover" src="cover1.jpg" alt="Cover">
+        <div class="p5-cover-glow" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="p5-music-right">
+      <div class="p5-music-top">
+        <div class="p5-track-meta">
+          <div class="p5-track-kicker">Now Playing</div>
+          <div id="p5TrackTitle" class="p5-track-title">—</div>
+        </div>
+
+        <div class="p5-top-actions">
+          <button id="p5Shuffle" class="p5-mbtn" type="button" data-cursor="link" aria-label="Shuffle">🔀</button>
+          <button id="p5Loop" class="p5-mbtn" type="button" data-cursor="link" aria-label="Loop">🔁</button>
+
+          <div class="p5-vol-box">
+            <button id="p5Mute" class="p5-mbtn p5-vol-btn" type="button" data-cursor="link" aria-label="Mute/unmute">🔊</button>
+            <div id="p5VolPopup" class="p5-vol-popup" aria-hidden="true">
+              <input id="p5Volume" class="p5-vol-slider" type="range" min="0" max="1" step="0.01" value="0.5" data-cursor="h-resize" aria-label="Volume">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p5-music-mid">
+        <button id="p5Prev" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Previous">⏮</button>
+
+        <button id="p5Play" class="p5-playhero" type="button" data-cursor="link" aria-label="Play/Pause">
+          <img id="p5PlayIcon" src="start.png" alt="Play">
+        </button>
+
+        <button id="p5Next" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Next">⏭</button>
+      </div>
+
+      <div class="p5-music-bottom">
+        <div class="p5-time-row">
+          <span id="p5Cur" class="p5-time">0:00</span>
+          <span id="p5Dur" class="p5-time">0:00</span>
+        </div>
+
+        <input id="p5Seek" class="p5-seek" type="range" min="0" max="100" value="0" step="0.1" data-cursor="h-resize" aria-label="Seek">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- GIF CURSOR -->
 <div id="gifCursor" class="gif-cursor" aria-hidden="true">
   <img id="gifCursorImg" src="NORMAL.gif" alt="">
@@ -801,58 +850,6 @@
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>
   <a href="#portfolio" class="button" data-cursor="link">Watch My Work</a>
   <a href="#contact" class="button" style="margin-top:16px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.16);box-shadow:0 0 24px rgba(255,0,60,0.18);" data-cursor="link">Contact Me</a>
-
-  <!-- ✅ BIG P5 HERO MUSIC PLAYER -->
-  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">
-    <div class="p5-music-frame">
-      <div class="p5-music-left">
-        <div class="p5-cover-wrap">
-          <img id="p5Cover" class="p5-cover" src="cover1.jpg" alt="Cover">
-          <div class="p5-cover-glow" aria-hidden="true"></div>
-        </div>
-      </div>
-
-      <div class="p5-music-right">
-        <div class="p5-music-top">
-          <div class="p5-track-meta">
-            <div class="p5-track-kicker">Now Playing</div>
-            <div id="p5TrackTitle" class="p5-track-title">—</div>
-          </div>
-
-          <div class="p5-top-actions">
-            <button id="p5Shuffle" class="p5-mbtn" type="button" data-cursor="link" aria-label="Shuffle">🔀</button>
-            <button id="p5Loop" class="p5-mbtn" type="button" data-cursor="link" aria-label="Loop">🔁</button>
-
-            <div class="p5-vol-box">
-              <button id="p5Mute" class="p5-mbtn p5-vol-btn" type="button" data-cursor="link" aria-label="Mute/unmute">🔊</button>
-              <div id="p5VolPopup" class="p5-vol-popup" aria-hidden="true">
-                <input id="p5Volume" class="p5-vol-slider" type="range" min="0" max="1" step="0.01" value="0.5" data-cursor="h-resize" aria-label="Volume">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="p5-music-mid">
-          <button id="p5Prev" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Previous">⏮</button>
-
-          <button id="p5Play" class="p5-playhero" type="button" data-cursor="link" aria-label="Play/Pause">
-            <img id="p5PlayIcon" src="start.png" alt="Play">
-          </button>
-
-          <button id="p5Next" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Next">⏭</button>
-        </div>
-
-        <div class="p5-music-bottom">
-          <div class="p5-time-row">
-            <span id="p5Cur" class="p5-time">0:00</span>
-            <span id="p5Dur" class="p5-time">0:00</span>
-          </div>
-
-          <input id="p5Seek" class="p5-seek" type="range" min="0" max="100" value="0" step="0.1" data-cursor="h-resize" aria-label="Seek">
-        </div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <section id="portfolio" class="portfolio">
@@ -1369,9 +1366,11 @@
       await music.play();
       setPlayIcon(true);
       setMuteIcon();
+      showHero();                 // ✅ show ONLY when playing
       return true;
     }catch(e){
       setPlayIcon(false);
+      hideHero();
       return false;
     }
   }
@@ -1379,6 +1378,7 @@
   function safePause(){
     music.pause();
     setPlayIcon(false);
+    hideHero();                   // ✅ hide when paused
   }
 
   // ✅ Hook tap button to unlock + start music
@@ -1387,12 +1387,11 @@
     if(!ok) return;
 
     userWantsMusic = true;
-    if(!music.src) setTrack(0);
+    if(!music.src) setTrack(currentIndex);
 
     music.muted = false;
     const played = await safePlay();
     if(played){
-      showHero();
       tapOverlay.classList.remove("show");
       volPopup.classList.remove("show");
       volPopup.setAttribute("aria-hidden","true");
@@ -1411,12 +1410,13 @@
       tapOverlay.classList.add("show");
       userWantsMusic = false;
       setPlayIcon(false);
+      hideHero();
       return;
     }
     userWantsMusic = true;
 
     if(music.paused){
-      if(!music.src) setTrack(0);
+      if(!music.src) setTrack(currentIndex);
       await safePlay();
     }else{
       safePause();
@@ -1520,29 +1520,23 @@
     safePause();
   });
 
-  // Default UI
-  setTrack(0);
+  // ✅ Default UI
+  // ✅ random starting track every refresh (shuffle OFF)
+  setTrack(Math.floor(Math.random() * TRACKS.length));
   setPlayIcon(false);
   setMuteIcon();
   setShuffleUI();
   setLoopUI();
   applySeekFill(0);
-
-  // ✅ Fade in when site loads (still behind intro)
-  window.addEventListener("load", ()=>{
-    showHero();
-  });
+  hideHero(); // ✅ never show on load
 
   // =========================
-  // INTRO END / SKIP (freeze + fade)
+  // INTRO END / SKIP
   // =========================
   let introHiding = false;
   function hideIntro(){
     if(introHiding) return;
     introHiding = true;
-
-    // ✅ fade OUT hero player synced with intro outro start
-    hideHero();
 
     try{ introVideo.pause(); }catch(e){}
     introOverlay.classList.add("outro");
@@ -1559,6 +1553,9 @@
     }, 820);
 
     document.body.style.overflow = "";
+
+    // ✅ Fix: make sure play icon doesn't look "stuck"
+    setPlayIcon(false);
   }
   introVideo.addEventListener("ended", hideIntro);
   skipIntroBtn.addEventListener("click", async () => { await unlockAudioFromGesture(); hideIntro(); });
@@ -1720,8 +1717,7 @@
     video.addEventListener("play", ()=>{
       setActive(player);
       if(musicUnlocked && userWantsMusic){
-        music.pause();
-        setPlayIcon(false);
+        safePause(); // ✅ also hides top music bar while video is playing
       }
       setPlayUI();
       if(CAN_HOVER) setCursor("precision");
@@ -1729,7 +1725,7 @@
 
     video.addEventListener("pause", ()=>{
       if(userWantsMusic && musicUnlocked){
-        safePlay();
+        safePlay(); // ✅ shows bar again when bg music resumes
       }
       setPlayUI();
       if(CAN_HOVER) setCursor("precision");
@@ -1737,7 +1733,7 @@
 
     video.addEventListener("ended", ()=>{
       if(userWantsMusic && musicUnlocked){
-        safePlay();
+        safePlay(); // ✅ shows bar again when bg music resumes
       }
       setPlayUI();
       if(CAN_HOVER) setCursor("precision");
