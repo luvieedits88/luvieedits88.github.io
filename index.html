@@ -784,39 +784,42 @@
           <div class="p5-track-kicker">Now Playing</div>
           <div id="p5TrackTitle" class="p5-track-title">—</div>
           <div id="p5TrackArtist" class="p5-track-artist">—</div>
-          <div id="p5TrackArtist" style="font-size:13px;opacity:0.8;margin-top:4px;"></div>
         </div>
 
         <div class="p5-top-actions">
-          <button id="p5Shuffle" class="p5-mbtn">
-  <img src="shuffle-icon.png" class="p5-icon" alt="Shuffle">
-</button>
-          <button id="p5Loop" class="p5-mbtn">
-  <img src="loop-icon.png" class="p5-icon" alt="Loop">
-</button>
+          <button id="p5Shuffle" class="p5-mbtn" type="button" data-cursor="link" aria-label="Shuffle">
+            <img src="shuffle-icon.png" class="p5-ico" alt="">
+          </button>
+
+          <button id="p5Loop" class="p5-mbtn" type="button" data-cursor="link" aria-label="Loop">
+            <img src="loop-icon.png" class="p5-ico" alt="">
+          </button>
 
           <div class="p5-vol-box">
-  <button id="p5Mute" class="p5-mbtn p5-vol-btn" type="button" data-cursor="link" aria-label="Mute/unmute">
-    <img id="p5VolIcon" class="p5-ico" src="volume.png" alt="">
-  </button>
+            <button id="p5Mute" class="p5-mbtn p5-vol-btn" type="button" data-cursor="link" aria-label="Mute/unmute">
+              <img id="p5VolIcon" class="p5-ico" src="volume on.png" alt="">
+            </button>
 
-  <input id="p5Volume" class="p5-vol-slider" type="range"
-         min="0" max="1" step="0.01" value="0.5"
-         data-cursor="h-resize" aria-label="Volume">
-</div>
+            <input id="p5Volume" class="p5-vol-slider" type="range"
+                   min="0" max="1" step="0.01" value="0.5"
+                   data-cursor="h-resize" aria-label="Volume">
+          </div>
+        </div>
+      </div>
 
       <div class="p5-music-mid">
-        <button id="p5Prev" class="p5-mbtn p5-skip">
-  <img src="prev-icon.png" class="p5-icon" alt="Previous">
-</button>
+        <button id="p5Prev" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Previous">
+          <img src="prev-icon.png" class="p5-ico" alt="">
+        </button>
 
         <button id="p5Play" class="p5-playhero" type="button" data-cursor="link" aria-label="Play/Pause">
           <img id="p5PlayIcon" src="start.png" alt="Play">
         </button>
 
-        <button id="p5Next" class="p5-mbtn p5-skip">
-  <img src="next-icon.png" class="p5-icon" alt="Next">
-</button>
+        <button id="p5Next" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Next">
+          <img src="next-icon.png" class="p5-ico" alt="">
+        </button>
+      </div>
 
       <div class="p5-music-bottom">
         <div class="p5-time-row">
@@ -824,12 +827,13 @@
           <span id="p5Dur" class="p5-time">0:00</span>
         </div>
 
-        <input id="p5Seek" class="p5-seek" type="range" min="0" max="100" value="0" step="0.1" data-cursor="h-resize" aria-label="Seek">
+        <input id="p5Seek" class="p5-seek" type="range" min="0" max="100" value="0" step="0.1"
+               data-cursor="h-resize" aria-label="Seek">
       </div>
     </div>
   </div>
 </div>
-
+  
 <!-- GIF CURSOR -->
 <div id="gifCursor" class="gif-cursor" aria-hidden="true">
   <img id="gifCursorImg" src="NORMAL.gif" alt="">
@@ -864,208 +868,278 @@
 
   <div class="video-grid">
     <!-- CARD 1 -->
-    <div class="video-card">
-      <div class="p5-player" data-cursor="precision">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video1.mp4" type="video/mp4">
-        </video>
+<div class="video-card">
 
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
+  <div class="p5-player" data-cursor="precision">
+    <video class="p5-video" preload="metadata" playsinline>
+      <source src="video1.mp4" type="video/mp4">
+    </video>
 
-        <div class="p5-hint">+10s</div>
+    <div class="p5-gestures" aria-hidden="true">
+      <button class="p5-zone p5-left" type="button"></button>
+      <button class="p5-zone p5-mid" type="button"></button>
+      <button class="p5-zone p5-right" type="button"></button>
+    </div>
 
-        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
-          <img src="start.png" alt="Play">
-        </button>
+    <div class="p5-hint">+10s</div>
 
-      <div class="p5-controls" data-cursor="normal">
-  <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
-    <img src="start.png" class="p5-icon" alt="Play">
-  </button>
+    <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
+      <img src="start.png" alt="Play">
+    </button>
 
-  <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
-    <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
-  </button>
+    <div class="p5-controls" data-cursor="normal">
 
-  <div class="p5-time"><span class="p5-current">0:00</span></div>
+      <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
+        <img src="start.png" class="p5-icon" alt="Play">
+      </button>
 
-  <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
+      <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
+        <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
+      </button>
 
-  <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
-    <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
-  </button>
+      <div class="p5-time">
+        <span class="p5-current">0:00</span>
+      </div>
 
-  <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
-    <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
-  </button>
+      <input class="p5-progress" type="range"
+             min="0" max="100" value="0" step="0.1"
+             aria-label="Seek" data-cursor="h-resize">
 
-  <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
-    <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
-  </button>
+      <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
+        <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
+      </button>
 
-  <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
-    <img src="plus-icon.png" class="p5-icon" alt="Volume +">
-  </button>
+      <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
+        <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
+      </button>
 
-  <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
-    <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
-  </button>
-</div>
+      <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
+        <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
+      </button>
+
+      <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
+        <img src="plus-icon.png" class="p5-icon" alt="Volume +">
+      </button>
+
+      <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
+        <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
+      </button>
+
+    </div> <!-- CLOSE .p5-controls -->
+
+  </div> <!-- CLOSE .p5-player -->
+
+  <div class="video-label">
+    Edit 1 <span>Persona-style player</span>
+  </div>
+
+</div> <!-- CLOSE .video-card -->
 
     <!-- CARD 2 -->
-    <div class="video-card">
-      <div class="p5-player" data-cursor="precision">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video2.mp4" type="video/mp4">
-        </video>
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
-          <img src="start.png" alt="Play">
-        </button>
-        <div class="p5-controls" data-cursor="normal">
-  <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
-    <img src="start.png" class="p5-icon" alt="Play">
-  </button>
+   <div class="video-card">
 
-  <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
-    <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
-  </button>
+  <div class="p5-player" data-cursor="precision">
+    <video class="p5-video" preload="metadata" playsinline>
+      <source src="video2.mp4" type="video/mp4">
+    </video>
 
-  <div class="p5-time"><span class="p5-current">0:00</span></div>
+    <div class="p5-gestures" aria-hidden="true">
+      <button class="p5-zone p5-left" type="button"></button>
+      <button class="p5-zone p5-mid" type="button"></button>
+      <button class="p5-zone p5-right" type="button"></button>
+    </div>
 
-  <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
+    <div class="p5-hint">+10s</div>
 
-  <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
-    <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
-  </button>
+    <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
+      <img src="start.png" alt="Play">
+    </button>
 
-  <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
-    <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
-  </button>
+    <div class="p5-controls" data-cursor="normal">
 
-  <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
-    <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
-  </button>
+      <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
+        <img src="start.png" class="p5-icon" alt="Play">
+      </button>
 
-  <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
-    <img src="plus-icon.png" class="p5-icon" alt="Volume +">
-  </button>
+      <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
+        <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
+      </button>
 
-  <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
-    <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
-  </button>
-</div>
+      <div class="p5-time">
+        <span class="p5-current">0:00</span>
+      </div>
+
+      <input class="p5-progress" type="range"
+             min="0" max="100" value="0" step="0.1"
+             aria-label="Seek" data-cursor="h-resize">
+
+      <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
+        <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
+      </button>
+
+      <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
+        <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
+      </button>
+
+      <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
+        <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
+      </button>
+
+      <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
+        <img src="plus-icon.png" class="p5-icon" alt="Volume +">
+      </button>
+
+      <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
+        <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
+      </button>
+
+    </div> <!-- CLOSE .p5-controls -->
+
+  </div> <!-- CLOSE .p5-player -->
+
+  <div class="video-label">
+    Edit 2 <span>Persona-style player</span>
+  </div>
+
+</div> <!-- CLOSE .video-card -->
     <!-- CARD 3 -->
-    <div class="video-card">
-      <div class="p5-player" data-cursor="precision">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video3.mp4" type="video/mp4">
-        </video>
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
-          <img src="start.png" alt="Play">
-        </button>
-        <div class="p5-controls" data-cursor="normal">
-  <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
-    <img src="start.png" class="p5-icon" alt="Play">
-  </button>
+   <div class="video-card">
 
-  <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
-    <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
-  </button>
+  <div class="p5-player" data-cursor="precision">
+    <video class="p5-video" preload="metadata" playsinline>
+      <source src="video3.mp4" type="video/mp4">
+    </video>
 
-  <div class="p5-time"><span class="p5-current">0:00</span></div>
+    <div class="p5-gestures" aria-hidden="true">
+      <button class="p5-zone p5-left" type="button"></button>
+      <button class="p5-zone p5-mid" type="button"></button>
+      <button class="p5-zone p5-right" type="button"></button>
+    </div>
 
-  <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
+    <div class="p5-hint">+10s</div>
 
-  <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
-    <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
-  </button>
+    <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
+      <img src="start.png" alt="Play">
+    </button>
 
-  <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
-    <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
-  </button>
+    <div class="p5-controls" data-cursor="normal">
 
-  <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
-    <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
-  </button>
+      <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
+        <img src="start.png" class="p5-icon" alt="Play">
+      </button>
 
-  <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
-    <img src="plus-icon.png" class="p5-icon" alt="Volume +">
-  </button>
+      <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
+        <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
+      </button>
 
-  <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
-    <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
-  </button>
-</div>
+      <div class="p5-time">
+        <span class="p5-current">0:00</span>
+      </div>
+
+      <input class="p5-progress" type="range"
+             min="0" max="100" value="0" step="0.1"
+             aria-label="Seek" data-cursor="h-resize">
+
+      <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
+        <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
+      </button>
+
+      <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
+        <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
+      </button>
+
+      <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
+        <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
+      </button>
+
+      <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
+        <img src="plus-icon.png" class="p5-icon" alt="Volume +">
+      </button>
+
+      <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
+        <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
+      </button>
+
+    </div> <!-- CLOSE .p5-controls -->
+
+  </div> <!-- CLOSE .p5-player -->
+
+  <div class="video-label">
+    Edit 3 <span>Persona-style player</span>
+  </div>
+
+</div> <!-- CLOSE .video-card -->
 
     <!-- CARD 4 -->
     <div class="video-card">
-      <div class="p5-player" data-cursor="precision">
-        <video class="p5-video" preload="metadata" playsinline>
-          <source src="video4.mp4" type="video/mp4">
-        </video>
-        <div class="p5-gestures" aria-hidden="true">
-          <button class="p5-zone p5-left" type="button"></button>
-          <button class="p5-zone p5-mid" type="button"></button>
-          <button class="p5-zone p5-right" type="button"></button>
-        </div>
-        <div class="p5-hint">+10s</div>
-        <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
-          <img src="start.png" alt="Play">
-        </button>
-       <div class="p5-controls" data-cursor="normal">
-  <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
-    <img src="start.png" class="p5-icon" alt="Play">
-  </button>
 
-  <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
-    <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
-  </button>
+  <div class="p5-player" data-cursor="precision">
+    <video class="p5-video" preload="metadata" playsinline>
+      <source src="video4.mp4" type="video/mp4">
+    </video>
 
-  <div class="p5-time"><span class="p5-current">0:00</span></div>
-
-  <input class="p5-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek" data-cursor="h-resize">
-
-  <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
-    <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
-  </button>
-
-  <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
-    <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
-  </button>
-
-  <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
-    <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
-  </button>
-
-  <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
-    <img src="plus-icon.png" class="p5-icon" alt="Volume +">
-  </button>
-
-  <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
-    <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
-  </button>
-</div>
-      </div>
-      <div class="video-label">Edit 4 <span>Persona-style player</span></div>
+    <div class="p5-gestures" aria-hidden="true">
+      <button class="p5-zone p5-left" type="button"></button>
+      <button class="p5-zone p5-mid" type="button"></button>
+      <button class="p5-zone p5-right" type="button"></button>
     </div>
+
+    <div class="p5-hint">+10s</div>
+
+    <button class="p5-bigplay" type="button" aria-label="Play" data-cursor="link">
+      <img src="start.png" alt="Play">
+    </button>
+
+    <div class="p5-controls" data-cursor="normal">
+
+      <button class="p5-btn p5-play" type="button" aria-label="Play/Pause" data-cursor="link">
+        <img src="start.png" class="p5-icon" alt="Play">
+      </button>
+
+      <button class="p5-btn p5-back" type="button" aria-label="Back 10 seconds" data-cursor="link">
+        <img src="fast-backward-icon.png" class="p5-icon" alt="Back 10s">
+      </button>
+
+      <div class="p5-time">
+        <span class="p5-current">0:00</span>
+      </div>
+
+      <input class="p5-progress" type="range"
+             min="0" max="100" value="0" step="0.1"
+             aria-label="Seek" data-cursor="h-resize">
+
+      <button class="p5-btn p5-fwd" type="button" aria-label="Forward 10 seconds" data-cursor="link">
+        <img src="fast-forward-icon.png" class="p5-icon" alt="Forward 10s">
+      </button>
+
+      <button class="p5-btn p5-vol-down" type="button" aria-label="Volume down" data-cursor="link">
+        <img src="minus-line-icon.png" class="p5-icon" alt="Volume -">
+      </button>
+
+      <button class="p5-btn p5-mute" type="button" aria-label="Mute" data-cursor="link">
+        <img src="volume on.png" class="p5-icon p5-mute-icon" alt="Unmuted">
+      </button>
+
+      <button class="p5-btn p5-vol-up" type="button" aria-label="Volume up" data-cursor="link">
+        <img src="plus-icon.png" class="p5-icon" alt="Volume +">
+      </button>
+
+      <button class="p5-btn p5-full" type="button" aria-label="Fullscreen" data-cursor="link">
+        <img src="expand-icon.png" class="p5-icon p5-full-icon" alt="Fullscreen">
+      </button>
+
+    </div> <!-- CLOSE .p5-controls -->
+
+  </div> <!-- CLOSE .p5-player -->
+
+  <div class="video-label">
+    Edit 4 <span>Persona-style player</span>
   </div>
-</section>
+
+</div> <!-- CLOSE .video-card -->
+
+</div> <!-- CLOSE .video-grid -->
+</section> <!-- CLOSE #portfolio -->
 
 <section id="contact" class="contact">
   <div class="contact-wrap">
@@ -1370,8 +1444,8 @@
 
 function setMuteIcon(){
   const muted = music.muted || music.volume === 0;
-  const img = muteBtnH.querySelector("img");
-  img.src = muted ? "volume-mute-icon.png" : "volume-icon.png";
+  const img = document.getElementById("p5VolIcon");
+  if(img) img.src = muted ? "volume muted.png" : "volume on.png";
 }
 
   function setShuffleUI(){
@@ -1407,21 +1481,19 @@ function setMuteIcon(){
   }
 
   function setTrack(i){
-    currentIndex = (i + TRACKS.length) % TRACKS.length;
-    const t = TRACKS[currentIndex];
+  currentIndex = (i + TRACKS.length) % TRACKS.length;
+  const t = TRACKS[currentIndex];
 
-    music.src = t.src;
-    titleEl.textContent = t.title || t.src;
-    if(artistEl) artistEl.textContent = t.artist || "";
-    const artistEl = document.getElementById("p5TrackArtist");
-if(artistEl) artistEl.textContent = t.artist;
-    coverImg.src = t.cover;
+  music.src = t.src;
+  titleEl.textContent = t.title || t.src;
+  if(artistEl) artistEl.textContent = t.artist || "";
+  coverImg.src = t.cover;
 
-    seek.value = 0;
-    applySeekFill(0);
-    curEl.textContent = "0:00";
-    durEl.textContent = "0:00";
-  }
+  seek.value = 0;
+  applySeekFill(0);
+  curEl.textContent = "0:00";
+  durEl.textContent = "0:00";
+}
 
   function pickNextIndex(){
     if(shuffleOn && TRACKS.length > 1){
@@ -1492,7 +1564,6 @@ if(artistEl) artistEl.textContent = t.artist;
     const played = await safePlay();
     if(played){
       tapOverlay.classList.remove("show");
-      volPopup.setAttribute("aria-hidden","true");
     }
   }
 
@@ -1559,19 +1630,12 @@ if(artistEl) artistEl.textContent = t.artist;
     setMuteIcon();
   });
 
-  // Volume popup toggle (clicking button toggles popup)
-  muteBtnH.addEventListener("dblclick", (e)=>{ e.preventDefault(); });
-      if(e.target === volSlider) return;
-    const open = volPopup.classList.toggle("show");
-    volPopup.setAttribute("aria-hidden", open ? "false" : "true");
-  });
-
-  volSlider.addEventListener("input", ()=>{
-    music.volume = Number(volSlider.value);
-    if(music.volume === 0) music.muted = true;
-    else music.muted = false;
-    setMuteIcon();
-  });
+  // ✅ Inline volume only (no popup)
+volSlider.addEventListener("input", ()=>{
+  music.volume = Number(volSlider.value);
+  music.muted = (music.volume === 0);
+  setMuteIcon();
+});
 
   // Seek/progress
   seek.addEventListener("input", ()=>{
