@@ -762,42 +762,73 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
-/* ===== SMALL COMPACT HERO PLAYER (MOBILE ONLY) ===== */
-/* keep it small WITHOUT clipping */
-  .p5-music-hero{
-    width:80% !important;
-    max-width:320px !important;
-    left:50% !important;
-    transform:translateX(-50%) !important;
-    height: 150px !important;   /* change this value */
-  }
+/* ===== HERO MUSIC PLAYER: ~70% SHORTER (MOBILE ONLY) ===== */
 
-  /* shrink everything inside instead of cutting height */
-  .p5-music-frame{
-    padding:6px 8px !important;
-    gap:6px !important;
-    overflow:visible !important; /* important: no clipping */
-  }
+/* keep width as-is (you said it's good) */
+.p5-music-hero{
+  /* leave your width/max-width/left/transform alone */
+}
 
-  /* ✅ make layout shorter naturally */
-  .p5-music-bottom{ gap:5px !important; }
-  .p5-time-row{ font-size:11px !important; }
+/* overall frame tighter */
+.p5-music-frame{
+  padding:4px 6px !important;   /* was 14px / 6-8px */
+  gap:4px !important;           /* less vertical space */
+  align-items:center !important;
+}
 
-  /* make cover smaller */
-  .p5-cover-wrap{
-    width:62px !important;
-    height:62px !important;
-    border-radius:18px !important;
-  }
+/* make cover much smaller (big height saver) */
+.p5-cover-wrap{
+  width:44px !important;        /* was 104 / 62 */
+  height:44px !important;
+  border-radius:14px !important;
+}
 
-  /* shrink text */
-  .p5-track-kicker{ font-size:11px !important; }
-  .p5-track-title{ font-size:13px !important; }
-  .p5-track-artist{ font-size:11px !important; opacity:0.8 !important; }
+/* reduce vertical stacking */
+.p5-music-right{
+  gap:4px !important;           /* was 10px */
+}
 
-  /* shrink slider + controls a bit */
-  .p5-vol-slider{ width:85px !important; max-width:85px !important; }
-  .p5-seek{ height:7px !important; }
+/* tighten top row */
+.p5-music-top{
+  gap:6px !important;
+}
+
+/* shrink text (also height saver) */
+.p5-track-kicker{ font-size:9px !important; }
+.p5-track-title{ font-size:11px !important; margin-top:2px !important; line-height:1.1 !important; }
+.p5-track-artist{ font-size:10px !important; margin-top:2px !important; line-height:1.1 !important; }
+
+/* shrink mid controls row height */
+.p5-music-mid{
+  gap:8px !important;
+  margin-top:0 !important;
+}
+.p5-playhero{
+  width:36px !important;        /* was 54/58 */
+  height:36px !important;
+  border-radius:12px !important;
+}
+.p5-playhero img{
+  width:18px !important;        /* was 26 */
+  height:18px !important;
+}
+
+/* make bottom section shorter */
+.p5-music-bottom{ gap:4px !important; }
+.p5-time-row{ font-size:10px !important; }
+.p5-seek{
+  height:6px !important;        /* was 8 */
+}
+
+/* keep volume slider visible but shorter */
+.p5-vol-slider{
+  width:70px !important;        /* was 85/150 */
+  max-width:70px !important;
+  height:6px !important;
+}
+.p5-vol-slider::-webkit-slider-thumb{
+  width:14px !important;
+  height:14px !important;
 }
   }
 </style>
