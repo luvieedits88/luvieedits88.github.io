@@ -762,92 +762,62 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
- /* ===== MOBILE HERO PLAYER CONTAINED + TEXT + VOLUME FIX ===== */
+ /* ===== MOBILE HERO TOP SECTION COMPACT ===== */
+
 .p5-music-hero{
+  width:calc(100% - 16px) !important;
   left:50% !important;
-  transform:translateX(-50%) translateY(0) !important;
-  width:calc(100% - 20px) !important;
-  max-width:560px !important;
+  transform:translateX(-50%) !important;
 }
 
-/* keep the whole card inside bounds */
+/* reduce overall padding */
 .p5-music-frame{
-  overflow:hidden !important;
-  padding:12px !important;
-  gap:12px !important;
-}
-
-/* layout: meta on left, actions on right (but wrapped safely) */
-.p5-music-top{
-  align-items:flex-start !important;
-  justify-content:space-between !important;
-  gap:10px !important;
-}
-
-/* FORCE meta to actually exist + take space */
-.p5-track-meta{
-  display:block !important;
-  flex:1 1 auto !important;
-  min-width:0 !important;
-  width:auto !important;
-}
-
-/* FORCE title/artist visible on mobile */
-#p5TrackTitle,
-#p5TrackArtist{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  max-width:100% !important;
-}
-
-/* prevent long text from breaking layout */
-.p5-track-title,
-.p5-track-artist{
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-}
-
-/* actions row: allow wrap so volume doesn't go out of bounds */
-.p5-top-actions{
-  width:auto !important;
-  flex:0 0 auto !important;
+  padding:10px 12px !important;
   gap:8px !important;
-  flex-wrap:wrap !important;        /* <- key fix */
-  justify-content:flex-end !important;
+}
+
+/* make cover smaller */
+.p5-cover-wrap{
+  width:70px !important;
+  height:70px !important;
+}
+
+/* tighten top row */
+.p5-music-top{
+  gap:8px !important;
   align-items:center !important;
 }
 
-/* volume container stays inside and doesn't push out */
-.p5-vol-box{
-  max-width:100% !important;
-  flex:0 0 auto !important;
-  gap:8px !important;
+/* make NOW PLAYING text smaller */
+.p5-nowplaying{
+  font-size:12px !important;
+  letter-spacing:1px !important;
 }
 
-/* volume slider contained (won’t overflow) */
+/* shrink title + artist */
+.p5-track-title{
+  font-size:13px !important;
+}
+
+.p5-track-artist{
+  font-size:11px !important;
+  opacity:0.8 !important;
+}
+
+/* compress action buttons */
+.p5-mbtn{
+  padding:6px 8px !important;
+}
+
+.p5-ico{
+  width:15px !important;
+  height:15px !important;
+}
+
+/* shrink volume slider */
 .p5-vol-slider{
-  width:110px !important;
-  max-width:110px !important;
-  flex:0 0 110px !important;
-}
-
-/* cover + play button smaller so everything fits */
-.p5-cover-wrap{
-  width:82px !important;
-  height:82px !important;
-}
-
-.p5-playhero{
-  width:44px !important;
-  height:44px !important;
-}
-
-/* prevent the seek bar knob from being clipped */
-.p5-music-bottom,
-.p5-seek{
-  max-width:100% !important;
+  width:90px !important;
+  max-width:90px !important;
 }
   }
 </style>
