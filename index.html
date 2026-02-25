@@ -762,42 +762,52 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
-   /* ===== MOBILE: shrink the TOP hero music player ===== */
+   /* ===== MOBILE HERO PLAYER CONTAINED + CLEAN ===== */
+
 .p5-music-hero{
-  width: min(560px, calc(100% - 22px)) !important;
-  top: calc(8px + env(safe-area-inset-top)) !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  width:calc(100% - 20px) !important;
+  max-width:560px !important;
 }
 
 .p5-music-frame{
-  padding: 10px !important;
-  border-radius: 18px !important;
-  gap: 12px !important;
+  overflow:hidden !important;
+  padding:12px !important;
+  gap:12px !important;
+}
+
+.p5-track-meta{
+  flex:1 1 auto !important;
+  min-width:0 !important;
+}
+
+.p5-track-title,
+.p5-track-artist{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.p5-top-actions{
+  flex-wrap:nowrap !important;
+  gap:8px !important;
+}
+
+.p5-vol-slider{
+  flex:0 0 100px !important;
+  max-width:100px !important;
 }
 
 .p5-cover-wrap{
-  width: 82px !important;
-  height: 82px !important;
-  border-radius: 16px !important;
+  width:82px !important;
+  height:82px !important;
 }
 
-.p5-track-title{ font-size: 13px !important; }
-.p5-track-artist{ font-size: 11px !important; }
-
-.p5-music-mid{ gap: 10px !important; }
 .p5-playhero{
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 14px !important;
+  width:44px !important;
+  height:44px !important;
 }
-.p5-playhero img{ width: 20px !important; height: 20px !important; }
-
-.p5-mbtn{
-  padding: 8px 10px !important;
-  border-radius: 12px !important;
-}
-.p5-ico{ width: 16px !important; height: 16px !important; }
-
-.p5-vol-slider{ width: 110px !important; }
   }
 </style>
 </head>
