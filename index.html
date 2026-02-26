@@ -2089,6 +2089,15 @@ volSlider.addEventListener("input", ()=>{
     introVideo.play().catch(()=>{});  
     ensureGifCursorInRightPlace();  
   });  
+    // If intro overlay is gone but body class stuck, clean it up
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const intro = document.getElementById("introOverlay");
+    if(!intro || intro.classList.contains("hide") || intro.style.display === "none"){
+      document.body.classList.remove("intro-active");
+    }
+  }, 1200);
+});
   
   // =========================  
   // VIDEO PLAYER CONTROLS (same as before)  
@@ -2444,15 +2453,24 @@ ${Object.entries(vars).map(([k,val])=>`    ${k}: ${val};`).join("\n")}
     }
   });
 })();
-    // Force show editor button on touch devices (S24 fix)
+    // ===== Mobile editor toggle button (with intro-safe fix) =====
 (function(){
   const btn = document.getElementById("p5EditorToggle");
-  if(!btn) return;
+  const panel = document.getElementById("p5LayoutPanel");
+  if(!btn || !panel) return;
 
-  const isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
-  if(isTouch){
-    btn.style.display = "block";
+  function openClose(){
+    // If you refreshed while intro was active, this can get stuck:
+    document.body.classList.remove("intro-active");
+
+    document.body.classList.toggle("p5-layout-edit");
+
+    // hard force (beats weird display state)
+    panel.style.display = document.body.classList.contains("p5-layout-edit") ? "block" : "none";
   }
+
+  btn.addEventListener("click", openClose);
+  btn.addEventListener("touchend", (e)=>{ e.preventDefault(); openClose(); }, {passive:false});
 })();
     
 </script>  
