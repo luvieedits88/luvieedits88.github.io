@@ -1018,13 +1018,38 @@
       </div>  
     </div>  <div class="p5-music-right">  
   <div class="p5-music-top">  
+    
     <div class="p5-track-meta">
-  <div class="p5-track-kicker">Now Playing</div>
-
-  <div class="p5-meta-lines">
+    <div class="p5-track-kicker">Now Playing</div>
     <div id="p5TrackTitle" class="p5-track-title">—</div>
     <div id="p5TrackArtist" class="p5-track-artist">—</div>
   </div>
+
+  <div class="p5-top-right">
+
+    <!-- Volume slider -->
+    <input id="p5Volume" class="p5-vol-slider" type="range"
+           min="0" max="1" step="0.01" value="0.7">
+
+    <!-- Shuffle / Loop / Mute UNDER volume -->
+    <div class="p5-actions-row">
+
+      <button id="p5Shuffle" class="p5-mbtn" type="button">
+        <img class="p5-ico" src="shuffle.svg" alt="">
+      </button>
+
+      <button id="p5Loop" class="p5-mbtn" type="button">
+        <img class="p5-ico" src="loop.svg" alt="">
+      </button>
+
+      <button id="p5Mute" class="p5-mbtn" type="button">
+        <img class="p5-ico" src="mute.svg" alt="">
+      </button>
+
+    </div>
+    
+  </div>
+    
 </div>
 
     <div class="p5-top-actions">  
