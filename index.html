@@ -790,6 +790,31 @@
     .p5-track-title{ font-size:14px; }  
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }  
   }  
+  /* ===================================== */
+/* 📱 MOBILE ONLY (iPhone + Android) */
+/* Shrink entire music player to 15% */
+/* ===================================== */
+
+@media (hover: none) and (pointer: coarse) and (max-width: 820px){
+
+  /* Default hidden position */
+  .p5-music-hero{
+    transform: translateX(-50%) translateY(10px) scale(0.15);
+    transform-origin: top center;
+  }
+
+  /* When shown */
+  .p5-music-hero.show{
+    transform: translateX(-50%) translateY(0) scale(0.15);
+  }
+
+  /* When hidden */
+  .p5-music-hero.hide{
+    transform: translateX(-50%) translateY(10px) scale(0.15);
+  }
+
+}
+  
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
     <div class="p5-music-left">  
