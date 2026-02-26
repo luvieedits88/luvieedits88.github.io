@@ -850,7 +850,7 @@
   .p5-music-frame{
     height: var(--m-frame-h) !important;
     max-height: var(--m-frame-h) !important;
-    overflow: hidden !important;
+    overflow: visbile !important;
 
     padding: var(--m-pad-y) var(--m-pad-x) !important;
     border-radius: var(--m-radius) !important;
@@ -943,23 +943,28 @@
     height: var(--m-play-icon) !important;
   }
 
-  /* Bottom seek + time */
-  .p5-music-bottom{
-    gap: var(--m-bottom-gap) !important;
-    margin-top: 0 !important;
-  }
-  .p5-time-row{
-    font-size: 10px !important;
-    font-weight: 900 !important;
-    opacity: .9 !important;
-  }
+ /* Seek slider */
+.p5-seek{
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--m-seek-w) !important;   /* ✅ width goes HERE */
+  height: var(--m-seek-h) !important;
+  border-radius: 999px;
+  outline: none;
+  overflow: visible !important;        /* ✅ stops clipping on mobile */
+}
 
-  .p5-seek{ height: var(--m-seek-h) !important; }
-  .p5-seek::-webkit-slider-thumb{
-    width: var(--m-seek-thumb) !important;
-    height: var(--m-seek-thumb) !important;
-    width: var(--m-seek-w) !important;
-  }
+/* Thumb (the ball) */
+.p5-seek::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--m-seek-thumb) !important;   /* ✅ thumb size stays thumb size */
+  height: var(--m-seek-thumb) !important;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(255,0,60,0.55);
+  cursor: pointer;
+ }
 }
   
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero p5-mini-mobile" data-cursor="normal" aria-live="polite">  
