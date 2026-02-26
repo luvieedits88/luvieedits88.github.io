@@ -762,93 +762,83 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
-/* ===== HERO MUSIC PLAYER – 85% COMPACT (MOBILE ONLY) ===== */
+/* ===== ULTRA COMPACT HERO PLAYER (MOBILE ONLY) ===== */
 
-/* keep width as you like */
-.p5-music-hero{
-  /* do NOT use fixed height */
-}
-
-/* tighter overall spacing */
+/* reduce outer padding */
 .p5-music-frame{
-  padding:6px 8px !important;
-  gap:6px !important;
-  align-items:center !important;
+  padding:4px 6px !important;
+  gap:4px !important;
 }
 
-/* slightly smaller cover */
+/* shrink cover */
 .p5-cover-wrap{
-  width:54px !important;
-  height:54px !important;
-  border-radius:16px !important;
+  width:48px !important;
+  height:48px !important;
 }
 
-/* compact right side */
-.p5-music-right{
+/* shrink playback row heavily */
+.p5-music-mid{
   gap:6px !important;
+  margin-top:0 !important;
 }
 
-/* text sizing (still readable) */
-.p5-track-kicker{ font-size:10px !important; }
-.p5-track-title{
-  font-size:13px !important;
-  line-height:1.15 !important;
-}
-.p5-track-artist{
-  font-size:11px !important;
-  opacity:0.8 !important;
-  line-height:1.1 !important;
-}
-
-/* shrink top buttons (shuffle/loop/volume button) */
-.p5-mbtn{
-  padding:6px 8px !important;
+/* shrink main play button (BIG height saver) */
+.p5-playhero{
+  width:34px !important;
+  height:34px !important;
   border-radius:10px !important;
 }
 
-.p5-ico{
-  width:14px !important;
-  height:14px !important;
-}
-
-/* smaller main play button */
-.p5-playhero{
-  width:42px !important;
-  height:42px !important;
-  border-radius:14px !important;
-}
-
 .p5-playhero img{
-  width:20px !important;
-  height:20px !important;
+  width:16px !important;
+  height:16px !important;
 }
 
-/* compact middle row */
-.p5-music-mid{
-  gap:10px !important;
-  margin-top:0 !important;
+/* shrink prev/next buttons */
+.p5-skip{
+  padding:5px 6px !important;
+}
+
+.p5-mbtn{
+  padding:5px 6px !important;
+  border-radius:8px !important;
+}
+
+.p5-ico{
+  width:12px !important;
+  height:12px !important;
+}
+
+/* shrink time row */
+.p5-time-row{
+  font-size:10px !important;
+  margin:0 !important;
 }
 
 /* shrink progress bar */
 .p5-seek{
-  height:6px !important;
+  height:5px !important;
 }
 
-/* shrink time text */
-.p5-time-row{
-  font-size:11px !important;
-}
-
-/* smaller volume slider */
+/* shrink volume area */
 .p5-vol-slider{
-  width:80px !important;
-  max-width:80px !important;
-  height:6px !important;
+  width:65px !important;
+  height:5px !important;
 }
 
 .p5-vol-slider::-webkit-slider-thumb{
-  width:14px !important;
-  height:14px !important;
+  width:12px !important;
+  height:12px !important;
+}
+
+/* shrink text slightly */
+.p5-track-title{
+  font-size:12px !important;
+  line-height:1.1 !important;
+}
+
+.p5-track-artist{
+  font-size:10px !important;
 }
   }
 </style>
