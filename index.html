@@ -1459,22 +1459,34 @@ function setMuteIcon(){
     }  
   }  
   
-  async function safePlay(){  
-    if(!musicUnlocked){  
-      const ok = await unlockAudioFromGesture();  
-      if(!ok) return false;  
-    }  
-    try{  
-      await music.play();  
-      setPlayIcon(true);  
-      setMuteIcon();  
-      return true;  
-    }catch(e){  
-      setPlayIcon(false);  
-      hideHero();  
-      return false;  
-    }  
-  }  
+  async function safePlay(){
+  if(!musicUnlocked){
+    const ok = await unlockAudioFromGesture();
+    if(!ok) return false;
+  }
+
+  try{
+    await music.play();
+    setPlayIcon(true);
+    setMuteIcon();
+    showHero();                 // ✅ always keep bar visible
+    return true;
+  }catch(e){
+    console.warn("safePlay failed:", e);
+
+    setPlayIcon(false);
+    setMuteIcon();
+
+    showHero();                 // ✅ DO NOT hide bar anymore
+
+    // If browser blocked playback, allow user to unlock again
+    if(!musicUnlocked && tapOverlay){
+      tapOverlay.classList.add("show");
+    }
+
+    return false;
+  }
+}
   
  function safePause(){  
   music.pause();  
