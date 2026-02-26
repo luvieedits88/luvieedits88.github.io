@@ -1673,7 +1673,7 @@ body.intro-active #p5LayoutPanel{
   const tapOverlay   = document.getElementById("tapSoundOverlay");  
   const tapBtn       = document.getElementById("tapSoundBtn");  
 
-  document.body.classList.remove("intro-active");
+  document.body.classList.add("intro-active");
   
   tapOverlay.classList.add("show");  
   document.body.style.overflow = "hidden";  
@@ -2046,7 +2046,7 @@ volSlider.addEventListener("input", ()=>{
     // ✅ Fix: make sure play icon doesn't look "stuck"  
     setPlayIcon(false);  
 
-    document.body.classList.add("intro-active");
+    document.body.classList.remove("intro-active");
   }  
   introVideo.addEventListener("ended", hideIntro);  
   skipIntroBtn.addEventListener("click", async () => { await unlockAudioFromGesture(); hideIntro(); });  
