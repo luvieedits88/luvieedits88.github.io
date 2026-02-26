@@ -2370,11 +2370,21 @@ volSlider.addEventListener("input", ()=>{
   loadSaved();
   syncInputsFromVars();
 
-  inputs.forEach(inp=>{
-    inp.addEventListener("input", ()=>{
-      const v = inp.dataset.var;
-      const unit = inp.dataset.unit || "px";
-      const n = Number(inp.value);
+inputs.forEach(inp => {
+  const handler = () => {
+    const v = inp.dataset.var;
+    const unit = inp.dataset.unit || "px";
+    const n = Number(inp.value);
+
+    if (unit === "%") setVar(v, `${n}%`);
+    else setVar(v, `${n}px`);
+
+    saveNow();
+  };
+
+  inp.addEventListener("input", handler);
+  inp.addEventListener("change", handler); // ✅ Samsung fix
+});
 
       // variables that are already percentages
       if(unit === "%") setVar(v, `${n}%`);
