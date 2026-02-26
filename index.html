@@ -405,7 +405,7 @@
     transform: translateY(-1px);  
   }  
   .p5-btn:active{ transform: translateY(0px) scale(0.98); }  
-  .p5-icon{ width:12px; height:12px; display:block; onject-fit:contain; }  
+  .p5-icon{ width:18px; height:18px; display:block; }  
   .p5-time{ min-width:54px; font-size:12px; opacity:0.9; }  
   .p5-progress{  
     flex:1;  
@@ -1168,7 +1168,7 @@
     if(!CAN_HOVER) return;  
     const ox = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-x")) || 0;  
     const oy = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--cursor-offset-y")) || 0;  
-    gifCursor.style.transform = translate(${mouseX + ox}px, ${mouseY + oy}px);  
+    gifCursor.style.transform = `translate(${mouseX + ox}px, ${mouseY + oy}px)`;  
   }  
   
   document.addEventListener("mousemove", (e)=>{  
@@ -1365,7 +1365,7 @@
     if(!isFinite(s)) return "0:00";  
     const m = Math.floor(s/60);  
     const sec = Math.floor(s%60).toString().padStart(2,"0");  
-    return ${m}:${sec};  
+    return `${m}:${sec}`;  
   }  
   
   function setPlayIcon(playing){  
@@ -1398,7 +1398,7 @@ function setMuteIcon(){
   function applySeekFill(percent){  
     const p = Math.max(0, Math.min(100, percent));  
     seek.style.background =  
-      linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.95) ${p}%, rgba(255,0,60,0.22) ${p}%, rgba(255,0,60,0.22) 100%);  
+      `linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.95) ${p}%, rgba(255,0,60,0.22) ${p}%, rgba(255,0,60,0.22) 100%)`;  
   }  
   
   function showHero(){  
@@ -1748,9 +1748,9 @@ volSlider.addEventListener("input", ()=>{
     function bumpVolume(delta){  
       setActive(player);  
       video.muted = false;  
-      video.volume = clamp01((video.volume ?? 0.😎 + delta);  
+      video.volume = clamp01((video.volume ?? 0.8) + delta);  
       setMuteIconV();  
-      showHint(player, Vol ${Math.round(video.volume * 100)}%);  
+      showHint(player, `Vol ${Math.round(video.volume * 100)}%`);  
     }  
   
     async function togglePlayerFullscreen(){  
