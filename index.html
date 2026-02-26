@@ -762,18 +762,58 @@
     .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }
     .p5-track-title{ font-size:14px; }
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }
-/* ===== ULTRA COMPACT HERO PLAYER (MOBILE ONLY) ===== */
+/* ===== FULL ULTRA COMPACT HERO PLAYER (MOBILE ONLY) ===== */
 
-/* reduce outer padding */
+/* tighter outer container */
 .p5-music-frame{
   padding:4px 6px !important;
   gap:4px !important;
+  align-items:center !important;
 }
 
-/* shrink cover */
+/* smaller cover */
 .p5-cover-wrap{
   width:48px !important;
   height:48px !important;
+  border-radius:14px !important;
+}
+
+/* tighter right column */
+.p5-music-right{
+  gap:4px !important;
+}
+
+/* compact top row */
+.p5-music-top{
+  gap:6px !important;
+}
+
+/* shrink text */
+.p5-track-kicker{
+  font-size:9px !important;
+  letter-spacing:0.5px !important;
+}
+
+.p5-track-title{
+  font-size:12px !important;
+  line-height:1.1 !important;
+}
+
+.p5-track-artist{
+  font-size:10px !important;
+  opacity:0.8 !important;
+  line-height:1.1 !important;
+}
+
+/* smaller top buttons */
+.p5-mbtn{
+  padding:5px 6px !important;
+  border-radius:8px !important;
+}
+
+.p5-ico{
+  width:12px !important;
+  height:12px !important;
 }
 
 /* shrink playback row heavily */
@@ -782,7 +822,7 @@
   margin-top:0 !important;
 }
 
-/* shrink main play button (BIG height saver) */
+/* smaller main play button */
 .p5-playhero{
   width:34px !important;
   height:34px !important;
@@ -799,46 +839,40 @@
   padding:5px 6px !important;
 }
 
-.p5-mbtn{
-  padding:5px 6px !important;
-  border-radius:8px !important;
+/* ===== BOTTOM SEEK AREA (big height saver) ===== */
+
+.p5-music-bottom{
+  gap:3px !important;
+  margin-top:0 !important;
 }
 
-.p5-ico{
+/* smaller time text */
+.p5-time-row{
+  font-size:9px !important;
+  line-height:1 !important;
+  margin:0 !important;
+}
+
+/* thinner progress bar */
+.p5-seek{
+  height:4px !important;
+  border-radius:999px !important;
+}
+
+.p5-seek::-webkit-slider-thumb{
   width:12px !important;
   height:12px !important;
 }
 
-/* shrink time row */
-.p5-time-row{
-  font-size:10px !important;
-  margin:0 !important;
-}
-
-/* shrink progress bar */
-.p5-seek{
-  height:5px !important;
-}
-
-/* shrink volume area */
+/* smaller volume slider */
 .p5-vol-slider{
-  width:65px !important;
-  height:5px !important;
+  width:60px !important;
+  height:4px !important;
 }
 
 .p5-vol-slider::-webkit-slider-thumb{
   width:12px !important;
   height:12px !important;
-}
-
-/* shrink text slightly */
-.p5-track-title{
-  font-size:12px !important;
-  line-height:1.1 !important;
-}
-
-.p5-track-artist{
-  font-size:10px !important;
 }
   }
 </style>
