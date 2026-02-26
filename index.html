@@ -790,108 +790,143 @@
     .p5-track-title{ font-size:14px; }  
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }  
   }  
-/* ✅ ULTRA COMPACT 90px MOBILE PLAYER */
+/* ===========================================
+   🎧 MOBILE ONLY — Spotify mini player + scroll text
+   =========================================== */
 @media (max-width:768px){
 
-  .p5-music-frame{
-    height: 90px !important;
-    max-height: 90px !important;
-    padding: 6px 8px !important;
-    border-radius: 16px !important;
-    gap: 6px !important;
-    overflow: hidden !important;
+  /* overall bar positioning */
+  .p5-mini-mobile{
+    width: calc(100% - 18px) !important;
+    top: calc(8px + env(safe-area-inset-top)) !important;
+  }
+
+  /* compact rounded bar look */
+  .p5-mini-mobile .p5-music-frame{
+    padding: 10px 12px !important;
+    border-radius: 22px !important;
+    gap: 12px !important;
     align-items: center !important;
+
+    max-height: 112px !important;
+    overflow: hidden !important;
   }
 
-  /* smaller cover */
-  .p5-cover-wrap{
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 12px !important;
+  /* cover on left */
+  .p5-mini-mobile .p5-cover-wrap{
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 14px !important;
+    flex: 0 0 auto !important;
   }
 
-  /* tighten right side */
-  .p5-music-right{
-    gap: 4px !important;
+  /* right side becomes stacked */
+  .p5-mini-mobile .p5-music-right{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
     min-width: 0 !important;
+    flex: 1 !important;
   }
 
-  /* TOP ROW */
-  .p5-music-top{
-    gap: 6px !important;
-    align-items: center !important;
+  /* hide "Now Playing" to save height */
+  .p5-mini-mobile .p5-track-kicker{
+    display: none !important;
   }
 
-  .p5-track-kicker{
-    font-size: 8px !important;
-    margin: 0 !important;
-    line-height: 1 !important;
+  /* hide shuffle/loop/volume buttons on mobile mini bar */
+  .p5-mini-mobile .p5-top-actions{
+    display: none !important;
   }
 
-  .p5-track-title{
+  /* ----- TITLE + ARTIST (scroll like Spotify) ----- */
+  .p5-mini-mobile .p5-track-title,
+  .p5-mini-mobile .p5-track-artist{
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    position: relative !important;
+    max-width: 100% !important;
+  }
+
+  .p5-mini-mobile .p5-track-title{
+    font-size: 14px !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+  }
+
+  .p5-mini-mobile .p5-track-artist{
+    margin-top: 2px !important;
     font-size: 11px !important;
-    line-height: 1 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    font-weight: 700 !important;
+    opacity: 0.8 !important;
+    line-height: 1.1 !important;
   }
 
-  .p5-track-artist{
-    font-size: 9px !important;
-    line-height: 1 !important;
-    opacity: .8 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+  /* scrolling span */
+  .p5-mini-mobile .p5-track-title .p5-scroll,
+  .p5-mini-mobile .p5-track-artist .p5-scroll{
+    display: inline-block !important;
+    padding-left: 100% !important;
+    animation: p5Scroll 9s linear infinite !important;
+    will-change: transform;
   }
 
-  /* smaller top buttons */
-  .p5-mbtn{
-    padding: 4px 6px !important;
-    border-radius: 10px !important;
+  /* little pause between loops */
+  @keyframes p5Scroll{
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
   }
 
-  .p5-ico{
-    width: 12px !important;
-    height: 12px !important;
-  }
-
-  .p5-vol-slider{
-    width: 60px !important;
-    height: 4px !important;
-  }
-  .p5-vol-slider::-webkit-slider-thumb{
-    width: 10px !important;
-    height: 10px !important;
-  }
-
-  /* CONTROLS ROW */
-  .p5-music-mid{
+  /* ---- controls row ---- */
+  .p5-mini-mobile .p5-music-mid{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
     margin: 0 !important;
-    gap: 6px !important;
   }
 
-  .p5-playhero{
-    width: 32px !important;
-    height: 32px !important;
+  .p5-mini-mobile .p5-playhero{
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 14px !important;
+  }
+  .p5-mini-mobile .p5-playhero img{
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .p5-mini-mobile .p5-mbtn{
+    padding: 6px 8px !important;
     border-radius: 12px !important;
   }
-  .p5-playhero img{
+  .p5-mini-mobile .p5-ico{
     width: 14px !important;
     height: 14px !important;
   }
 
-  .p5-skip{
-    padding: 4px 6px !important;
+  /* ---- seek + time ---- */
+  .p5-mini-mobile .p5-music-bottom{
+    margin-top: 6px !important;
+    gap: 6px !important;
   }
 
-  /* REMOVE seek bar + time (no space at 90px) */
-  .p5-music-bottom{
-    display: none !important;
+  .p5-mini-mobile .p5-time-row{
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    opacity: 0.85 !important;
+  }
+
+  .p5-mini-mobile .p5-seek{
+    height: 6px !important;
+  }
+  .p5-mini-mobile .p5-seek::-webkit-slider-thumb{
+    width: 14px !important;
+    height: 14px !important;
   }
 }
   
-</style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
+</style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero p5-mini-mobile" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
     <div class="p5-music-left">  
       <div class="p5-cover-wrap">  
