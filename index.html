@@ -1057,9 +1057,17 @@ body.intro-active #p5LayoutPanel{
   -webkit-tap-highlight-color: transparent;
 }
 
-/* show ONLY on real mobile devices */
-@media (max-width: 820px) and (hover: none) and (pointer: coarse) {
-  .p5-editor-toggle{ display: block; }
+/* default: hidden */
+.p5-editor-toggle{ display:none; }
+
+/* show on ANY touch device */
+@media (pointer: coarse), (hover: none) {
+  .p5-editor-toggle{ display:block; }
+}
+
+/* hide on real desktop mouse */
+@media (hover:hover) and (pointer:fine){
+  .p5-editor-toggle{ display:none; }
 }
   /* ✅ Mobile: Editor button bottom-center */
 @media (max-width: 820px) and (hover: none) and (pointer: coarse) {
@@ -2420,6 +2428,16 @@ volSlider.addEventListener("input", ()=>{
   btn.addEventListener("click", () => {
     document.body.classList.toggle("p5-layout-edit");
   });
+})();
+    // Force show editor button on touch devices (S24 fix)
+(function(){
+  const btn = document.getElementById("p5EditorToggle");
+  if(!btn) return;
+
+  const isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+  if(isTouch){
+    btn.style.display = "block";
+  }
 })();
     
 </script>  
