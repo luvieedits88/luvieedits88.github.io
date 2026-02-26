@@ -1114,8 +1114,9 @@ body.intro-active #p5LayoutPanel{
   width: min(92vw, 320px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  max-height: 70vh;
+  overscroll-behavior: contain;
 }
-
 /* keep buttons visible while scrolling */
 .p5-layout-actions{
   position: sticky;
@@ -2405,22 +2406,24 @@ window.addEventListener("load", () => {
       const unit = inp.dataset.unit || "px";
       const n = Number(inp.value);
 
-      if(unit === "%") setVar(v, `${n}%`);
-      else setVar(v, `${n}px`);
 
-      saveNow();
-    };
 
     inp.addEventListener("input", handler);
     inp.addEventListener("change", handler); // Samsung/Android fix
   });
 
-  document.getElementById("p5EnterEdit")?.addEventListener("click", ()=>{
-    document.body.classList.toggle("p5-layout-edit");
-  });
-  document.getElementById("p5ExitEdit")?.addEventListener("click", ()=>{
-    document.body.classList.remove("p5-layout-edit");
-  });
+ const enterBtn = document.getElementById("p5EnterEdit");
+ const exitBtn  = document.getElementById("p5ExitEdit");
+
+ enterBtn?.addEventListener("click", () => {
+   document.body.classList.add("p5-layout-edit");
+   panel.style.display = "block";
+ });
+
+ exitBtn?.addEventListener("click", () => {
+   document.body.classList.remove("p5-layout-edit");
+   panel.style.display = "none";
+ });
 
   document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
     localStorage.removeItem(KEY);
