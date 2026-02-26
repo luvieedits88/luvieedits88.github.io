@@ -1109,6 +1109,21 @@ body.intro-active #p5LayoutPanel{
 }
 .p5-layout-actions button.secondary{ background: rgba(255,255,255,0.08); }
   
+  /* ✅ Make the editor panel usable on phones */
+.p5-layout-panel{
+  width: min(92vw, 320px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* keep buttons visible while scrolling */
+.p5-layout-actions{
+  position: sticky;
+  bottom: 0;
+  background: rgba(0,0,0,0.85);
+  padding-top: 10px;
+}
+  
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
     <div class="p5-music-left">  
@@ -2394,13 +2409,12 @@ inputs.forEach(inp => {
     });
   });
 
-  // buttons
-  document.getElementById("p5EnterEdit")?.addEventListener("click", ()=>{
-    document.body.classList.add("p5-layout-edit");
-  });
-  document.getElementById("p5ExitEdit")?.addEventListener("click", ()=>{
-    document.body.classList.remove("p5-layout-edit");
-  });
+document.getElementById("p5EnterEdit")?.addEventListener("click", ()=>{
+  document.body.classList.toggle("p5-layout-edit");
+});
+document.getElementById("p5ExitEdit")?.addEventListener("click", ()=>{
+  document.body.classList.remove("p5-layout-edit");
+});
 
   document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
     localStorage.removeItem(KEY);
