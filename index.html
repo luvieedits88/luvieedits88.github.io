@@ -1035,6 +1035,12 @@
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 body.p5-layout-edit .p5-layout-panel{ display:block; }
+  /* ✅ Hide editor while intro is active */
+body.intro-active #p5EditorToggle,
+body.intro-active #p5LayoutPanel{
+  display: none !important;
+  pointer-events: none !important;
+}
   /* ===== Mobile Editor Toggle Button ===== */
 .p5-editor-toggle{
   position: fixed;
@@ -1661,6 +1667,8 @@ body.p5-layout-edit .p5-layout-panel{ display:block; }
   const skipIntroBtn = document.getElementById("skipIntro");  
   const tapOverlay   = document.getElementById("tapSoundOverlay");  
   const tapBtn       = document.getElementById("tapSoundBtn");  
+
+  document.body.classList.add("intro-active");
   
   tapOverlay.classList.add("show");  
   document.body.style.overflow = "hidden";  
@@ -2032,6 +2040,8 @@ volSlider.addEventListener("input", ()=>{
   
     // ✅ Fix: make sure play icon doesn't look "stuck"  
     setPlayIcon(false);  
+
+    document.body.classList.add("intro-active");
   }  
   introVideo.addEventListener("ended", hideIntro);  
   skipIntroBtn.addEventListener("click", async () => { await unlockAudioFromGesture(); hideIntro(); });  
