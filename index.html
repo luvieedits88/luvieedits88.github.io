@@ -784,23 +784,23 @@
     .p5-progress{ flex: 1 1 100%; height:8px; }  
     .p5-progress::-webkit-slider-thumb{ width:18px; height:18px; }  
     .p5-time{ min-width:auto; }  
-  
-    .p5-music-frame{ padding:14px; border-radius:22px; }  
-    .p5-cover-wrap{ width:104px; height:104px; border-radius:18px; }  
-    .p5-track-title{ font-size:14px; }  
-    .p5-playhero{ width:54px; height:54px; border-radius:16px; }  
   }  
-  /* ==========================================================
-   ✅ MOBILE HERO MUSIC PLAYER (your diagram layout)
+ /* ==========================================================
+   📱 MOBILE HERO MUSIC PLAYER (ONLY)
+   Layout:
+   [cover] [title/artist] [volume]
+                    [shuffle][loop][mute]
+            [prev]   [play]   [next]
+             [time row]
+        -------- centered seek (75%) --------
    ========================================================== */
 
-@media (max-width: 820px) and (hover:none) and (pointer:coarse){
+@media (max-width: 820px) and (hover: none) and (pointer: coarse){
+
   :root{
-    /* your old values */
     --m-player-width: min(92vw, 420px);
     --m-player-top: calc(8px + env(safe-area-inset-top));
 
-    --m-frame-h: 60px;      /* you said this is the ONLY good height */
     --m-pad-y: 8px;
     --m-pad-x: 12px;
     --m-gap: 10px;
@@ -815,40 +815,44 @@
     --m-btn-pad-x: 8px;
     --m-btn-radius: 12px;
 
-    --m-icon: 10px;         /* shuffle/loop/mute/prev/next icons */
-    --m-play: 35px;         /* play button bigger than others */
+    --m-icon: 10px;
+
+    --m-play: 35px;
     --m-play-icon: 16px;
 
     --m-vol-w: 88px;
     --m-vol-h: 6px;
     --m-vol-thumb: 14px;
 
-    --m-seek-w: 75%;
     --m-seek-h: 6px;
     --m-seek-thumb: 14px;
+    --m-seek-w: 75%;
 
     --m-time: 9px;
   }
 
-  /* player position + width */
+  /* hero bar position + width */
   .p5-music-hero{
     width: var(--m-player-width) !important;
     top: var(--m-player-top) !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(0) !important;
   }
 
-  /* frame: keep your "60px look" but DON'T clip (clipping hides buttons/balls) */
+  /* frame: DO NOT lock height (locking height hides stuff) */
   .p5-music-frame{
-    height: auto !important;                /* ✅ allow internal rows */
-    min-height: var(--m-frame-h) !important;/* ✅ keeps your good height feel */
     padding: var(--m-pad-y) var(--m-pad-x) !important;
     border-radius: var(--m-radius) !important;
     gap: var(--m-gap) !important;
 
-    overflow: visible !important;           /* ✅ important */
-    align-items: center !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+
+    align-items: stretch !important;
   }
 
-  /* cover smaller but same idea */
+  /* cover */
   .p5-cover-wrap{
     width: var(--m-cover) !important;
     height: var(--m-cover) !important;
@@ -856,160 +860,200 @@
     flex: 0 0 auto !important;
   }
 
-  /* RIGHT SIDE = GRID AREAS (this matches your diagram) */
+  /* right column stack */
   .p5-music-right{
     flex: 1 !important;
     min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
 
+  /* top row: meta left, actions right */
+  .p5-music-top{
     display: grid !important;
     grid-template-columns: 1fr auto !important;
-    grid-template-rows: auto auto auto !important;
-    grid-template-areas:
-      "meta actions"
-      "mid  mid"
-      "bottom bottom" !important;
-
-    row-gap: 6px !important;
     column-gap: 10px !important;
     align-items: start !important;
   }
 
-  .p5-track-meta{
-    grid-area: meta !important;
-    min-width: 0 !important;
-  }
-
-  .p5-top-actions{
-    grid-area: actions !important;
-
-    /* make volume first row, buttons under it */
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    gap: 6px !important;
-  }
-
-  /* ✅ make volume row take full line so shuffle/loop/mute go UNDER */
-  .p5-vol-box{
-    flex: 0 0 100% !important;         /* forces next items to next line */
-    display:flex !important;
-    justify-content:flex-end !important;
-    align-items:center !important;
-    gap: 8px !important;
-  }
-
-  /* hide kicker on mobile */
   .p5-track-kicker{ display:none !important; }
 
-  /* title + artist sizes */
   .p5-track-title{
     font-size: var(--m-title) !important;
     font-weight: 900 !important;
     line-height: 1.1 !important;
+    margin-top: 0 !important;
+
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
   }
+
+  .p5-track-title .marquee{
+    animation: none !important;
+    padding-left: 0 !important;
+  }
+
   .p5-track-artist{
     font-size: var(--m-artist) !important;
     font-weight: 700 !important;
-    opacity: .82 !important;
+    opacity: .85 !important;
+    margin-top: 2px !important;
     line-height: 1.1 !important;
+
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    margin-top: 2px !important;
   }
 
-  /* all small icon buttons */
+  /* right side becomes: volume on top, buttons under */
+  .p5-top-actions{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 6px !important;
+  }
+
+  /* base button sizing */
   .p5-mbtn{
     padding: var(--m-btn-pad-y) var(--m-btn-pad-x) !important;
     border-radius: var(--m-btn-radius) !important;
     line-height: 1 !important;
   }
+
   .p5-ico{
     width: var(--m-icon) !important;
     height: var(--m-icon) !important;
   }
 
-  /* play row */
+  /* volume box: ONLY slider visible here */
+  .p5-vol-box{
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  /* hide the mute button inside vol box (we place mute under volume instead) */
+  .p5-vol-box .p5-vol-btn{
+    display: none !important;
+  }
+
+  /* volume slider */
+  .p5-vol-slider{
+    width: var(--m-vol-w) !important;
+    height: var(--m-vol-h) !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    touch-action: pan-x !important;
+  }
+
+  .p5-vol-slider::-webkit-slider-thumb{
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    width: var(--m-vol-thumb) !important;
+    height: var(--m-vol-thumb) !important;
+    border-radius: 999px !important;
+  }
+
+  .p5-vol-slider::-moz-range-thumb{
+    width: var(--m-vol-thumb) !important;
+    height: var(--m-vol-thumb) !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+  }
+
+  /* make shuffle/loop/mute row under volume */
+  .p5-top-actions{
+    display: grid !important;
+    grid-template-rows: auto auto !important;
+    justify-items: end !important;
+  }
+  .p5-vol-box{ grid-row: 1 !important; }
+
+  /* put the 3 buttons into row 2 */
+  #p5Shuffle, #p5Loop, #p5Mute{
+    grid-row: 2 !important;
+  }
+
+  /* force row layout for those 3 */
+  .p5-top-actions{
+    grid-auto-flow: row !important;
+  }
+  #p5Shuffle, #p5Loop, #p5Mute{
+    display: inline-flex !important;
+    margin-left: 6px !important;
+  }
+
+  /* mid row: prev/play/next */
   .p5-music-mid{
-    grid-area: mid !important;
-    display:flex !important;
-    justify-content:center !important;
-    align-items:center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     gap: 12px !important;
     margin: 0 !important;
   }
 
-  /* play button (bigger than others but still small) */
+  .p5-skip{
+    padding: 6px 8px !important;
+    border-radius: 12px !important;
+  }
+
+  /* play bigger than others but still small */
   .p5-playhero{
     width: var(--m-play) !important;
     height: var(--m-play) !important;
     border-radius: 14px !important;
-    flex: 0 0 auto !important;
   }
   .p5-playhero img{
     width: var(--m-play-icon) !important;
     height: var(--m-play-icon) !important;
   }
 
-  /* bottom row */
+  /* bottom: time + seek centered */
   .p5-music-bottom{
-    grid-area: bottom !important;
-    display:flex !important;
+    display: flex !important;
     flex-direction: column !important;
-    gap: 4px !important;
     align-items: center !important;
-    margin: 0 !important;
+    gap: 6px !important;
+    margin-top: 0 !important;
   }
 
-  /* time row smaller */
   .p5-time-row{
     width: var(--m-seek-w) !important;
-    display:flex !important;
+    display: flex !important;
     justify-content: space-between !important;
-    align-items:center !important;
+    align-items: center !important;
     font-size: var(--m-time) !important;
     font-weight: 800 !important;
     opacity: .9 !important;
+    margin: 0 !important;
   }
 
-  /* seek bar centered and 75% width */
   .p5-seek{
     width: var(--m-seek-w) !important;
     height: var(--m-seek-h) !important;
-
-    -webkit-appearance:none !important;
-    appearance:none !important;
-
-    touch-action: pan-x !important;  /* ✅ drag works on phone */
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    touch-action: pan-x !important;
   }
+
   .p5-seek::-webkit-slider-thumb{
-    -webkit-appearance:none !important;
-    appearance:none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
     width: var(--m-seek-thumb) !important;
     height: var(--m-seek-thumb) !important;
     border-radius: 999px !important;
   }
 
-  /* volume slider sizes */
-  .p5-vol-slider{
-    width: var(--m-vol-w) !important;
-    height: var(--m-vol-h) !important;
-
-    -webkit-appearance:none !important;
-    appearance:none !important;
-
-    touch-action: pan-x !important;  /* ✅ drag works */
-  }
-  .p5-vol-slider::-webkit-slider-thumb{
-    -webkit-appearance:none !important;
-    appearance:none !important;
-    width: var(--m-vol-thumb) !important;
-    height: var(--m-vol-thumb) !important;
+  .p5-seek::-moz-range-thumb{
+    width: var(--m-seek-thumb) !important;
+    height: var(--m-seek-thumb) !important;
     border-radius: 999px !important;
+    border: 0 !important;
   }
 }
   
