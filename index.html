@@ -1061,6 +1061,16 @@ body.intro-active #p5LayoutPanel{
 @media (max-width: 820px) and (hover: none) and (pointer: coarse) {
   .p5-editor-toggle{ display: block; }
 }
+  /* ✅ Mobile: Editor button bottom-center */
+@media (max-width: 820px) and (hover: none) and (pointer: coarse) {
+  .p5-editor-toggle{
+    left: 50% !important;
+    right: auto !important;
+    bottom: calc(24px + env(safe-area-inset-bottom)) !important; /* your -24 request */
+    transform: translateX(-50%) !important;
+    display: block;
+  }
+}
 
 .p5-layout-panel h3{ margin:0 0 10px; font-size:14px; font-weight:900; }
 .p5-layout-row{
