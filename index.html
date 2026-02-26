@@ -1446,6 +1446,11 @@ body.intro-active #p5LayoutPanel{
 </section>  <audio id="bgMusic" preload="auto"></audio>
 
 <footer>© 2026 Luvie Edits</footer>  
+  
+      <button id="p5EditorToggle" class="p5-editor-toggle" type="button">
+⚙️ Editor
+</button>
+  
   <div class="p5-layout-panel" id="p5LayoutPanel">
   <h3>Mobile Hero Layout Editor</h3>
 
@@ -1668,7 +1673,7 @@ body.intro-active #p5LayoutPanel{
   const tapOverlay   = document.getElementById("tapSoundOverlay");  
   const tapBtn       = document.getElementById("tapSoundBtn");  
 
-  document.body.classList.add("intro-active");
+  document.body.classList.remove("intro-active");
   
   tapOverlay.classList.add("show");  
   document.body.style.overflow = "hidden";  
@@ -2406,10 +2411,6 @@ volSlider.addEventListener("input", ()=>{
     document.body.classList.toggle("p5-layout-edit");
   });
 })();
-    
-    <button id="p5EditorToggle" class="p5-editor-toggle" type="button">
-⚙️ Editor
-</button>
     
 </script>  
 </body>  
