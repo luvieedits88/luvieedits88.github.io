@@ -1025,54 +1025,71 @@
     <div id="p5TrackArtist" class="p5-track-artist">—</div>
   </div>
 
-  <div class="p5-top-right">
+  <div class="p5-music-right">
 
-    <!-- Volume slider -->
-    <input id="p5Volume" class="p5-vol-slider" type="range"
-           min="0" max="1" step="0.01" value="0.7">
+  <!-- TOP: title/artist + volume + (shuffle/loop/mute under volume) -->
+  <div class="p5-music-top">
 
-    <!-- Shuffle / Loop / Mute UNDER volume -->
-    <div class="p5-actions-row">
-
-      <button id="p5Shuffle" class="p5-mbtn" type="button">
-        <img class="p5-ico" src="shuffle.svg" alt="">
-      </button>
-
-      <button id="p5Loop" class="p5-mbtn" type="button">
-        <img class="p5-ico" src="loop.svg" alt="">
-      </button>
-
-      <button id="p5Mute" class="p5-mbtn" type="button">
-        <img class="p5-ico" src="mute.svg" alt="">
-      </button>
-
+    <div class="p5-track-meta">
+      <div class="p5-track-kicker">Now Playing</div>
+      <div id="p5TrackTitle" class="p5-track-title">—</div>
+      <div id="p5TrackArtist" class="p5-track-artist">—</div>
     </div>
-    
+
+    <div class="p5-top-right">
+
+      <!-- Volume slider (ONLY ONE) -->
+      <input id="p5Volume" class="p5-vol-slider" type="range"
+             min="0" max="1" step="0.01" value="0.5"
+             aria-label="Volume">
+
+      <!-- Shuffle / Loop / Mute under volume -->
+      <div class="p5-actions-row">
+
+        <button id="p5Shuffle" class="p5-mbtn" type="button" aria-label="Shuffle">
+          <img src="shuffle-icon.png" class="p5-ico" alt="">
+        </button>
+
+        <button id="p5Loop" class="p5-mbtn" type="button" aria-label="Loop">
+          <img src="loop-icon.png" class="p5-ico" alt="">
+        </button>
+
+        <button id="p5Mute" class="p5-mbtn" type="button" aria-label="Mute/unmute">
+          <img id="p5VolIcon" src="volume on.png" class="p5-ico" alt="">
+        </button>
+
+      </div>
+    </div>
   </div>
-    
+
+  <!-- MID: prev / play / next -->
+  <div class="p5-music-mid">
+    <button id="p5Prev" class="p5-mbtn p5-skip" type="button" aria-label="Previous">
+      <img src="prev-icon.png" class="p5-ico" alt="">
+    </button>
+
+    <button id="p5Play" class="p5-playhero" type="button" aria-label="Play/Pause">
+      <img id="p5PlayIcon" src="start.png" alt="Play">
+    </button>
+
+    <button id="p5Next" class="p5-mbtn p5-skip" type="button" aria-label="Next">
+      <img src="next-icon.png" class="p5-ico" alt="">
+    </button>
+  </div>
+
+  <!-- BOTTOM: seek THEN time row (like you requested) -->
+  <div class="p5-music-bottom">
+    <input id="p5Seek" class="p5-seek" type="range" min="0" max="100" value="0" step="0.1"
+           aria-label="Seek">
+
+    <div class="p5-time-row">
+      <span id="p5Cur" class="p5-time">0:00</span>
+      <span id="p5Dur" class="p5-time">0:00</span>
+    </div>
+  </div>
+
 </div>
-
-    <div class="p5-top-actions">  
-      <button id="p5Shuffle" class="p5-mbtn" type="button" data-cursor="link" aria-label="Shuffle">  
-        <img src="shuffle-icon.png" class="p5-ico" alt="">  
-      </button>  
-
-      <button id="p5Loop" class="p5-mbtn" type="button" data-cursor="link" aria-label="Loop">  
-        <img src="loop-icon.png" class="p5-ico" alt="">  
-      </button>  
-
-      <div class="p5-vol-box">  
-        <button id="p5Mute" class="p5-mbtn p5-vol-btn" type="button" data-cursor="link" aria-label="Mute/unmute">  
-          <img id="p5VolIcon" class="p5-ico" src="volume on.png" alt="">  
-        </button>  
-
-        <input id="p5Volume" class="p5-vol-slider" type="range"  
-               min="0" max="1" step="0.01" value="0.5"  
-               data-cursor="h-resize" aria-label="Volume">  
-      </div>  
-    </div>  
-  </div>  
-
+      
   <div class="p5-music-mid">  
     <button id="p5Prev" class="p5-mbtn p5-skip" type="button" data-cursor="link" aria-label="Previous">  
       <img src="prev-icon.png" class="p5-ico" alt="">  
