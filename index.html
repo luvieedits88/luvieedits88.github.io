@@ -2336,45 +2336,44 @@ volSlider.addEventListener("input", ()=>{
     const first = document.querySelector(".p5-player");  
     if(first) setActive(first);  
   }  
-    /* ==========================================================
+   /* ==========================================================
    ✅ Mobile hero layout editor (moves + resizes + saves)
    ========================================================== */
-(function(){
+(function () {
   const root = document.documentElement;
   const panel = document.getElementById("p5LayoutPanel");
-  if(!panel) return;
+  if (!panel) return;
 
   const KEY = "p5MobileHeroVars_v1";
-
   const inputs = panel.querySelectorAll("[data-var]");
 
-  function setVar(name, value){
+  function setVar(name, value) {
     root.style.setProperty(name, value);
   }
-  function getVar(name){
+  function getVar(name) {
     return getComputedStyle(root).getPropertyValue(name).trim();
   }
 
-  function loadSaved(){
-    try{
+  function loadSaved() {
+    try {
       const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-      if(saved && typeof saved === "object"){
-        Object.entries(saved).forEach(([k,v])=> setVar(k, v));
+      if (saved && typeof saved === "object") {
+        Object.entries(saved).forEach(([k, v]) => setVar(k, v));
       }
-    }catch(e){}
+    } catch (e) {}
   }
 
-  function saveNow(){
+  function saveNow() {
     const out = {};
-    inputs.forEach(inp=>{
+    inputs.forEach((inp) => {
       const v = inp.dataset.var;
       out[v] = getVar(v);
     });
     localStorage.setItem(KEY, JSON.stringify(out));
   }
 
-  function syncInputsFromVars(){
-    inputs.forEach(inp=>{
+  function syncInputsFromVars() {
+    inputs.forEach((inp) => {
       const v = inp.dataset.var;
       const cur = getVar(v);
       inp.value = parseFloat(cur) || 0;
@@ -2385,60 +2384,55 @@ volSlider.addEventListener("input", ()=>{
   loadSaved();
   syncInputsFromVars();
 
-inputs.forEach(inp => {
-  const handler = () => {
-    const v = inp.dataset.var;
-    const unit = inp.dataset.unit || "px";
-    const n = Number(inp.value);
+  inputs.forEach((inp) => {
+    const handler = () => {
+      const v = inp.dataset.var;
+      const unit = inp.dataset.unit || "px";
+      const n = Number(inp.value);
 
-    if (unit === "%") setVar(v, `${n}%`);
-    else setVar(v, `${n}px`);
-
-    saveNow();
-  };
-
-  inp.addEventListener("input", handler);
-  inp.addEventListener("change", handler); // ✅ Samsung fix
-});
-
-      // variables that are already percentages
-      if(unit === "%") setVar(v, `${n}%`);
+      if (unit === "%") setVar(v, `${n}%`);
       else setVar(v, `${n}px`);
 
       saveNow();
-    });
+    };
+
+    inp.addEventListener("input", handler);
+    inp.addEventListener("change", handler); // ✅ Samsung fix
   });
 
-document.getElementById("p5EnterEdit")?.addEventListener("click", ()=>{
-  document.body.classList.toggle("p5-layout-edit");
-});
-document.getElementById("p5ExitEdit")?.addEventListener("click", ()=>{
-  document.body.classList.remove("p5-layout-edit");
-});
+  document.getElementById("p5EnterEdit")?.addEventListener("click", () => {
+    document.body.classList.toggle("p5-layout-edit");
+  });
+  document.getElementById("p5ExitEdit")?.addEventListener("click", () => {
+    document.body.classList.remove("p5-layout-edit");
+  });
 
-  document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
+  document.getElementById("p5ResetMobileCSS")?.addEventListener("click", () => {
     localStorage.removeItem(KEY);
-    // reload page vars from CSS defaults by clearing inline style
-    inputs.forEach(inp=>{
+    inputs.forEach((inp) => {
       const v = inp.dataset.var;
       root.style.removeProperty(v);
     });
     syncInputsFromVars();
   });
 
-  document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async ()=>{
+  document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async () => {
     const vars = {};
-    inputs.forEach(inp=>{
+    inputs.forEach((inp) => {
       const v = inp.dataset.var;
       vars[v] = getVar(v);
     });
 
-    const css = `@media (max-width: 820px) and (hover: none) and (pointer: coarse) {\n  :root{\n${Object.entries(vars).map(([k,val])=>`    ${k}: ${val};`).join("\n")}\n  }\n}`;
+    const css =
+      `@media (max-width: 820px) and (hover: none) and (pointer: coarse) {\n` +
+      `  :root{\n` +
+      Object.entries(vars).map(([k, val]) => `    ${k}: ${val};`).join("\n") +
+      `\n  }\n}`;
 
-    try{
+    try {
       await navigator.clipboard.writeText(css);
       alert("Copied! Paste this into your CSS to save forever.");
-    }catch(e){
+    } catch (e) {
       console.log(css);
       alert("Clipboard blocked. I printed it in console.");
     }
