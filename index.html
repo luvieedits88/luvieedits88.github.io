@@ -791,39 +791,82 @@
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }  
   }  
 /* ==========================================================
-   📱 MOBILE ONLY — fixed width + fixed height + full controls
-   (shuffle/loop/mute/volume back)
+   📱 MOBILE MUSIC PLAYER — EASY CONTROL PANEL (CSS variables)
+   Change values in :root below to resize/move everything.
    ========================================================== */
-@media (max-width:768px){
 
-  /* width like your red lines (not full screen) */
-  .p5-mini-mobile{
-    width: min(92vw, 420px) !important;   /* ✅ adjust 420px if you want wider */
-    top: calc(8px + env(safe-area-inset-top)) !important;
+/* ✅ MOBILE KNOBS */
+@media (max-width:768px){
+  :root{
+    /* Player box */
+    --m-player-width: min(92vw, 420px);  /* width (red lines) */
+    --m-player-top: calc(8px + env(safe-area-inset-top)); /* move up/down */
+    --m-frame-h: 50px;                  /* height (yellow line) */
+    --m-pad-y: 10px;                     /* inside padding */
+    --m-pad-x: 12px;
+    --m-gap: 10px;                       /* overall gaps */
+    --m-radius: 22px;
+
+    /* Cover */
+    --m-cover: 54px;
+
+    /* Text */
+    --m-title: 11px;
+    --m-artist: 9px;
+
+    /* Buttons */
+    --m-btn-pad-y: 6px;
+    --m-btn-pad-x: 8px;
+    --m-btn-radius: 12px;
+    --m-icon: 14px;
+
+    /* Play button */
+    --m-play: 40px;
+    --m-play-icon: 16px;
+
+    /* Volume slider */
+    --m-vol-w: 88px;
+    --m-vol-h: 6px;
+    --m-vol-thumb: 14px;
+
+    /* Seek slider */
+    --m-seek-h: 6px;
+    --m-seek-thumb: 14px;
+
+    /* Layout fine tune (move groups) */
+    --m-top-gap: 10px;   /* space between title block and buttons block */
+    --m-mid-gap: 12px;   /* gap between prev/play/next */
+    --m-bottom-gap: 6px; /* gap between time and seek */
   }
 
-  /* frame height like your yellow line */
-  .p5-mini-mobile .p5-music-frame{
-    height: 122px !important;            /* ✅ adjust 112–132 to match yellow line */
-    max-height: 122px !important;
+  /* Position + width */
+  .p5-music-hero{
+    width: var(--m-player-width) !important;
+    top: var(--m-player-top) !important;
+  }
+
+  /* Frame size */
+  .p5-music-frame{
+    height: var(--m-frame-h) !important;
+    max-height: var(--m-frame-h) !important;
     overflow: hidden !important;
 
-    padding: 10px 12px !important;
-    border-radius: 22px !important;
-    gap: 10px !important;
+    padding: var(--m-pad-y) var(--m-pad-x) !important;
+    border-radius: var(--m-radius) !important;
+    gap: var(--m-gap) !important;
     align-items: center !important;
   }
 
-  /* cover */
-  .p5-mini-mobile .p5-cover-wrap{
-    width: 54px !important;
-    height: 54px !important;
-    border-radius: 14px !important;
+  /* Cover */
+  .p5-cover-wrap{
+    width: var(--m-cover) !important;
+    height: var(--m-cover) !important;
+    border-radius: calc(var(--m-radius) - 8px) !important;
     flex: 0 0 auto !important;
   }
 
-  /* right side = tight layout */
-  .p5-mini-mobile .p5-music-right{
+  /* Right side stack */
+  .p5-music-right{
     flex: 1 !important;
     min-width: 0 !important;
     display: flex !important;
@@ -831,115 +874,89 @@
     gap: 8px !important;
   }
 
-  /* -------- TOP ROW: title/artist + shuffle/loop/mute/volume -------- */
-  .p5-mini-mobile .p5-music-top{
+  /* TOP row: title/artist + actions */
+  .p5-music-top{
     display: grid !important;
     grid-template-columns: 1fr auto !important;
+    gap: var(--m-top-gap) !important;
     align-items: start !important;
-    gap: 10px !important;
   }
 
-  .p5-mini-mobile .p5-track-kicker{
-    display: none !important; /* saves height */
-  }
+  .p5-track-kicker{ display:none !important; }
 
-  /* scrolling title + artist */
-  .p5-mini-mobile .p5-track-title,
-  .p5-mini-mobile .p5-track-artist{
-    overflow: hidden !important;
-    white-space: nowrap !important;
-    max-width: 100% !important;
-    position: relative !important;
-  }
-
-  .p5-mini-mobile .p5-track-title{
-    font-size: 13px !important;
+  .p5-track-title{
+    font-size: var(--m-title) !important;
     font-weight: 900 !important;
     line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
-
-  .p5-mini-mobile .p5-track-artist{
-    margin-top: 2px !important;
-    font-size: 11px !important;
+  .p5-track-artist{
+    font-size: var(--m-artist) !important;
     font-weight: 700 !important;
     opacity: .82 !important;
+    margin-top: 2px !important;
     line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
-  .p5-mini-mobile .p5-track-title .p5-scroll,
-  .p5-mini-mobile .p5-track-artist .p5-scroll{
-    display: inline-block !important;
-    padding-left: 100% !important;
-    animation: p5Scroll 10s linear infinite !important;
-    will-change: transform;
+  /* Button sizing */
+  .p5-mbtn{
+    padding: var(--m-btn-pad-y) var(--m-btn-pad-x) !important;
+    border-radius: var(--m-btn-radius) !important;
+  }
+  .p5-ico{
+    width: var(--m-icon) !important;
+    height: var(--m-icon) !important;
   }
 
-  @keyframes p5Scroll{
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+  /* Volume */
+  .p5-vol-slider{
+    width: var(--m-vol-w) !important;
+    height: var(--m-vol-h) !important;
+  }
+  .p5-vol-slider::-webkit-slider-thumb{
+    width: var(--m-vol-thumb) !important;
+    height: var(--m-vol-thumb) !important;
   }
 
-  /* actions group back */
-  .p5-mini-mobile .p5-top-actions{
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-  }
-
-  /* buttons smaller */
-  .p5-mini-mobile .p5-mbtn{
-    padding: 6px 8px !important;
-    border-radius: 12px !important;
-  }
-  .p5-mini-mobile .p5-ico{ width: 14px !important; height: 14px !important; }
-
-  /* volume (compact) */
-  .p5-mini-mobile .p5-vol-box{ gap: 8px !important; }
-  .p5-mini-mobile .p5-vol-slider{
-    width: 88px !important;
-    height: 6px !important;
-  }
-  .p5-mini-mobile .p5-vol-slider::-webkit-slider-thumb{
-    width: 14px !important;
-    height: 14px !important;
-  }
-
-  /* -------- MID ROW: prev/play/next (compact) -------- */
-  .p5-mini-mobile .p5-music-mid{
+  /* MID row controls */
+  .p5-music-mid{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap: var(--m-mid-gap) !important;
     margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 12px !important;
   }
 
-  .p5-mini-mobile .p5-playhero{
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 14px !important;
+  .p5-playhero{
+    width: var(--m-play) !important;
+    height: var(--m-play) !important;
+    border-radius: calc(var(--m-btn-radius) + 2px) !important;
   }
-  .p5-mini-mobile .p5-playhero img{ width: 16px !important; height: 16px !important; }
+  .p5-playhero img{
+    width: var(--m-play-icon) !important;
+    height: var(--m-play-icon) !important;
+  }
 
-  .p5-mini-mobile .p5-skip{ padding: 6px 9px !important; }
-
-  /* -------- BOTTOM ROW: time + seek (thin) -------- */
-  .p5-mini-mobile .p5-music-bottom{
-    gap: 6px !important;
+  /* Bottom seek + time */
+  .p5-music-bottom{
+    gap: var(--m-bottom-gap) !important;
     margin-top: 0 !important;
   }
-
-  .p5-mini-mobile .p5-time-row{
+  .p5-time-row{
     font-size: 10px !important;
     font-weight: 900 !important;
     opacity: .9 !important;
   }
 
-  .p5-mini-mobile .p5-seek{
-    height: 6px !important;
-  }
-  .p5-mini-mobile .p5-seek::-webkit-slider-thumb{
-    width: 14px !important;
-    height: 14px !important;
+  .p5-seek{ height: var(--m-seek-h) !important; }
+  .p5-seek::-webkit-slider-thumb{
+    width: var(--m-seek-thumb) !important;
+    height: var(--m-seek-thumb) !important;
   }
 }
   
