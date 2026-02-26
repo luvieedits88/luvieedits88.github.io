@@ -790,9 +790,10 @@
     .p5-track-title{ font-size:14px; }  
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }  
   }  
- /* ✅ FORCE compact TOP music player on mobile */
+ /* ✅ SUPER COMPACT TOP MUSIC PLAYER (phones only) */
 @media (max-width:768px){
 
+  /* make the whole bar shorter */
   .p5-music-frame{
     padding: 10px !important;
     border-radius: 18px !important;
@@ -800,40 +801,78 @@
     align-items: center !important;
   }
 
+  /* smaller cover */
   .p5-cover-wrap{
-    width: 70px !important;
-    height: 70px !important;
+    width: 64px !important;
+    height: 64px !important;
     border-radius: 14px !important;
   }
 
+  /* tighten right column */
   .p5-music-right{ gap: 6px !important; }
 
-  .p5-track-kicker{ font-size: 10px !important; line-height: 1.1 !important; }
-  .p5-track-title{ font-size: 12px !important; line-height: 1.15 !important; }
-  .p5-track-artist{ font-size: 10px !important; line-height: 1.1 !important; }
+  /* make top row layout: text + actions */
+  .p5-music-top{
+    gap: 8px !important;
+    align-items: flex-start !important;
+  }
 
+  /* text sizes + clamp so it stays short */
+  .p5-track-kicker{ font-size: 10px !important; line-height: 1.1 !important; }
+  .p5-track-title{
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+    max-width: 220px; /* keeps height small */
+  }
+  .p5-track-artist{
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+    max-width: 220px;
+  }
+
+  /* make your marquee scroll fit this */
+  .p5-track-title, .p5-track-artist{
+    overflow: hidden !important;
+    white-space: nowrap !important;
+  }
+
+  /* buttons smaller */
   .p5-top-actions{ gap: 6px !important; }
   .p5-mbtn{
-    padding: 7px 9px !important;
+    padding: 6px 8px !important;
     border-radius: 12px !important;
   }
-  .p5-ico{ width: 15px !important; height: 15px !important; }
+  .p5-ico{ width: 14px !important; height: 14px !important; }
 
+  /* volume slider shorter */
+  .p5-vol-slider{
+    width: 84px !important;
+    height: 6px !important;
+  }
+  .p5-vol-slider::-webkit-slider-thumb{
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* mid controls: smaller + tighter */
+  .p5-music-mid{
+    gap: 10px !important;
+    margin-top: 0 !important;
+  }
   .p5-playhero{
-    width: 44px !important;
-    height: 44px !important;
+    width: 40px !important;
+    height: 40px !important;
     border-radius: 14px !important;
   }
-  .p5-playhero img{ width: 20px !important; height: 20px !important; }
+  .p5-playhero img{ width: 18px !important; height: 18px !important; }
+  .p5-skip{ padding: 6px 9px !important; }
 
-  .p5-vol-slider{ width: 92px !important; height: 7px !important; }
-  .p5-vol-slider::-webkit-slider-thumb{ width: 16px !important; height: 16px !important; }
-
-  .p5-music-bottom{ gap: 6px !important; }
+  /* bottom: keep but compact */
+  .p5-music-bottom{ gap: 5px !important; }
   .p5-time-row{ font-size: 10px !important; line-height: 1 !important; }
 
-  .p5-seek{ height: 7px !important; }
-  .p5-seek::-webkit-slider-thumb{ width: 16px !important; height: 16px !important; }
+  .p5-seek{ height: 6px !important; }
+  .p5-seek::-webkit-slider-thumb{ width: 14px !important; height: 14px !important; }
 }
 
   .p5-seek{ height: 7px; }
@@ -1498,7 +1537,8 @@ function setMuteIcon(){
   music.src = t.src;  
   const title = t.title || t.src;
   titleEl.innerHTML = `<span class="marquee">${title}</span>`;
-  if(artistEl) artistEl.textContent = t.artist || "";  
+  const artist = t.artist || "";
+  artistEl.innerHTML = artist ? `<span class="marquee">${artist}</span>` : ""; 
   coverImg.src = t.cover;  
   
   seek.value = 0;  
