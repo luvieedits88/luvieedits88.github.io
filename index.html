@@ -107,7 +107,7 @@
   .tap-sound-overlay{  
     position:fixed;  
     inset:0;  
-    z-index:100000;  
+    z-index:6;  
     display:flex;  
     align-items:flex-end;  
     justify-content:center;  
@@ -1199,9 +1199,13 @@ body.intro-active #p5LayoutPanel{
   </video>  
   <button id="skipIntro" class="intro-skip" type="button" aria-label="Skip intro" data-cursor="link">Skip</button>  
   <div class="intro-outro" aria-hidden="true"></div>  
-</div>  <!-- SOUND BUTTON -->  <div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">  
-  <button id="tapSoundBtn" class="tap-sound-btn" type="button" data-cursor="link">Tap to enable sound</button>  
-</div>  <section class="hero">  
+  <!-- SOUND BUTTON -->
+<div id="tapSoundOverlay" class="tap-sound-overlay" aria-hidden="false">
+  <button id="tapSoundBtn" class="tap-sound-btn" type="button" data-cursor="link">Tap to enable sound</button>
+ </div>
+</div>
+
+  <section class="hero">  
   <img src="joker.png" class="character joker" alt="Joker">  
   <img src="sumire.png" class="character sumire" alt="Sumire">    <h1 class="title">LUVIE EDITS</h1>  
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>  
