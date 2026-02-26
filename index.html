@@ -2422,19 +2422,7 @@ window.addEventListener("load", () => {
   inp.addEventListener("input", handler);
   inp.addEventListener("change", handler); // Android/Samsung
 });
-  
- const enterBtn = document.getElementById("p5EnterEdit");
- const exitBtn  = document.getElementById("p5ExitEdit");
 
- enterBtn?.addEventListener("click", () => {
-   document.body.classList.add("p5-layout-edit");
-   panel.style.display = "block";
- });
-
- exitBtn?.addEventListener("click", () => {
-   document.body.classList.remove("p5-layout-edit");
-   panel.style.display = "none";
- });
 
   document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
     localStorage.removeItem(KEY);
@@ -2467,24 +2455,24 @@ ${Object.entries(vars).map(([k,val])=>`    ${k}: ${val};`).join("\n")}
     }
   });
 })();
-    // ===== Mobile editor toggle button (with intro-safe fix) =====
-(function(){
-  const btn = document.getElementById("p5EditorToggle");
+  
+    // ✅ CLEAN SINGLE EDITOR TOGGLE (FINAL FIX)
+(function () {
+
+  const btn   = document.getElementById("p5EditorToggle");
   const panel = document.getElementById("p5LayoutPanel");
-  if(!btn || !panel) return;
+  if (!btn || !panel) return;
 
-  function openClose(){
-    // If you refreshed while intro was active, this can get stuck:
-    document.body.classList.remove("intro-active");
-
+  function toggleEditor(){
     document.body.classList.toggle("p5-layout-edit");
-
-    // hard force (beats weird display state)
-    panel.style.display = document.body.classList.contains("p5-layout-edit") ? "block" : "none";
   }
 
-  btn.addEventListener("click", openClose);
-  btn.addEventListener("touchend", (e)=>{ e.preventDefault(); openClose(); }, {passive:false});
+  btn.addEventListener("click", toggleEditor);
+  btn.addEventListener("touchend", function(e){
+    e.preventDefault();
+    toggleEditor();
+  }, { passive:false });
+
 })();
     
 </script>  
