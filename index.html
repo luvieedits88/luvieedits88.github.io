@@ -2355,10 +2355,10 @@ window.addEventListener("load", () => {
     if(first) setActive(first);  
   }  
    /* ==========================================================
-   ✅ Mobile hero layout editor (moves + resizes + saves)
+   ✅ Mobile hero layout editor (moves + resizes + saves) — FIXED
    ========================================================== */
 (function(){
-  const root = document.documentElement;
+  const root  = document.documentElement;
   const panel = document.getElementById("p5LayoutPanel");
   if(!panel) return;
 
@@ -2395,12 +2395,8 @@ window.addEventListener("load", () => {
       const v = inp.dataset.var;
       const cur = getVar(v);
 
-      // If it's % in CSS, preserve it
-      if(cur.endsWith("%")){
-        inp.value = parseFloat(cur) || 0;
-      }else{
-        inp.value = parseFloat(cur) || 0;
-      }
+      // keep % values usable in number input
+      inp.value = parseFloat(cur) || 0;
     });
   }
 
@@ -2408,30 +2404,58 @@ window.addEventListener("load", () => {
   loadSaved();
   syncInputsFromVars();
 
- inputs.forEach(inp => {
-  const handler = () => {
-    const v = inp.dataset.var;
-    const unit = inp.dataset.unit || "px";
-    const n = Number(inp.value);
+  // live update vars while typing
+  inputs.forEach(inp => {
+    const handler = () => {
+      const v = inp.dataset.var;
+      const unit = inp.dataset.unit || "px";
+      const n = Number(inp.value);
 
-    const value = unit === "%" ? `${n}%` : `${n}${unit}`;
-    setVar(v, value);
-    saveNow();
-  };
+      if(Number.isFinite(n)){
+        setVar(v, unit === "%" ? `${n}%` : `${n}px`);
+        saveNow();
+      }
+    };
 
-  inp.addEventListener("input", handler);
-  inp.addEventListener("change", handler); // Android/Samsung
-});
+    inp.addEventListener("input", handler);
+    inp.addEventListener("change", handler); // Android/Samsung
+  });
 
+  // Toggle buttons
+  const toggleBtn = document.getElementById("p5EditorToggle");
+  const enterBtn  = document.getElementById("p5EnterEdit");
+  const exitBtn   = document.getElementById("p5ExitEdit");
 
+  function openPanel(){
+    document.body.classList.remove("intro-active"); // safety
+    document.body.classList.add("p5-layout-edit");
+    panel.style.display = "block";
+  }
+
+  function closePanel(){
+    document.body.classList.remove("p5-layout-edit");
+    panel.style.display = "none";
+  }
+
+  function togglePanel(){
+    if(document.body.classList.contains("p5-layout-edit")) closePanel();
+    else openPanel();
+  }
+
+  toggleBtn?.addEventListener("click", togglePanel);
+  toggleBtn?.addEventListener("touchend", (e)=>{ e.preventDefault(); togglePanel(); }, {passive:false});
+
+  enterBtn?.addEventListener("click", openPanel);
+  exitBtn?.addEventListener("click", closePanel);
+
+  // Reset
   document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
     localStorage.removeItem(KEY);
-    inputs.forEach(inp=>{
-      root.style.removeProperty(inp.dataset.var);
-    });
+    inputs.forEach(inp => root.style.removeProperty(inp.dataset.var));
     syncInputsFromVars();
   });
 
+  // Copy permanent CSS
   document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async ()=>{
     const vars = {};
     inputs.forEach(inp=>{
@@ -2451,9 +2475,12 @@ ${Object.entries(vars).map(([k,val])=>`    ${k}: ${val};`).join("\n")}
       alert("Copied! Paste this into your CSS to save forever.");
     }catch(e){
       console.log(css);
-      alert("Clipboard blocked. I printed it in console.");
+      alert("Clipboard blocked. The CSS was printed in console.");
     }
   });
+
+  // Start closed
+  closePanel();
 })();
   
     // ✅ CLEAN SINGLE EDITOR TOGGLE (FINAL FIX)
