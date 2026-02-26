@@ -791,97 +791,92 @@
     .p5-playhero{ width:54px; height:54px; border-radius:16px; }  
   }  
 /* ==========================================================
-   📱 MOBILE MUSIC PLAYER — LAYOUT YOU ASKED FOR
-   [cover] [title+artist] [buttons + volume]
-   [seek bar]
-   [time left        time right]
+   📱 MOBILE PLAYER — layout like screenshot
+   [cover] [title/artist] [volume]
+                 [shuffle loop mute]
+        [prev]   [play]   [next]
+          [seek bar]
+   [time left]           [time right]
    ========================================================== */
 
-@media (max-width:768px){
+@media (hover:none) and (pointer:coarse) and (max-width:820px){
   :root{
-    /* Player box */
-    --m-player-width: min(92vw, 420px);
+    --m-player-width: min(94vw, 420px);
     --m-player-top: calc(8px + env(safe-area-inset-top));
 
-    /* Height of the whole bar (make it bigger if clipped) */
-    --m-frame-h: 72px;
-
-    /* Padding + spacing */
     --m-pad-y: 10px;
     --m-pad-x: 12px;
-    --m-gap: 10px;
     --m-radius: 22px;
+    --m-gap: 10px;
 
-    /* Cover */
     --m-cover: 54px;
 
-    /* Text */
     --m-title: 11px;
     --m-artist: 9px;
 
-    /* Buttons */
     --m-btn-pad-y: 6px;
     --m-btn-pad-x: 8px;
     --m-btn-radius: 12px;
-    --m-icon: 14px;
+    --m-icon: 13px;
 
-    /* Seek slider */
-    --m-seek-h: 6px;
-    --m-seek-thumb: 14px;
+    --m-play: 40px;        /* play/pause bigger than others */
+    --m-play-icon: 16px;
 
-    /* Volume slider */
-    --m-vol-w: 88px;
+    --m-vol-w: 110px;
     --m-vol-h: 6px;
     --m-vol-thumb: 14px;
 
-    /* Layout gaps */
-    --m-top-gap: 10px;
-    --m-bottom-gap: 6px;
+    --m-seek-h: 6px;
+    --m-seek-thumb: 14px;
 
-    /* Time text size */
-    --m-time-font: 10px;
+    --m-time: 9px;
   }
 
-  /* Player position + width */
+  /* player position + width */
   .p5-music-hero{
     width: var(--m-player-width) !important;
     top: var(--m-player-top) !important;
   }
 
-  /* Outer frame sizing */
+  /* frame */
   .p5-music-frame{
-    height: var(--m-frame-h) !important;
-    max-height: var(--m-frame-h) !important;
-
     padding: var(--m-pad-y) var(--m-pad-x) !important;
     border-radius: var(--m-radius) !important;
+    gap: var(--m-gap) !important;
 
-    display:grid !important;
-    grid-template-columns: var(--m-cover) 1fr auto !important;
-    grid-template-rows: auto auto auto !important;
-    grid-template-areas:
-      "cover meta actions"
-      "seek  seek seek"
-      "time  time time" !important;
+    /* IMPORTANT: don't lock height (locking height was hiding stuff) */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
 
-    column-gap: var(--m-gap) !important;
-    row-gap: var(--m-bottom-gap) !important;
-
-    align-items:center !important;
-    overflow:hidden !important;
+    align-items: stretch !important;
   }
 
-  /* Left cover */
-  .p5-music-left{ grid-area: cover !important; }
+  /* cover */
   .p5-cover-wrap{
     width: var(--m-cover) !important;
     height: var(--m-cover) !important;
     border-radius: calc(var(--m-radius) - 8px) !important;
-    overflow:hidden !important;
+    flex: 0 0 auto !important;
   }
 
-  /* Middle meta (title+artist) */
-  .p5-track-meta{ grid-area: meta !important; min-width:0 !important; }
+  /* Right column layout */
+  .p5-music-right{
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto auto !important;
+    row-gap: 8px !important;
+  }
+
+  /* TOP row: meta + volume column */
+  .p5-music-top{
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    column-gap: 10px !important;
+    align-items: start !important;
+  }
+
   .p5-track-kicker{ display:none !important; }
 
   .p5-track-title{
@@ -896,7 +891,7 @@
   .p5-track-artist{
     font-size: var(--m-artist) !important;
     font-weight: 700 !important;
-    opacity: .82 !important;
+    opacity: .85 !important;
     margin-top: 2px !important;
     line-height: 1.1 !important;
     white-space: nowrap !important;
@@ -905,88 +900,111 @@
     max-width: 100% !important;
   }
 
-  /* Right actions: shuffle/loop/mute + volume */
-  .p5-top-actions{
-    grid-area: actions !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
+  /* right top column (volume + actions under it) */
+  .p5-top-right{
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
     gap: 8px !important;
-    flex-wrap: nowrap !important;
-    min-width: 0 !important;
   }
 
-  /* Button sizing */
+  /* Buttons base */
   .p5-mbtn{
     padding: var(--m-btn-pad-y) var(--m-btn-pad-x) !important;
     border-radius: var(--m-btn-radius) !important;
+    line-height: 1 !important;
   }
   .p5-ico{
     width: var(--m-icon) !important;
     height: var(--m-icon) !important;
   }
 
-  /* Volume container + slider */
-  .p5-vol-box{
+  /* shuffle/loop/mute under volume */
+  .p5-actions-row{
     display:flex !important;
-    align-items:center !important;
-    gap:6px !important;
+    gap: 6px !important;
+    justify-content: flex-end !important;
   }
 
+  /* Volume slider — keep draggable */
   .p5-vol-slider{
     width: var(--m-vol-w) !important;
     height: var(--m-vol-h) !important;
-    -webkit-appearance:none !important;
-    appearance:none !important;
-    border-radius: 999px !important;
-    touch-action: pan-x !important; /* lets you drag on mobile */
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    touch-action: pan-x !important; /* IMPORTANT for mobile dragging */
   }
-
   .p5-vol-slider::-webkit-slider-thumb{
-    -webkit-appearance:none !important;
-    appearance:none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
     width: var(--m-vol-thumb) !important;
     height: var(--m-vol-thumb) !important;
     border-radius: 999px !important;
   }
+  .p5-vol-slider::-moz-range-thumb{
+    width: var(--m-vol-thumb) !important;
+    height: var(--m-vol-thumb) !important;
+    border-radius: 999px !important;
+    border: 0 !important;
+  }
 
-  /* Hide the old middle controls row (prev/play/next)
-     because you DIDN'T want it in your layout */
-  .p5-music-mid{ display:none !important; }
-
-  /* Seek row */
-  .p5-music-bottom{
-    grid-area: seek !important;
-    display:block !important;
+  /* MID row: prev / play / next visible */
+  .p5-music-mid{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap: 12px !important;
     margin: 0 !important;
   }
 
-  /* Put only the seek bar here */
+  /* make prev/next smaller */
+  .p5-music-mid .p5-mbtn{
+    padding: 6px 8px !important;
+    border-radius: 12px !important;
+  }
+
+  /* play button slightly bigger than others */
+  .p5-playhero{
+    width: var(--m-play) !important;
+    height: var(--m-play) !important;
+    border-radius: 14px !important;
+    flex: 0 0 auto !important;
+  }
+  .p5-playhero img{
+    width: var(--m-play-icon) !important;
+    height: var(--m-play-icon) !important;
+  }
+
+  /* Seek bar (draggable) */
   .p5-seek{
     width: 100% !important;
     height: var(--m-seek-h) !important;
-    -webkit-appearance:none !important;
-    appearance:none !important;
-    border-radius:999px !important;
-    touch-action: pan-x !important; /* lets you drag seek on mobile */
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    touch-action: pan-x !important; /* IMPORTANT */
   }
   .p5-seek::-webkit-slider-thumb{
-    -webkit-appearance:none !important;
-    appearance:none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
     width: var(--m-seek-thumb) !important;
     height: var(--m-seek-thumb) !important;
-    border-radius:999px !important;
+    border-radius: 999px !important;
+  }
+  .p5-seek::-moz-range-thumb{
+    width: var(--m-seek-thumb) !important;
+    height: var(--m-seek-thumb) !important;
+    border-radius: 999px !important;
+    border: 0 !important;
   }
 
-  /* Time row under seek */
+  /* time row: smaller + separated */
   .p5-time-row{
-    grid-area: time !important;
     display:flex !important;
-    justify-content:space-between !important;
+    justify-content: space-between !important;
     align-items:center !important;
-    font-size: var(--m-time-font) !important;
-    font-weight: 900 !important;
-    opacity: .92 !important;
+    font-size: var(--m-time) !important;
+    font-weight: 800 !important;
+    opacity: .9 !important;
     margin-top: 2px !important;
   }
 }
