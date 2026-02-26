@@ -786,33 +786,33 @@
     .p5-time{ min-width:auto; }  
   }  
  /* ==========================================================
-   ✅ MOBILE HERO MUSIC BAR (looks like your 2nd picture)
-   cover | title/artist | (top-right: volume + actions)
-   center overlay: prev play next
-   bottom: time (left) + seek bar (full)
+   ✅ MOBILE HERO MUSIC BAR + EDITOR VARS
    ========================================================== */
 @media (max-width: 820px) and (hover: none) and (pointer: coarse) {
 
   :root{
+    /* size */
     --m-player-width: min(92vw, 420px);
     --m-player-top: calc(8px + env(safe-area-inset-top));
 
-    --m-frame-h: 60px;          /* you said this height is perfect */
+    --m-frame-h: 60px;            /* bar height */
     --m-pad-y: 8px;
     --m-pad-x: 12px;
     --m-radius: 22px;
+    --m-gap: 10px;
 
     --m-cover: 54px;
 
     --m-title: 11px;
     --m-artist: 9px;
+    --m-time: 10px;
 
-    --m-icon: 10px;             /* shuffle/loop/mute/prev/next icons */
+    --m-icon: 10px;
     --m-btn-pad-y: 6px;
     --m-btn-pad-x: 8px;
     --m-btn-radius: 12px;
 
-    --m-play: 35px;             /* play button bigger than others */
+    --m-play: 35px;
     --m-play-icon: 16px;
 
     --m-vol-w: 88px;
@@ -823,16 +823,32 @@
     --m-seek-thumb: 14px;
     --m-seek-w: 75%;
 
-    --m-time: 10px;
+    /* MOVE EVERYTHING (X/Y offsets) */
+    --m-frame-x: 0px;
+    --m-frame-y: 0px;
+
+    --m-cover-x: 0px;
+    --m-cover-y: 0px;
+
+    --m-meta-x: 0px;
+    --m-meta-y: 0px;
+
+    --m-actions-x: 0px;
+    --m-actions-y: 0px;
+
+    --m-mid-x: 0px;
+    --m-mid-y: 0px;
+
+    --m-bottom-x: 0px;
+    --m-bottom-y: 0px;
   }
 
-  /* bar position */
   .p5-music-hero{
     width: var(--m-player-width) !important;
     top: var(--m-player-top) !important;
+    transform: translateX(-50%) translate(var(--m-frame-x), var(--m-frame-y)) !important;
   }
 
-  /* compact frame */
   .p5-music-frame{
     position: relative !important;
     height: var(--m-frame-h) !important;
@@ -847,7 +863,7 @@
       "cover bottom right" !important;
 
     align-items: center !important;
-    gap: 10px !important;
+    gap: var(--m-gap) !important;
     overflow: hidden !important;
   }
 
@@ -857,16 +873,18 @@
     width: var(--m-cover) !important;
     height: var(--m-cover) !important;
     border-radius: 16px !important;
+    transform: translate(var(--m-cover-x), var(--m-cover-y)) !important;
   }
 
-  /* hide “Now Playing” to match your slim bar */
+  /* hide kicker */
   .p5-track-kicker{ display:none !important; }
 
-  /* meta (title/artist) */
+  /* meta */
   .p5-music-top{
     grid-area: meta !important;
     margin: 0 !important;
     display: block !important;
+    transform: translate(var(--m-meta-x), var(--m-meta-y)) !important;
   }
   .p5-track-title{
     font-size: var(--m-title) !important;
@@ -875,6 +893,13 @@
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .p5-track-title .marquee{
+    animation: none !important; /* on small bar: no marquee */
+    padding-left: 0 !important;
+    transform: none !important;
   }
   .p5-track-artist{
     font-size: var(--m-artist) !important;
@@ -887,13 +912,14 @@
     margin-top: 2px !important;
   }
 
-  /* top-right: volume + actions under it */
+  /* right side */
   .p5-top-right{
     grid-area: right !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
     gap: 6px !important;
+    transform: translate(var(--m-actions-x), var(--m-actions-y)) !important;
   }
 
   .p5-actions-row{
@@ -928,12 +954,12 @@
     border-radius: 999px !important;
   }
 
-  /* center controls overlay (like your 2nd pic) */
+  /* mid overlay (prev play next) */
   .p5-music-mid{
     position: absolute !important;
     left: 50% !important;
     top: 50% !important;
-    transform: translate(-50%, -40%) !important;
+    transform: translate(-50%, -40%) translate(var(--m-mid-x), var(--m-mid-y)) !important;
     display: flex !important;
     gap: 10px !important;
     align-items: center !important;
@@ -942,13 +968,6 @@
     z-index: 5 !important;
   }
 
-  /* prev/next small */
-  .p5-skip .p5-ico{
-    width: var(--m-icon) !important;
-    height: var(--m-icon) !important;
-  }
-
-  /* play button bigger */
   .p5-playhero{
     width: var(--m-play) !important;
     height: var(--m-play) !important;
@@ -959,7 +978,7 @@
     height: var(--m-play-icon) !important;
   }
 
-  /* bottom (time + seek) */
+  /* bottom */
   .p5-music-bottom{
     grid-area: bottom !important;
     display: flex !important;
@@ -967,22 +986,20 @@
     gap: 4px !important;
     margin: 0 !important;
     align-items: flex-start !important;
+    transform: translate(var(--m-bottom-x), var(--m-bottom-y)) !important;
   }
 
-  /* time as “0:01/6:02” on left */
   .p5-time-row{
     font-size: var(--m-time) !important;
     font-weight: 800 !important;
     opacity: .9 !important;
     justify-content: flex-start !important;
-    gap: 0 !important;
   }
   #p5Dur::before{
     content: " / " !important;
     opacity: .9 !important;
   }
 
-  /* seek bar centered 75% width */
   .p5-seek{
     width: var(--m-seek-w) !important;
     height: var(--m-seek-h) !important;
@@ -998,6 +1015,55 @@
     border-radius: 999px !important;
   }
 }
+
+/* ==========================================================
+   ✅ EDITOR PANEL UI (works on all screens)
+   ========================================================== */
+.p5-layout-panel{
+  position: fixed;
+  left: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  z-index: 2147483646;
+  width: min(92vw, 380px);
+  background: rgba(0,0,0,0.78);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  padding: 12px;
+  display: none;
+  backdrop-filter: blur(8px);
+  color:#fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+body.p5-layout-edit .p5-layout-panel{ display:block; }
+
+.p5-layout-panel h3{ margin:0 0 10px; font-size:14px; font-weight:900; }
+.p5-layout-row{
+  display:grid;
+  grid-template-columns: 1fr 74px;
+  gap: 10px;
+  align-items:center;
+  margin: 8px 0;
+}
+.p5-layout-row label{ font-size: 12px; opacity:.9; }
+.p5-layout-row input[type="number"]{
+  width: 74px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  color:#fff;
+  border-radius: 10px;
+  padding: 6px 8px;
+}
+.p5-layout-actions{ display:flex; gap: 10px; margin-top: 10px; }
+.p5-layout-actions button{
+  flex:1;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,0,60,0.35);
+  color:#fff;
+  font-weight: 900;
+  padding: 10px 10px;
+}
+.p5-layout-actions button.secondary{ background: rgba(255,255,255,0.08); }
   
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
@@ -1353,7 +1419,51 @@
   </div>  
 </section>  <audio id="bgMusic" preload="auto"></audio>
 
-<footer>© 2026 Luvie Edits</footer>  <script>  
+<footer>© 2026 Luvie Edits</footer>  
+  <div class="p5-layout-panel" id="p5LayoutPanel">
+  <h3>Mobile Hero Layout Editor</h3>
+
+  <!-- sizes -->
+  <div class="p5-layout-row"><label>Bar height</label><input data-var="--m-frame-h" type="number" value="60"></div>
+  <div class="p5-layout-row"><label>Cover size</label><input data-var="--m-cover" type="number" value="54"></div>
+  <div class="p5-layout-row"><label>Icon size</label><input data-var="--m-icon" type="number" value="10"></div>
+  <div class="p5-layout-row"><label>Play size</label><input data-var="--m-play" type="number" value="35"></div>
+  <div class="p5-layout-row"><label>Title px</label><input data-var="--m-title" type="number" value="11"></div>
+  <div class="p5-layout-row"><label>Artist px</label><input data-var="--m-artist" type="number" value="9"></div>
+  <div class="p5-layout-row"><label>Seek width %</label><input data-var="--m-seek-w" data-unit="%" type="number" value="75"></div>
+  <div class="p5-layout-row"><label>Volume width</label><input data-var="--m-vol-w" type="number" value="88"></div>
+
+  <!-- move blocks -->
+  <div class="p5-layout-row"><label>Frame X</label><input data-var="--m-frame-x" type="number" value="0"></div>
+  <div class="p5-layout-row"><label>Frame Y</label><input data-var="--m-frame-y" type="number" value="0"></div>
+
+  <div class="p5-layout-row"><label>Cover X</label><input data-var="--m-cover-x" type="number" value="0"></div>
+  <div class="p5-layout-row"><label>Cover Y</label><input data-var="--m-cover-y" type="number" value="0"></div>
+
+  <div class="p5-layout-row"><label>Meta X</label><input data-var="--m-meta-x" type="number" value="0"></div>
+  <div class="p5-layout-row"><label>Meta Y</label><input data-var="--m-meta-y" type="number" value="0"></div>
+
+  <div class="p5-layout-row"><label>Actions X</label><input data-var="--m-actions-x" type="number" value="0"></div>
+  <div class="p5-layout-row"><label>Actions Y</label><input data-var="--m-actions-y" type="number" value="0"></div>
+
+  <div class="p5-layout-row"><label>Mid X</label><input data-var="--m-mid-x" type="number" value="0"></div>
+  <div class="p5-layout-row"><label>Mid Y</label><input data-var="--m-mid-y" type="number" value="0"></div>
+
+  <div class="p5-layout-row"><label>Bottom X</label><input data-var="--m-bottom-x" type="number" value="0"></div>
+  <div class="p5-layout-row"><label>Bottom Y</label><input data-var="--m-bottom-y" type="number" value="0"></div>
+
+  <div class="p5-layout-actions">
+    <button type="button" id="p5CopyMobileCSS">Copy Permanent CSS</button>
+    <button type="button" class="secondary" id="p5ResetMobileCSS">Reset</button>
+  </div>
+
+  <div class="p5-layout-actions">
+    <button type="button" class="secondary" id="p5ExitEdit">Exit</button>
+    <button type="button" class="secondary" id="p5EnterEdit">Edit Mode</button>
+  </div>
+</div>
+  
+  <script>  
   // =========================  
   // GIF CURSOR ENGINE  
   // =========================  
@@ -1586,7 +1696,6 @@
   const loopBtn    = document.getElementById("p5Loop");  
   
   const muteBtnH   = document.getElementById("p5Mute");  
-  const volBox     = document.querySelector(".p5-vol-box");  
   const volSlider  = document.getElementById("p5Volume");  
   
   const seek       = document.getElementById("p5Seek");  
@@ -2159,6 +2268,106 @@ volSlider.addEventListener("input", ()=>{
     const first = document.querySelector(".p5-player");  
     if(first) setActive(first);  
   }  
+    /* ==========================================================
+   ✅ Mobile hero layout editor (moves + resizes + saves)
+   ========================================================== */
+(function(){
+  const root = document.documentElement;
+  const panel = document.getElementById("p5LayoutPanel");
+  if(!panel) return;
+
+  const KEY = "p5MobileHeroVars_v1";
+
+  const inputs = panel.querySelectorAll("[data-var]");
+
+  function setVar(name, value){
+    root.style.setProperty(name, value);
+  }
+  function getVar(name){
+    return getComputedStyle(root).getPropertyValue(name).trim();
+  }
+
+  function loadSaved(){
+    try{
+      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+      if(saved && typeof saved === "object"){
+        Object.entries(saved).forEach(([k,v])=> setVar(k, v));
+      }
+    }catch(e){}
+  }
+
+  function saveNow(){
+    const out = {};
+    inputs.forEach(inp=>{
+      const v = inp.dataset.var;
+      out[v] = getVar(v);
+    });
+    localStorage.setItem(KEY, JSON.stringify(out));
+  }
+
+  function syncInputsFromVars(){
+    inputs.forEach(inp=>{
+      const v = inp.dataset.var;
+      const cur = getVar(v);
+      inp.value = parseFloat(cur) || 0;
+    });
+  }
+
+  // init
+  loadSaved();
+  syncInputsFromVars();
+
+  inputs.forEach(inp=>{
+    inp.addEventListener("input", ()=>{
+      const v = inp.dataset.var;
+      const unit = inp.dataset.unit || "px";
+      const n = Number(inp.value);
+
+      // variables that are already percentages
+      if(unit === "%") setVar(v, `${n}%`);
+      else setVar(v, `${n}px`);
+
+      saveNow();
+    });
+  });
+
+  // buttons
+  document.getElementById("p5EnterEdit")?.addEventListener("click", ()=>{
+    document.body.classList.add("p5-layout-edit");
+  });
+  document.getElementById("p5ExitEdit")?.addEventListener("click", ()=>{
+    document.body.classList.remove("p5-layout-edit");
+  });
+
+  document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
+    localStorage.removeItem(KEY);
+    // reload page vars from CSS defaults by clearing inline style
+    inputs.forEach(inp=>{
+      const v = inp.dataset.var;
+      root.style.removeProperty(v);
+    });
+    syncInputsFromVars();
+  });
+
+  document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async ()=>{
+    const vars = {};
+    inputs.forEach(inp=>{
+      const v = inp.dataset.var;
+      vars[v] = getVar(v);
+    });
+
+    const css = `@media (max-width: 820px) and (hover: none) and (pointer: coarse) {\n  :root{\n${Object.entries(vars).map(([k,val])=>`    ${k}: ${val};`).join("\n")}\n  }\n}`;
+
+    try{
+      await navigator.clipboard.writeText(css);
+      alert("Copied! Paste this into your CSS to save forever.");
+    }catch(e){
+      console.log(css);
+      alert("Clipboard blocked. I printed it in console.");
+    }
+  });
+})();
+    
 </script>  </body>  
 </html>
 
