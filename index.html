@@ -2145,37 +2145,38 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
   const durEl      = document.getElementById("p5Dur");  
   
   let currentIndex = 0;  
- function applySmartMarquee(titleEl, text){
-  // 1) Put the text inside the span
-  titleEl.innerHTML = `<span class="marquee">${text}</span>`;
-  const mq = titleEl.querySelector(".marquee");
-  if(!mq) return;
+ function applySmartMarquee(el, text){
 
-  // 2) Measure after DOM updates
+  // 1️⃣ Set title content
+  el.innerHTML = `<span class="marquee">${text}</span>`;
+  const mq = el.querySelector(".marquee");
+
+  // 2️⃣ Wait for layout
   requestAnimationFrame(() => {
-    const containerW = titleEl.clientWidth;
+
+    const containerW = el.clientWidth;
     const textW = mq.scrollWidth;
 
+    // 3️⃣ Only animate if text overflows
     if(textW > containerW + 2){
+
       const distance = textW - containerW;
 
-      titleEl.style.setProperty("--marquee-distance", distance + "px");
+      el.style.setProperty("--marquee-distance", distance + "px");
 
-      // speed scaling: longer distance = longer time
       const speed = Math.max(10, Math.min(26, distance / 30));
-      titleEl.style.setProperty("--marquee-speed", speed + "s");
+      el.style.setProperty("--marquee-speed", speed + "s");
 
-      titleEl.classList.add("animate");
+      el.classList.add("animate");
 
-      // restart animation
-      mq.style.animation = "none";
-      mq.offsetHeight; // force reflow
-      mq.style.animation = "";
     } else {
-      titleEl.classList.remove("animate");
-      titleEl.style.removeProperty("--marquee-distance");
-      titleEl.style.removeProperty("--marquee-speed");
+
+      el.classList.remove("animate");
+      el.style.removeProperty("--marquee-distance");
+      el.style.removeProperty("--marquee-speed");
+
     }
+
   });
 }
   let shuffleOn = false;  
@@ -2238,20 +2239,24 @@ function setMuteIcon(){
     heroPlayer.classList.remove("show");  
   }  
   
-  function setTrack(i){  
-  currentIndex = (i + TRACKS.length) % TRACKS.length;  
-  const t = TRACKS[currentIndex];  
-  
-  music.src = t.src;  
+  function setTrack(i){
+
+  currentIndex = (i + TRACKS.length) % TRACKS.length;
+  const t = TRACKS[currentIndex];
+
+  music.src = t.src;
+
+  // ✅ Apply smart marquee correctly
   applySmartMarquee(titleEl, t.title || t.src);
-  if(artistEl) artistEl.textContent = t.artist || "";  
-  coverImg.src = t.cover;  
-  
-  seek.value = 0;  
-  applySeekFill(0);  
-  curEl.textContent = "0:00";  
-  durEl.textContent = "0:00";  
-}  
+
+  if(artistEl) artistEl.textContent = t.artist || "";
+  coverImg.src = t.cover;
+
+  seek.value = 0;
+  applySeekFill(0);
+  curEl.textContent = "0:00";
+  durEl.textContent = "0:00";
+}
   
   function pickNextIndex(){  
     if(shuffleOn && TRACKS.length > 1){  
