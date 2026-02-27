@@ -2437,20 +2437,20 @@ volSlider.addEventListener("input", ()=>{
     }  
   });  
   
-  // Ended logic (shuffle + loop)  
-  music.addEventListener("ended", async ()=>{  
-    if(loopMode === "one"){  
-      music.currentTime = 0;  
-      if(userWantsMusic) await safePlay();  
-      return;  
-    }  
-    if(loopMode === "all"){  
-      setTrack(pickNextIndex());  
-      if(userWantsMusic) await safePlay();  
-      return;  
-    }  
-    safePause();  
-  });  
+  // Ended logic (shuffle + loop) ✅ FIXED: always go to next track
+music.addEventListener("ended", async () => {
+
+  // Loop one = replay the same track
+  if(loopMode === "one"){
+    music.currentTime = 0;
+    if(userWantsMusic) await safePlay();
+    return;
+  }
+
+  // Otherwise always advance (shuffle respected)
+  setTrack(pickNextIndex());
+  if(userWantsMusic) await safePlay();
+}); 
   
   // ✅ Default UI  
   // ✅ random starting track every refresh (shuffle OFF)  
