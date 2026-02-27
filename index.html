@@ -3252,6 +3252,36 @@ window.addEventListener("load", () => {
   const title = t?.title || t?.src || "";
   if(title) applySmartMarquee(titleEl, title);
 });
+    /* =========================================
+   ✅ DESKTOP ONLY — Video Player Buttons
+   ========================================= */
+
+/* =========================================
+   ✅ DESKTOP ONLY — Video Player Buttons
+   Controlled by ONE variable
+   ========================================= */
+@media (min-width: 769px){
+
+  :root{
+    --vp-size: 35px; /* 🔥 CHANGE THIS VALUE ONLY */
+  }
+
+  .p5-player .p5-btn{
+    width: var(--vp-size);
+    height: var(--vp-size);
+    padding: 0;
+    border-radius: calc(var(--vp-size) * 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .p5-player .p5-icon{
+    width: calc(var(--vp-size) * 0.55);
+    height: calc(var(--vp-size) * 0.55);
+  }
+
+}
   
     
 </script>  
