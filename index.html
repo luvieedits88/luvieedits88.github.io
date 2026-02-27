@@ -624,20 +624,29 @@
     padding:16px;  
     border-radius:26px;  
   
-   background:
-  radial-gradient(circle at 18% 35%, rgba(255,0,60,0.15), rgba(0,0,0,0) 52%),
-  radial-gradient(circle at 72% 60%, rgba(255,255,255,0.05), rgba(0,0,0,0) 55%),
+  background:
+  radial-gradient(
+    circle at 18% 35%,
+    rgba(255, 0, 60, 0.10),
+    rgba(0, 0, 0, 0) 60%
+  ),
+  radial-gradient(
+    circle at 72% 60%,
+    rgba(255, 255, 255, 0.04),
+    rgba(0, 0, 0, 0) 65%
+  ),
   linear-gradient(
     180deg,
-   rgba(12,12,16,0.48)
-   rgba(0,0,0,0.32)
+    rgba(12, 12, 16, 0.46),
+    rgba(0, 0, 0, 0.30)
   );
   
     border:1px solid rgba(255,255,255,0.10);  
     box-shadow:  
       0 30px 90px rgba(0,0,0,0.65),  
       0 0 45px rgba(255,0,60,0.12);  
-    backdrop-filter: blur(8px);  
+   backdrop-filter: blur(3px);
+-webkit-backdrop-filter: blur(3px);
   }  
   
   .p5-music-left{ display:flex; align-items:center; justify-content:center; }  
