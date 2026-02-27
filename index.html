@@ -2725,35 +2725,34 @@ window.addEventListener("load", () => {
   const STORAGE_KEY = "p5_mobile_layout_v2";
 
   // ✅ Real defaults - not from computedStyle
-  const DEFAULTS = {
-    "--m-frame-h": "60px",
-    "--m-cover": "54px",
-    "--m-icon": "10px",
-    "--m-play": "35px",
-    "--m-title": "11px",
-    "--m-artist": "9px",
-    "--m-vol-w": "88px",
-    "--m-seek-w": "75%",
+ const DEFAULTS = {
+  "--m-frame-h": "85px",
+  "--m-cover": "54px",
+  "--m-icon": "8px",
+  "--m-play": "30px",
+  "--m-title": "11px",
+  "--m-artist": "9px",
+  "--m-vol-w": "88px",
+  "--m-seek-w": "132%",
 
-    "--m-frame-x": "0px",
-    "--m-frame-y": "0px",
+  "--m-frame-x": "0px",
+  "--m-frame-y": "0px",
 
-    "--m-cover-x": "0px",
-    "--m-cover-y": "0px",
+  "--m-cover-x": "0px",
+  "--m-cover-y": "-25px",
 
-    "--m-meta-x": "0px",
-    "--m-meta-y": "0px",
+  "--m-meta-x": "0px",
+  "--m-meta-y": "0px",
 
-    "--m-actions-x": "0px",
-    "--m-actions-y": "0px",
+  "--m-actions-x": "10px",
+  "--m-actions-y": "-5px",
 
-    "--m-mid-x": "0px",
-    "--m-mid-y": "0px",
+  "--m-mid-x": "0px",
+  "--m-mid-y": "10px",
 
-    "--m-bottom-x": "0px",
-    "--m-bottom-y": "0px",
-  };
-
+  "--m-bottom-x": "-65px",
+  "--m-bottom-y": "-14px",
+};
   const inputs = panel.querySelectorAll("[data-var]");
 
   function setVar(name, value){
