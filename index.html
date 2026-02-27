@@ -1128,6 +1128,157 @@ body.intro-active #p5LayoutPanel{
   background: rgba(0,0,0,0.85);
   padding-top: 10px;
 }
+  /* =========================
+   ✅ AE UI STYLES (ADD THIS BELOW your existing .p5-layout-panel styles)
+   ========================= */
+
+.ae-group{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 10px 0 12px;
+  background: rgba(0,0,0,0.35);
+}
+
+.ae-group-title{
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  opacity: .92;
+  background: rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.ae-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ae-row:last-child{ border-bottom: 0; }
+
+.ae-label{
+  font-size: 12px;
+  font-weight: 800;
+  opacity: .9;
+}
+
+.ae-fields{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.ae-fields input{
+  width: 86px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  color:#fff;
+  border-radius: 10px;
+  padding: 6px 8px;
+  font-weight: 900;
+  outline: none;
+}
+
+.ae-unit{
+  font-size: 11px;
+  opacity: .75;
+  font-weight: 900;
+}
+
+/* blocks (collapsible like AE) */
+.ae-block{
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.20);
+}
+.ae-block:first-child{ border-top:0; }
+
+.ae-summary{
+  list-style:none;
+  cursor:pointer;
+  padding: 10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  user-select:none;
+  font-weight: 900;
+  font-size: 12px;
+}
+.ae-summary::-webkit-details-marker{ display:none; }
+
+.ae-twisty{
+  width: 18px;
+  display:inline-grid;
+  place-items:center;
+  opacity:.85;
+}
+
+details[open] .ae-twisty{ transform: rotate(0deg); }
+details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
+
+.ae-name{
+  opacity:.95;
+}
+
+.ae-xy{
+  padding: 10px 12px 12px;
+  display:grid;
+  gap:10px;
+}
+
+.ae-xy-label{
+  font-size: 12px;
+  opacity: .85;
+  font-weight: 900;
+}
+
+.ae-xy-fields{
+  display:grid;
+  gap:10px;
+}
+
+.ae-field{
+  display:grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 8px;
+  align-items:center;
+}
+
+.ae-axis{
+  font-size: 12px;
+  font-weight: 1000;
+  opacity: .9;
+  text-align:center;
+  color: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  padding: 6px 0;
+}
+
+/* input in XY */
+.ae-field input{
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  color:#fff;
+  border-radius: 10px;
+  padding: 7px 8px;
+  font-weight: 900;
+  outline:none;
+}
+
+/* keep action buttons consistent */
+.p5-layout-actions{
+  position: sticky;
+  bottom: 0;
+  background: rgba(0,0,0,0.88);
+  padding-top: 10px;
+}
   
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
@@ -1493,48 +1644,253 @@ body.intro-active #p5LayoutPanel{
 ⚙️ Editor
 </button>
   
-  <div class="p5-layout-panel" id="p5LayoutPanel">
-  <h3>Mobile Hero Layout Editor</h3>
+<!-- =========================
+     ✅ AE-STYLE MOBILE HERO EDITOR UI (DROP-IN REPLACEMENT)
+     Replace ONLY your <div class="p5-layout-panel"...>...</div> with this.
+     ========================= -->
 
-  <!-- sizes -->
-  <div class="p5-layout-row"><label>Bar height</label><input data-var="--m-frame-h" type="number" value="60"></div>
-  <div class="p5-layout-row"><label>Cover size</label><input data-var="--m-cover" type="number" value="54"></div>
-  <div class="p5-layout-row"><label>Icon size</label><input data-var="--m-icon" type="number" value="10"></div>
-  <div class="p5-layout-row"><label>Play size</label><input data-var="--m-play" type="number" value="35"></div>
-  <div class="p5-layout-row"><label>Title px</label><input data-var="--m-title" type="number" value="11"></div>
-  <div class="p5-layout-row"><label>Artist px</label><input data-var="--m-artist" type="number" value="9"></div>
-  <div class="p5-layout-row"><label>Seek width %</label><input data-var="--m-seek-w" data-unit="%" type="number" value="75"></div>
-  <div class="p5-layout-row"><label>Volume width</label><input data-var="--m-vol-w" type="number" value="88"></div>
+<div class="p5-layout-panel" id="p5LayoutPanel">
+  <h3>AE Mobile Hero Editor</h3>
 
-  <!-- move blocks -->
-  <div class="p5-layout-row"><label>Frame X</label><input data-var="--m-frame-x" type="number" value="0"></div>
-  <div class="p5-layout-row"><label>Frame Y</label><input data-var="--m-frame-y" type="number" value="0"></div>
+  <!-- =========================
+       BASIC SIZES (like AE "Transform > Scale")
+       ========================= -->
+  <div class="ae-group">
+    <div class="ae-group-title">Sizes</div>
 
-  <div class="p5-layout-row"><label>Cover X</label><input data-var="--m-cover-x" type="number" value="0"></div>
-  <div class="p5-layout-row"><label>Cover Y</label><input data-var="--m-cover-y" type="number" value="0"></div>
+    <div class="ae-row">
+      <div class="ae-label">Bar Height</div>
+      <div class="ae-fields">
+        <input data-var="--m-frame-h" type="number" value="60" aria-label="Bar Height">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
 
-  <div class="p5-layout-row"><label>Meta X</label><input data-var="--m-meta-x" type="number" value="0"></div>
-  <div class="p5-layout-row"><label>Meta Y</label><input data-var="--m-meta-y" type="number" value="0"></div>
+    <div class="ae-row">
+      <div class="ae-label">Cover Size</div>
+      <div class="ae-fields">
+        <input data-var="--m-cover" type="number" value="54" aria-label="Cover Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
 
-  <div class="p5-layout-row"><label>Actions X</label><input data-var="--m-actions-x" type="number" value="0"></div>
-  <div class="p5-layout-row"><label>Actions Y</label><input data-var="--m-actions-y" type="number" value="0"></div>
+    <div class="ae-row">
+      <div class="ae-label">Icon Size</div>
+      <div class="ae-fields">
+        <input data-var="--m-icon" type="number" value="10" aria-label="Icon Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
 
-  <div class="p5-layout-row"><label>Mid X</label><input data-var="--m-mid-x" type="number" value="0"></div>
-  <div class="p5-layout-row"><label>Mid Y</label><input data-var="--m-mid-y" type="number" value="0"></div>
+    <div class="ae-row">
+      <div class="ae-label">Play Button</div>
+      <div class="ae-fields">
+        <input data-var="--m-play" type="number" value="35" aria-label="Play Button Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
 
-  <div class="p5-layout-row"><label>Bottom X</label><input data-var="--m-bottom-x" type="number" value="0"></div>
-  <div class="p5-layout-row"><label>Bottom Y</label><input data-var="--m-bottom-y" type="number" value="0"></div>
+    <div class="ae-row">
+      <div class="ae-label">Title</div>
+      <div class="ae-fields">
+        <input data-var="--m-title" type="number" value="11" aria-label="Title Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
 
+    <div class="ae-row">
+      <div class="ae-label">Artist</div>
+      <div class="ae-fields">
+        <input data-var="--m-artist" type="number" value="9" aria-label="Artist Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+
+    <div class="ae-row">
+      <div class="ae-label">Volume Width</div>
+      <div class="ae-fields">
+        <input data-var="--m-vol-w" type="number" value="88" aria-label="Volume Width">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+
+    <div class="ae-row">
+      <div class="ae-label">Seek Width</div>
+      <div class="ae-fields">
+        <input data-var="--m-seek-w" data-unit="%" type="number" value="75" aria-label="Seek Width Percent">
+        <span class="ae-unit">%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       AE POSITION GROUPS
+       Each block = Position X / Y (like AE Transform > Position)
+       ========================= -->
+
+  <div class="ae-group">
+    <div class="ae-group-title">Position</div>
+
+    <!-- Frame -->
+    <details class="ae-block" open>
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Frame</span>
+      </summary>
+
+      <div class="ae-xy">
+        <div class="ae-xy-label">Position</div>
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--m-frame-x" type="number" value="0" aria-label="Frame Position X">
+            <span class="ae-unit">px</span>
+          </div>
+
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--m-frame-y" type="number" value="0" aria-label="Frame Position Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Cover -->
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Cover</span>
+      </summary>
+
+      <div class="ae-xy">
+        <div class="ae-xy-label">Position</div>
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--m-cover-x" type="number" value="0" aria-label="Cover Position X">
+            <span class="ae-unit">px</span>
+          </div>
+
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--m-cover-y" type="number" value="0" aria-label="Cover Position Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Meta -->
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Meta (Title/Artist)</span>
+      </summary>
+
+      <div class="ae-xy">
+        <div class="ae-xy-label">Position</div>
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--m-meta-x" type="number" value="0" aria-label="Meta Position X">
+            <span class="ae-unit">px</span>
+          </div>
+
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--m-meta-y" type="number" value="0" aria-label="Meta Position Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Actions -->
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Actions (Shuffle/Loop/Mute/Vol)</span>
+      </summary>
+
+      <div class="ae-xy">
+        <div class="ae-xy-label">Position</div>
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--m-actions-x" type="number" value="0" aria-label="Actions Position X">
+            <span class="ae-unit">px</span>
+          </div>
+
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--m-actions-y" type="number" value="0" aria-label="Actions Position Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Mid -->
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Mid (Prev/Play/Next)</span>
+      </summary>
+
+      <div class="ae-xy">
+        <div class="ae-xy-label">Position</div>
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--m-mid-x" type="number" value="0" aria-label="Mid Position X">
+            <span class="ae-unit">px</span>
+          </div>
+
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--m-mid-y" type="number" value="0" aria-label="Mid Position Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Bottom -->
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Bottom (Time/Seek)</span>
+      </summary>
+
+      <div class="ae-xy">
+        <div class="ae-xy-label">Position</div>
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--m-bottom-x" type="number" value="0" aria-label="Bottom Position X">
+            <span class="ae-unit">px</span>
+          </div>
+
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--m-bottom-y" type="number" value="0" aria-label="Bottom Position Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- =========================
+       ACTION BUTTONS
+       ========================= -->
   <div class="p5-layout-actions">
     <button type="button" id="p5CopyMobileCSS">Copy Permanent CSS</button>
     <button type="button" class="secondary" id="p5ResetMobileCSS">Reset</button>
   </div>
-
-  <div class="p5-layout-actions">
-    <button type="button" class="secondary" id="p5ExitEdit">Exit</button>
-    <button type="button" class="secondary" id="p5EnterEdit">Edit Mode</button>
-  </div>
 </div>
+
   
   <script>  
   // =========================  
@@ -2355,132 +2711,153 @@ window.addEventListener("load", () => {
     if(first) setActive(first);  
   }  
    /* ==========================================================
-   ✅ Mobile hero layout editor (moves + resizes + saves) — FIXED
+   CLEAN AE-STYLE MOBILE HERO EDITOR
+   Fixes Android "0" bug by owning defaults in JS
    ========================================================== */
+
 (function(){
+
   const root  = document.documentElement;
   const panel = document.getElementById("p5LayoutPanel");
-  if(!panel) return;
+  const toggleBtn = document.getElementById("p5EditorToggle");
+  if(!panel || !toggleBtn) return;
 
-  const KEY = "p5MobileHeroVars_v1";
+  const STORAGE_KEY = "p5_mobile_layout_v2";
+
+  // ✅ Real defaults - not from computedStyle
+  const DEFAULTS = {
+    "--m-frame-h": "60px",
+    "--m-cover": "54px",
+    "--m-icon": "10px",
+    "--m-play": "35px",
+    "--m-title": "11px",
+    "--m-artist": "9px",
+    "--m-vol-w": "88px",
+    "--m-seek-w": "75%",
+
+    "--m-frame-x": "0px",
+    "--m-frame-y": "0px",
+
+    "--m-cover-x": "0px",
+    "--m-cover-y": "0px",
+
+    "--m-meta-x": "0px",
+    "--m-meta-y": "0px",
+
+    "--m-actions-x": "0px",
+    "--m-actions-y": "0px",
+
+    "--m-mid-x": "0px",
+    "--m-mid-y": "0px",
+
+    "--m-bottom-x": "0px",
+    "--m-bottom-y": "0px",
+  };
+
   const inputs = panel.querySelectorAll("[data-var]");
 
   function setVar(name, value){
     root.style.setProperty(name, value);
   }
+
   function getVar(name){
-    return getComputedStyle(root).getPropertyValue(name).trim();
+    // ✅ Always read from inline style first (most reliable)
+    const inline = root.style.getPropertyValue(name).trim();
+    if(inline) return inline;
+
+    // If inline not set, use default (not computedStyle)
+    return DEFAULTS[name] || "0px";
+  }
+
+  function applyDefaults(){
+    Object.entries(DEFAULTS).forEach(([k,v]) => setVar(k, v));
   }
 
   function loadSaved(){
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw){
+      applyDefaults();
+      return;
+    }
     try{
-      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-      if(saved && typeof saved === "object"){
-        Object.entries(saved).forEach(([k,v]) => setVar(k, v));
-      }
-    }catch(e){}
+      const saved = JSON.parse(raw);
+      Object.entries(DEFAULTS).forEach(([k,def])=>{
+        setVar(k, saved[k] || def);
+      });
+    }catch(e){
+      applyDefaults();
+    }
   }
 
   function saveNow(){
     const out = {};
-    inputs.forEach(inp => {
-      const v = inp.dataset.var;
-      out[v] = getVar(v);
-    });
-    localStorage.setItem(KEY, JSON.stringify(out));
+    Object.keys(DEFAULTS).forEach(k => out[k] = getVar(k));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
   }
 
-  function syncInputsFromVars(){
+  function syncInputs(){
     inputs.forEach(inp=>{
       const v = inp.dataset.var;
       const cur = getVar(v);
-
-      // keep % values usable in number input
       inp.value = parseFloat(cur) || 0;
     });
   }
 
-  // init
-  loadSaved();
-  syncInputsFromVars();
-
-  // live update vars while typing
-  inputs.forEach(inp => {
-    const handler = () => {
+  // ✅ Live update
+  inputs.forEach(inp=>{
+    const onChange = ()=>{
       const v = inp.dataset.var;
       const unit = inp.dataset.unit || "px";
       const n = Number(inp.value);
+      if(!Number.isFinite(n)) return;
 
-      if(Number.isFinite(n)){
-        setVar(v, unit === "%" ? `${n}%` : `${n}px`);
-        saveNow();
-      }
+      setVar(v, unit === "%" ? `${n}%` : `${n}px`);
+      saveNow();
     };
 
-    inp.addEventListener("input", handler);
-    inp.addEventListener("change", handler); // Android/Samsung
+    inp.addEventListener("input", onChange);
+    inp.addEventListener("change", onChange);
   });
 
-  // Toggle buttons
-  const toggleBtn = document.getElementById("p5EditorToggle");
-  const enterBtn  = document.getElementById("p5EnterEdit");
-  const exitBtn   = document.getElementById("p5ExitEdit");
-
-  function openPanel(){
-    document.body.classList.remove("intro-active"); // safety
-    document.body.classList.add("p5-layout-edit");
-    panel.style.display = "block";
+  // ✅ Toggle editor open/close
+  function toggleEditor(){
+    document.body.classList.toggle("p5-layout-edit");
   }
 
-  function closePanel(){
-    document.body.classList.remove("p5-layout-edit");
-    panel.style.display = "none";
-  }
+  toggleBtn.addEventListener("click", toggleEditor);
+  toggleBtn.addEventListener("touchend", (e)=>{
+    e.preventDefault();
+    toggleEditor();
+  }, {passive:false});
 
-  function togglePanel(){
-    if(document.body.classList.contains("p5-layout-edit")) closePanel();
-    else openPanel();
-  }
-
-  toggleBtn?.addEventListener("click", togglePanel);
-  toggleBtn?.addEventListener("touchend", (e)=>{ e.preventDefault(); togglePanel(); }, {passive:false});
-
-  enterBtn?.addEventListener("click", openPanel);
-  exitBtn?.addEventListener("click", closePanel);
-
-  // Reset
+  // ✅ Reset
   document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
-    localStorage.removeItem(KEY);
-    inputs.forEach(inp => root.style.removeProperty(inp.dataset.var));
-    syncInputsFromVars();
+    localStorage.removeItem(STORAGE_KEY);
+    applyDefaults();
+    syncInputs();
   });
 
-  // Copy permanent CSS
+  // ✅ Copy permanent CSS
   document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async ()=>{
-    const vars = {};
-    inputs.forEach(inp=>{
-      const v = inp.dataset.var;
-      vars[v] = getVar(v);
+    let css = `@media (max-width: 820px) and (hover: none) and (pointer: coarse) {\n  :root{\n`;
+    Object.keys(DEFAULTS).forEach(k=>{
+      css += `    ${k}: ${getVar(k)};\n`;
     });
-
-    const css =
-`@media (max-width: 820px) and (hover: none) and (pointer: coarse) {
-  :root{
-${Object.entries(vars).map(([k,val])=>`    ${k}: ${val};`).join("\n")}
-  }
-}`;
+    css += "  }\n}";
 
     try{
       await navigator.clipboard.writeText(css);
       alert("Copied! Paste this into your CSS to save forever.");
     }catch(e){
       console.log(css);
-      alert("Clipboard blocked. The CSS was printed in console.");
+      alert("Clipboard blocked. CSS printed in console.");
     }
   });
 
-  // Start closed
-  closePanel();
+  // ✅ start
+  loadSaved();
+  syncInputs();
+
 })();
   
     // ✅ CLEAN SINGLE EDITOR TOGGLE (FINAL FIX)
