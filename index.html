@@ -410,6 +410,60 @@
   }  
   .p5-btn:active{ transform: translateY(0px) scale(0.98); }  
   .p5-icon{ width:18px; height:18px; display:block; }  
+
+  /* ==========================================================
+   ✅ DESKTOP ONLY — VIDEO PLAYER CONTROLS (ONE VARIABLE)
+   Resizes: button box + icon + spacing together
+   ========================================================== */
+@media (min-width: 769px) and (hover:hover) and (pointer:fine){
+
+  :root{
+    --vp-btn: 42px;  /* 🔥 change ONLY this number */
+  }
+
+  /* Optional: scale spacing/padding of the controls row too */
+  .p5-player .p5-controls{
+    gap: calc(var(--vp-btn) * 0.20);                 /* button spacing */
+    padding: calc(var(--vp-btn) * 0.22) calc(var(--vp-btn) * 0.26); /* bar padding */
+  }
+
+  /* Button box becomes fixed-size square */
+  .p5-player .p5-btn{
+    width: var(--vp-btn);
+    height: var(--vp-btn);
+
+    padding: 0;           /* important so size is controlled by width/height */
+    min-width: 0;
+    min-height: 0;
+
+    border-radius: calc(var(--vp-btn) * 0.28);
+
+    display: grid;
+    place-items: center;
+  }
+
+  /* Icon scales with the button */
+  .p5-player .p5-icon{
+    width: calc(var(--vp-btn) * 0.55);
+    height: calc(var(--vp-btn) * 0.55);
+  }
+
+  /* Optional: make time text scale slightly with the button size */
+  .p5-player .p5-time{
+    font-size: calc(var(--vp-btn) * 0.28);
+    min-width: calc(var(--vp-btn) * 1.2);
+  }
+
+  /* Optional: make the slider height scale a bit */
+  .p5-player .p5-progress{
+    height: calc(var(--vp-btn) * 0.14);
+  }
+  .p5-player .p5-progress::-webkit-slider-thumb{
+    width: calc(var(--vp-btn) * 0.33);
+    height: calc(var(--vp-btn) * 0.33);
+  }
+
+}
   .p5-time{ min-width:54px; font-size:12px; opacity:0.9; }  
   .p5-progress{  
     flex:1;  
