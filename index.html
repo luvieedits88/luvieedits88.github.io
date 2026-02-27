@@ -885,7 +885,7 @@
     /* Mobile: hide both by default */
     .joker,
     .sumire{
-    display:none !important;
+    display:none;
     }
     .sumire{right:-120px;max-height:85vh;}
     .joker{left:-120px;max-height:85vh; }
@@ -896,6 +896,10 @@
     .p5-progress::-webkit-slider-thumb{ width:18px; height:18px; }  
     .p5-time{ min-width:auto; }  
   }  
+    .joker,
+    .sumire{
+      z-index: 2;
+    }
  /* ==========================================================
    ✅ MOBILE HERO MUSIC BAR + EDITOR VARS
    ========================================================== */
