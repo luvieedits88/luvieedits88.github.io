@@ -2824,11 +2824,10 @@ window.addEventListener("load", () => {
     document.body.classList.toggle("p5-layout-edit");
   }
 
-  toggleBtn.addEventListener("click", toggleEditor);
-  toggleBtn.addEventListener("touchend", (e)=>{
-    e.preventDefault();
-    toggleEditor();
-  }, {passive:false});
+  toggleBtn.addEventListener("pointerup", (e) => {
+  e.preventDefault();
+  toggleEditor();
+});
 
   // ✅ Reset
   document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
@@ -2860,24 +2859,6 @@ window.addEventListener("load", () => {
 
 })();
   
-    // ✅ CLEAN SINGLE EDITOR TOGGLE (FINAL FIX)
-(function () {
-
-  const btn   = document.getElementById("p5EditorToggle");
-  const panel = document.getElementById("p5LayoutPanel");
-  if (!btn || !panel) return;
-
-  function toggleEditor(){
-    document.body.classList.toggle("p5-layout-edit");
-  }
-
-  btn.addEventListener("click", toggleEditor);
-  btn.addEventListener("touchend", function(e){
-    e.preventDefault();
-    toggleEditor();
-  }, { passive:false });
-
-})();
     
 </script>  
 </body>  
