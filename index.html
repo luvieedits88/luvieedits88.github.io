@@ -2437,6 +2437,14 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
   // ✅ P5 HERO MUSIC PLAYER LOGIC  
   // =========================  
   const music = document.getElementById("bgMusic");  
+
+    function syncHeroIcon(){
+  setPlayIcon(musicUnlocked && !music.paused);
+}
+
+music.addEventListener("play",  syncHeroIcon);
+music.addEventListener("pause", syncHeroIcon);
+music.addEventListener("ended", syncHeroIcon);
   
   const TRACKS = [  
   {  
@@ -2671,8 +2679,9 @@ function setMuteIcon(){
     if(!music.src) setTrack(currentIndex);  
   
     music.muted = false;  
-    const played = await safePlay();  
-    if(played){  
+    const played = await safePlay();
+    syncHeroIcon();
+    if(played){
       tapOverlay.classList.remove("show");  
     }  
   }  
@@ -2825,7 +2834,7 @@ music.addEventListener("ended", async () => {
     showHero();  
   
     // ✅ Fix: make sure play icon doesn't look "stuck"  
-    setPlayIcon(false);  
+    setPlayIcon(musicUnlocked && !music.paused);
 
     document.body.classList.remove("intro-active");
   }  
