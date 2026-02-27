@@ -857,8 +857,13 @@
     .title{font-size:38px;letter-spacing:3px;}  
     .subtitle{font-size:15px;max-width:320px;}  
     .button{padding:14px 28px;}  
-    .joker{display:none;}  
-    .sumire{right:-120px;max-height:85vh;}  
+    /* Mobile: hide both by default */
+    .joker,
+    .sumire{
+    display:none !important;
+    }
+    .sumire{right:-120px;max-height:85vh;}
+    .joker{left:-120px;max-height:85vh; }
   
     .p5-controls{ left:14px; right:14px; flex-wrap:wrap; row-gap:8px; padding:12px 12px; }  
     .p5-btn{ padding:10px 12px; min-width:42px; min-height:42px; border-radius:12px; font-size:16px; }  
@@ -3318,6 +3323,26 @@ window.addEventListener("load", () => {
   const t = TRACKS[currentIndex];
   const title = t?.title || t?.src || "";
   if(title) applySmartMarquee(titleEl, title);
+});
+
+    /* 🔥 RANDOM MOBILE CHARACTER */
+window.addEventListener("load", () => {
+
+  if (window.innerWidth > 768) return;
+
+  const joker  = document.querySelector(".character.joker");
+  const sumire = document.querySelector(".character.sumire");
+  if (!joker || !sumire) return;
+
+  joker.style.display = "none";
+  sumire.style.display = "none";
+
+  if (Math.random() < 0.5) {
+    joker.style.display = "block";
+  } else {
+    sumire.style.display = "block";
+  }
+
 });
 
     
