@@ -415,6 +415,31 @@
   .p5-btn:active{ transform: translateY(0px) scale(0.98); }  
   .p5-icon{ width:18px; height:18px; display:block; }  
 
+  /* =========================================
+   FORCE PLAYER ICONS WHITE (EXCEPT PLAY/PAUSE)
+   ========================================= */
+
+/* Target ALL player icons */
+.p5-icon,
+.p5-ico,
+.p5-bigplay img,
+.p5-playhero img{
+
+  /* make dark pngs white */
+  filter: brightness(0) invert(1);
+
+}
+
+/* BUT DO NOT affect start.png and pause.png */
+.p5-playhero img[src*="start.png"],
+.p5-playhero img[src*="pause.png"],
+.p5-bigplay img[src*="start.png"],
+.p5-bigplay img[src*="pause.png"]{
+
+  filter: none !important;
+
+}
+
   /* ==========================================================
    ✅ DESKTOP ONLY — VIDEO PLAYER CONTROLS (ONE VARIABLE)
    Resizes: button box + icon + spacing together
