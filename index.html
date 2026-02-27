@@ -2145,11 +2145,13 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
   const durEl      = document.getElementById("p5Dur");  
   
   let currentIndex = 0;  
-  function applySmartMarquee(titleEl, text){
-  const title = t.title || t.src;
-  applySmartMarquee(titleEl, title);
+ function applySmartMarquee(titleEl, text){
+  // 1) Put the text inside the span
+  titleEl.innerHTML = `<span class="marquee">${text}</span>`;
   const mq = titleEl.querySelector(".marquee");
+  if(!mq) return;
 
+  // 2) Measure after DOM updates
   requestAnimationFrame(() => {
     const containerW = titleEl.clientWidth;
     const textW = mq.scrollWidth;
@@ -2159,13 +2161,15 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
 
       titleEl.style.setProperty("--marquee-distance", distance + "px");
 
+      // speed scaling: longer distance = longer time
       const speed = Math.max(10, Math.min(26, distance / 30));
       titleEl.style.setProperty("--marquee-speed", speed + "s");
 
       titleEl.classList.add("animate");
 
+      // restart animation
       mq.style.animation = "none";
-      mq.offsetHeight;
+      mq.offsetHeight; // force reflow
       mq.style.animation = "";
     } else {
       titleEl.classList.remove("animate");
@@ -2239,7 +2243,7 @@ function setMuteIcon(){
   const t = TRACKS[currentIndex];  
   
   music.src = t.src;  
-  titleEl.innerHTML = `<span class="marquee">${title}</span>`;
+  applySmartMarquee(titleEl, t.title || t.src);
   if(artistEl) artistEl.textContent = t.artist || "";  
   coverImg.src = t.cover;  
   
