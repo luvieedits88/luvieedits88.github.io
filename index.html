@@ -1054,12 +1054,15 @@
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 body.p5-layout-edit .p5-layout-panel{ display:block; }
-  /* ✅ Hide editor while intro is active */
+  /* Hide editor while intro is active */
 body.intro-active #p5EditorToggle,
-body.intro-active #p5LayoutPanel{
+body.intro-active #p5LayoutPanel,
+body.intro-active #p5EditorToggleDesktop,
+body.intro-active #p5LayoutPanelDesktop{
   display: none !important;
   pointer-events: none !important;
 }
+  
   /* ===== Mobile Editor Toggle Button ===== */
 .p5-editor-toggle{
   position: fixed;
@@ -1098,6 +1101,113 @@ body.intro-active #p5LayoutPanel{
     display: block;
   }
 }
+  /* ==========================================================
+   ✅ DESKTOP HERO MUSIC BAR VARS (SEPARATE FROM MOBILE)
+   Only applies on real desktop (mouse/trackpad)
+   ========================================================== */
+@media (min-width: 821px) and (hover:hover) and (pointer:fine){
+
+  :root{
+    --d-player-width: 760px;
+    --d-player-top: calc(12px + env(safe-area-inset-top));
+
+    --d-frame-h: 154px;
+    --d-cover: 122px;
+    --d-title: 16px;
+    --d-artist: 12px;
+    --d-vol-w: 150px;
+
+    --d-frame-x: 0px;
+    --d-frame-y: 0px;
+
+    --d-cover-x: 0px;
+    --d-cover-y: 0px;
+
+    --d-meta-x: 0px;
+    --d-meta-y: 0px;
+
+    --d-actions-x: 0px;
+    --d-actions-y: 0px;
+
+    --d-mid-x: 0px;
+    --d-mid-y: 0px;
+
+    --d-bottom-x: 0px;
+    --d-bottom-y: 0px;
+  }
+
+  .p5-music-hero{
+    width: min(var(--d-player-width), calc(100% - 18px)) !important;
+    top: var(--d-player-top) !important;
+    transform: translateX(-50%) translate(var(--d-frame-x), var(--d-frame-y)) !important;
+  }
+
+  .p5-music-frame{
+    height: var(--d-frame-h) !important;
+  }
+
+  .p5-cover-wrap{
+    width: var(--d-cover) !important;
+    height: var(--d-cover) !important;
+    transform: translate(var(--d-cover-x), var(--d-cover-y)) !important;
+  }
+
+  .p5-track-title{
+    font-size: var(--d-title) !important;
+    transform: translate(var(--d-meta-x), var(--d-meta-y)) !important;
+  }
+
+  .p5-track-artist{
+    font-size: var(--d-artist) !important;
+    transform: translate(var(--d-meta-x), var(--d-meta-y)) !important;
+  }
+
+  .p5-top-right{
+    transform: translate(var(--d-actions-x), var(--d-actions-y)) !important;
+  }
+
+  .p5-music-mid{
+    transform: translate(-50%, -50%) translate(var(--d-mid-x), var(--d-mid-y)) !important;
+  }
+
+  .p5-music-bottom{
+    transform: translate(var(--d-bottom-x), var(--d-bottom-y)) !important;
+  }
+
+  .p5-vol-slider{
+    width: var(--d-vol-w) !important;
+  }
+}
+
+/* ==========================================================
+   ✅ DESKTOP EDITOR TOGGLE BUTTON
+   ========================================================== */
+.p5-editor-toggle-desktop{
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2147483647;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-weight: 900;
+  display: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover:hover) and (pointer:fine){
+  .p5-editor-toggle-desktop{ display:block; }
+}
+@media (pointer: coarse), (hover:none){
+  .p5-editor-toggle-desktop{ display:none; }
+}
+
+body.p5-layout-edit-desktop #p5LayoutPanelDesktop{
+  display:block;
+}
+
 
 .p5-layout-panel h3{ margin:0 0 10px; font-size:14px; font-weight:900; }
 .p5-layout-row{
@@ -1658,6 +1768,9 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
       <button id="p5EditorToggle" class="p5-editor-toggle" type="button">
 ⚙️ Editor
 </button>
+  <button id="p5EditorToggleDesktop" class="p5-editor-toggle-desktop" type="button">
+🖥 Desktop Editor
+</button>
   
 <!-- =========================
      ✅ AE-STYLE MOBILE HERO EDITOR UI (DROP-IN REPLACEMENT)
@@ -1906,7 +2019,171 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
   </div>
 </div>
 
-  
+  <!-- =========================
+     ✅ AE-STYLE DESKTOP HERO EDITOR
+     ========================= -->
+<div class="p5-layout-panel" id="p5LayoutPanelDesktop">
+  <h3>AE Desktop Hero Editor</h3>
+
+  <div class="ae-group">
+    <div class="ae-group-title">Sizes</div>
+
+    <div class="ae-row">
+      <div class="ae-label">Bar Height</div>
+      <div class="ae-fields">
+        <input data-var="--d-frame-h" type="number" value="154" aria-label="Bar Height">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+
+    <div class="ae-row">
+      <div class="ae-label">Cover Size</div>
+      <div class="ae-fields">
+        <input data-var="--d-cover" type="number" value="122" aria-label="Cover Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+
+    <div class="ae-row">
+      <div class="ae-label">Title Size</div>
+      <div class="ae-fields">
+        <input data-var="--d-title" type="number" value="16" aria-label="Title Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+
+    <div class="ae-row">
+      <div class="ae-label">Artist Size</div>
+      <div class="ae-fields">
+        <input data-var="--d-artist" type="number" value="12" aria-label="Artist Size">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+
+    <div class="ae-row">
+      <div class="ae-label">Volume Width</div>
+      <div class="ae-fields">
+        <input data-var="--d-vol-w" type="number" value="150" aria-label="Volume Width">
+        <span class="ae-unit">px</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ae-group">
+    <div class="ae-group-title">Position</div>
+
+    <details class="ae-block" open>
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Frame</span>
+      </summary>
+      <div class="ae-xy">
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--d-frame-x" type="number" value="0" aria-label="Frame X">
+            <span class="ae-unit">px</span>
+          </div>
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--d-frame-y" type="number" value="0" aria-label="Frame Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Cover</span>
+      </summary>
+      <div class="ae-xy">
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--d-cover-x" type="number" value="0" aria-label="Cover X">
+            <span class="ae-unit">px</span>
+          </div>
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--d-cover-y" type="number" value="0" aria-label="Cover Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Actions</span>
+      </summary>
+      <div class="ae-xy">
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--d-actions-x" type="number" value="0" aria-label="Actions X">
+            <span class="ae-unit">px</span>
+          </div>
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--d-actions-y" type="number" value="0" aria-label="Actions Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Mid</span>
+      </summary>
+      <div class="ae-xy">
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--d-mid-x" type="number" value="0" aria-label="Mid X">
+            <span class="ae-unit">px</span>
+          </div>
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--d-mid-y" type="number" value="0" aria-label="Mid Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="ae-block">
+      <summary class="ae-summary">
+        <span class="ae-twisty">▾</span>
+        <span class="ae-name">Bottom</span>
+      </summary>
+      <div class="ae-xy">
+        <div class="ae-xy-fields">
+          <div class="ae-field">
+            <span class="ae-axis">X</span>
+            <input data-var="--d-bottom-x" type="number" value="0" aria-label="Bottom X">
+            <span class="ae-unit">px</span>
+          </div>
+          <div class="ae-field">
+            <span class="ae-axis">Y</span>
+            <input data-var="--d-bottom-y" type="number" value="0" aria-label="Bottom Y">
+            <span class="ae-unit">px</span>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="p5-layout-actions">
+    <button type="button" id="p5CopyDesktopCSS">Copy Permanent CSS</button>
+    <button type="button" class="secondary" id="p5ResetDesktopCSS">Reset</button>
+  </div>
+</div>
+
   <script>  
   // =========================  
   // GIF CURSOR ENGINE  
@@ -2763,150 +3040,210 @@ window.addEventListener("load", () => {
     if(first) setActive(first);  
   }  
    /* ==========================================================
-   CLEAN AE-STYLE MOBILE HERO EDITOR
-   Fixes Android "0" bug by owning defaults in JS
+   ✅ TWO EDITORS: Mobile (--m-*) + Desktop (--d-*)
+   Fixes "0" bug by using real defaults, not computedStyle.
    ========================================================== */
-
 (function(){
 
-  const root  = document.documentElement;
-  const panel = document.getElementById("p5LayoutPanel");
-  const toggleBtn = document.getElementById("p5EditorToggle");
-  if(!panel || !toggleBtn) return;
+  const root = document.documentElement;
 
-  const STORAGE_KEY = "p5_mobile_layout_v2";
+  // ---------- MOBILE ----------
+  const panelM = document.getElementById("p5LayoutPanel");          // your existing mobile panel
+  const toggleM = document.getElementById("p5EditorToggle");         // your existing mobile toggle button
 
-  // ✅ Real defaults - not from computedStyle
- const DEFAULTS = {
-  "--m-frame-h": "85px",
-  "--m-cover": "54px",
-  "--m-icon": "8px",
-  "--m-play": "33px",
-  "--m-title": "11px",
-  "--m-artist": "9px",
-  "--m-vol-w": "88px",
-  "--m-seek-w": "132%",
+  const STORAGE_M = "p5_mobile_layout_v2";
 
-  "--m-frame-x": "0px",
-  "--m-frame-y": "0px",
+  const DEFAULTS_M = {
+    "--m-frame-h": "85px",
+    "--m-cover": "54px",
+    "--m-icon": "8px",
+    "--m-play": "33px",
+    "--m-title": "11px",
+    "--m-artist": "9px",
+    "--m-vol-w": "88px",
+    "--m-seek-w": "132%",
 
-  "--m-cover-x": "0px",
-  "--m-cover-y": "-25px",
+    "--m-frame-x": "0px",
+    "--m-frame-y": "0px",
+    "--m-cover-x": "0px",
+    "--m-cover-y": "-25px",
+    "--m-meta-x": "0px",
+    "--m-meta-y": "0px",
+    "--m-actions-x": "10px",
+    "--m-actions-y": "-5px",
+    "--m-mid-x": "0px",
+    "--m-mid-y": "10px",
+    "--m-bottom-x": "-65px",
+    "--m-bottom-y": "-14px",
+  };
 
-  "--m-meta-x": "0px",
-  "--m-meta-y": "0px",
+  // ---------- DESKTOP ----------
+  const panelD = document.getElementById("p5LayoutPanelDesktop");
+  const toggleD = document.getElementById("p5EditorToggleDesktop");
 
-  "--m-actions-x": "10px",
-  "--m-actions-y": "-5px",
+  const STORAGE_D = "p5_desktop_layout_v1";
 
-  "--m-mid-x": "0px",
-  "--m-mid-y": "10px",
+  // These defaults match your CURRENT desktop layout (so editor never shows 0)
+  const DEFAULTS_D = {
+    "--d-player-width": "760px",
+    "--d-player-top": "12px",          // note: calc() can't be a number input, so we keep top fixed in CSS
+    "--d-frame-h": "154px",
+    "--d-cover": "122px",
+    "--d-title": "16px",
+    "--d-artist": "12px",
+    "--d-vol-w": "150px",
 
-  "--m-bottom-x": "-65px",
-  "--m-bottom-y": "-14px",
-};
-  const inputs = panel.querySelectorAll("[data-var]");
+    "--d-frame-x": "0px",
+    "--d-frame-y": "0px",
+    "--d-cover-x": "0px",
+    "--d-cover-y": "0px",
+    "--d-meta-x": "0px",
+    "--d-meta-y": "0px",
+    "--d-actions-x": "0px",
+    "--d-actions-y": "0px",
+    "--d-mid-x": "0px",
+    "--d-mid-y": "0px",
+    "--d-bottom-x": "0px",
+    "--d-bottom-y": "0px",
+  };
 
+  // ---------- helpers ----------
   function setVar(name, value){
     root.style.setProperty(name, value);
   }
 
-  function getVar(name){
-    // ✅ Always read from inline style first (most reliable)
+  function getInlineOrDefault(name, defaults){
     const inline = root.style.getPropertyValue(name).trim();
     if(inline) return inline;
-
-    // If inline not set, use default (not computedStyle)
-    return DEFAULTS[name] || "0px";
+    return defaults[name] || "0px";
   }
 
-  function applyDefaults(){
-    Object.entries(DEFAULTS).forEach(([k,v]) => setVar(k, v));
+  function applyDefaults(defaults){
+    Object.entries(defaults).forEach(([k,v]) => setVar(k, v));
   }
 
-  function loadSaved(){
-    const raw = localStorage.getItem(STORAGE_KEY);
+  function loadSaved(storageKey, defaults){
+    const raw = localStorage.getItem(storageKey);
     if(!raw){
-      applyDefaults();
+      applyDefaults(defaults);
       return;
     }
     try{
       const saved = JSON.parse(raw);
-      Object.entries(DEFAULTS).forEach(([k,def])=>{
+      Object.entries(defaults).forEach(([k,def])=>{
         setVar(k, saved[k] || def);
       });
     }catch(e){
-      applyDefaults();
+      applyDefaults(defaults);
     }
   }
 
-  function saveNow(){
+  function saveNow(storageKey, defaults){
     const out = {};
-    Object.keys(DEFAULTS).forEach(k => out[k] = getVar(k));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(out));
+    Object.keys(defaults).forEach(k => out[k] = getInlineOrDefault(k, defaults));
+    localStorage.setItem(storageKey, JSON.stringify(out));
   }
 
-  function syncInputs(){
-    inputs.forEach(inp=>{
-      const v = inp.dataset.var;
-      const cur = getVar(v);
-      inp.value = parseFloat(cur) || 0;
-    });
-  }
+  function bindPanel(panel, defaults, storageKey){
+    if(!panel) return;
 
-  // ✅ Live update
-  inputs.forEach(inp=>{
-    const onChange = ()=>{
-      const v = inp.dataset.var;
-      const unit = inp.dataset.unit || "px";
-      const n = Number(inp.value);
-      if(!Number.isFinite(n)) return;
+    const inputs = panel.querySelectorAll("[data-var]");
 
-      setVar(v, unit === "%" ? `${n}%` : `${n}px`);
-      saveNow();
-    };
-
-    inp.addEventListener("input", onChange);
-    inp.addEventListener("change", onChange);
-  });
-
-  // ✅ Toggle editor open/close
-  function toggleEditor(){
-    document.body.classList.toggle("p5-layout-edit");
-  }
-
-  toggleBtn.addEventListener("pointerup", (e) => {
-  e.preventDefault();
-  toggleEditor();
-});
-
-  // ✅ Reset
-  document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
-    localStorage.removeItem(STORAGE_KEY);
-    applyDefaults();
-    syncInputs();
-  });
-
-  // ✅ Copy permanent CSS
-  document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async ()=>{
-    let css = `@media (max-width: 820px) and (hover: none) and (pointer: coarse) {\n  :root{\n`;
-    Object.keys(DEFAULTS).forEach(k=>{
-      css += `    ${k}: ${getVar(k)};\n`;
-    });
-    css += "  }\n}";
-
-    try{
-      await navigator.clipboard.writeText(css);
-      alert("Copied! Paste this into your CSS to save forever.");
-    }catch(e){
-      console.log(css);
-      alert("Clipboard blocked. CSS printed in console.");
+    function syncInputs(){
+      inputs.forEach(inp=>{
+        const v = inp.dataset.var;
+        const cur = getInlineOrDefault(v, defaults);
+        inp.value = parseFloat(cur) || parseFloat(defaults[v]) || 0;
+      });
     }
-  });
 
-  // ✅ start
-  loadSaved();
-  syncInputs();
+    inputs.forEach(inp=>{
+      const onChange = ()=>{
+        const v = inp.dataset.var;
+        const unit = inp.dataset.unit || "px";
+        const n = Number(inp.value);
+        if(!Number.isFinite(n)) return;
+
+        setVar(v, unit === "%" ? `${n}%` : `${n}px`);
+        saveNow(storageKey, defaults);
+      };
+
+      inp.addEventListener("input", onChange);
+      inp.addEventListener("change", onChange);
+    });
+
+    // initial sync
+    syncInputs();
+
+    return { syncInputs };
+  }
+
+  // ---------- INIT MOBILE ----------
+  if(panelM && toggleM){
+    loadSaved(STORAGE_M, DEFAULTS_M);
+    const mobile = bindPanel(panelM, DEFAULTS_M, STORAGE_M);
+
+    toggleM.addEventListener("pointerup", (e)=>{
+      e.preventDefault();
+      document.body.classList.toggle("p5-layout-edit");
+      // make sure values show correctly when opening
+      mobile?.syncInputs?.();
+    });
+
+    document.getElementById("p5ResetMobileCSS")?.addEventListener("click", ()=>{
+      localStorage.removeItem(STORAGE_M);
+      applyDefaults(DEFAULTS_M);
+      mobile?.syncInputs?.();
+    });
+
+    document.getElementById("p5CopyMobileCSS")?.addEventListener("click", async ()=>{
+      let css = `@media (max-width: 820px) and (hover: none) and (pointer: coarse) {\n  :root{\n`;
+      Object.keys(DEFAULTS_M).forEach(k=>{
+        css += `    ${k}: ${getInlineOrDefault(k, DEFAULTS_M)};\n`;
+      });
+      css += "  }\n}";
+      try{
+        await navigator.clipboard.writeText(css);
+        alert("Copied Mobile CSS! Paste into your CSS to keep forever.");
+      }catch(e){
+        console.log(css);
+        alert("Clipboard blocked. CSS printed in console.");
+      }
+    });
+  }
+
+  // ---------- INIT DESKTOP ----------
+  if(panelD && toggleD){
+    loadSaved(STORAGE_D, DEFAULTS_D);
+    const desk = bindPanel(panelD, DEFAULTS_D, STORAGE_D);
+
+    toggleD.addEventListener("pointerup", (e)=>{
+      e.preventDefault();
+      document.body.classList.toggle("p5-layout-edit-desktop");
+      desk?.syncInputs?.();
+    });
+
+    document.getElementById("p5ResetDesktopCSS")?.addEventListener("click", ()=>{
+      localStorage.removeItem(STORAGE_D);
+      applyDefaults(DEFAULTS_D);
+      desk?.syncInputs?.();
+    });
+
+    document.getElementById("p5CopyDesktopCSS")?.addEventListener("click", async ()=>{
+      let css = `@media (min-width: 821px) and (hover:hover) and (pointer:fine) {\n  :root{\n`;
+      Object.keys(DEFAULTS_D).forEach(k=>{
+        css += `    ${k}: ${getInlineOrDefault(k, DEFAULTS_D)};\n`;
+      });
+      css += "  }\n}";
+      try{
+        await navigator.clipboard.writeText(css);
+        alert("Copied Desktop CSS! Paste into your CSS to keep forever.");
+      }catch(e){
+        console.log(css);
+        alert("Clipboard blocked. CSS printed in console.");
+      }
+    });
+  }
 
 })();
     
