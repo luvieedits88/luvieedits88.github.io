@@ -593,6 +593,10 @@
     opacity:0.85;  
   }  
   /* ✅ Title container (viewport with soft fade edges) */
+/* =========================================
+   SMART MARQUEE TITLE (Desktop + Mobile)
+   ========================================= */
+
 .p5-track-title{  
   margin-top:4px;  
   font-weight:900;  
@@ -602,35 +606,46 @@
   overflow:hidden;
   white-space:nowrap;
   max-width:100%;
-
-  /* Soft fade so it never looks cut */
-  -webkit-mask-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    #000 12%,
-    #000 88%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    90deg,
-    transparent 0%,
-    #000 12%,
-    #000 88%,
-    transparent 100%
-  );
 }
 
-/* The moving text */
+/* Desktop fade edges only */
+@media (hover:hover) and (pointer:fine){
+  .p5-track-title{
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  }
+}
+
 .p5-track-title .marquee{
   display:inline-block;
-  padding-left:100%;
-  animation:p5Marquee 12s linear infinite;
-  will-change:transform;
+  white-space:nowrap;
+  transform:translateX(0);
+  opacity:1;
+  will-change:transform, opacity;
 }
 
-@keyframes p5Marquee{
-  0%   { transform:translateX(0); }
-  100% { transform:translateX(-100%); }
+.p5-track-title.animate .marquee{
+  animation: p5SmartMarquee var(--marquee-speed, 12s) linear infinite;
+}
+
+@keyframes p5SmartMarquee{
+  0%   { transform:translateX(0); opacity:1; }
+  70%  { transform:translateX(calc(-1 * var(--marquee-distance))); opacity:1; }
+  85%  { transform:translateX(calc(-1 * var(--marquee-distance) - 20px)); opacity:0; }
+  86%  { transform:translateX(100%); opacity:0; }
+  100% { transform:translateX(0); opacity:1; }
 }
   
 .p5-track-artist{  
@@ -900,11 +915,7 @@
     -webkit-mask-image: none !important;
     mask-image: none !important;
   }
-  .p5-track-title .marquee{
-    animation: none !important; /* on small bar: no marquee */
-    padding-left: 0 !important;
-    transform: none !important;
-  }
+  
   .p5-track-artist{
     font-size: var(--m-artist) !important;
     line-height: 1.1 !important;
@@ -2134,6 +2145,35 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
   const durEl      = document.getElementById("p5Dur");  
   
   let currentIndex = 0;  
+  function applySmartMarquee(titleEl, text){
+  const title = t.title || t.src;
+  applySmartMarquee(titleEl, title);
+  const mq = titleEl.querySelector(".marquee");
+
+  requestAnimationFrame(() => {
+    const containerW = titleEl.clientWidth;
+    const textW = mq.scrollWidth;
+
+    if(textW > containerW + 2){
+      const distance = textW - containerW;
+
+      titleEl.style.setProperty("--marquee-distance", distance + "px");
+
+      const speed = Math.max(10, Math.min(26, distance / 30));
+      titleEl.style.setProperty("--marquee-speed", speed + "s");
+
+      titleEl.classList.add("animate");
+
+      mq.style.animation = "none";
+      mq.offsetHeight;
+      mq.style.animation = "";
+    } else {
+      titleEl.classList.remove("animate");
+      titleEl.style.removeProperty("--marquee-distance");
+      titleEl.style.removeProperty("--marquee-speed");
+    }
+  });
+}
   let shuffleOn = false;  
   let loopMode = "off"; // "off" | "all" | "one"  
   
@@ -2199,7 +2239,6 @@ function setMuteIcon(){
   const t = TRACKS[currentIndex];  
   
   music.src = t.src;  
-  const title = t.title || t.src;
   titleEl.innerHTML = `<span class="marquee">${title}</span>`;
   if(artistEl) artistEl.textContent = t.artist || "";  
   coverImg.src = t.cover;  
@@ -2857,6 +2896,12 @@ window.addEventListener("load", () => {
   syncInputs();
 
 })();
+    
+    window.addEventListener("resize", () => {
+  const t = TRACKS[currentIndex];
+  const title = t?.title || t?.src || "";
+  if(title) applySmartMarquee(titleEl, title);
+});
   
     
 </script>  
