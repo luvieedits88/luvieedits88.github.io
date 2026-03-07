@@ -270,20 +270,21 @@
     z-index:1;  
     pointer-events:none;  
   }  
-  .joker{  
-    left:-60px;  
-    transform:scaleX(-1) rotate(-6deg);  
-    filter:
-  drop-shadow(0 0 30px rgba(0,201,122,0.6))
-  drop-shadow(0 0 70px rgba(0,201,122,0.3)); 
-  }  
-  .sumire{  
-    right:-40px;  
-    transform:rotate(6deg);  
-    filter:
-  drop-shadow(0 0 30px rgba(0,201,122,0.6))
-  drop-shadow(0 0 70px rgba(0,201,122,0.3)); 
-  }  
+  .enkidu-left{
+  left:-60px;
+  transform: rotate(-4deg);
+  filter:
+    drop-shadow(0 0 30px rgba(0,201,122,0.6))
+    drop-shadow(0 0 70px rgba(0,201,122,0.3));
+}
+
+.enkidu-right{
+  right:-40px;
+  transform: rotate(4deg);
+  filter:
+    drop-shadow(0 0 30px rgba(0,201,122,0.6))
+    drop-shadow(0 0 70px rgba(0,201,122,0.3));
+}
   
   /* PORTFOLIO */  
   .portfolio{  
@@ -893,32 +894,36 @@
     cursor:pointer;  
   }  
   
-  /* ✅ remove the old dock entirely */  
-  .music-dock{ display:none !important; }  
-  
-  @media (max-width:768px){  
-    .hero{ min-height:92svh; min-height:92dvh; }  
-    .title{font-size:38px;letter-spacing:3px;}  
-    .subtitle{font-size:15px;max-width:320px;}  
-    .button{padding:14px 28px;}  
-    /* Mobile: hide both by default */
-    .joker,
-    .sumire{
+  /* ✅ remove the old dock entirely */
+.music-dock{ display:none !important; }
+
+@media (max-width:768px){
+  .hero{ min-height:92svh; min-height:92dvh; }
+  .title{font-size:38px;letter-spacing:3px;}
+  .subtitle{font-size:15px;max-width:320px;}
+  .button{padding:14px 28px;}
+
+  /* Mobile: hide both by default */
+  .enkidu-left,
+  .enkidu-right{
     display:none;
-    }
-    .sumire{right:-120px;max-height:85vh;}
-    .joker{left:-120px;max-height:85vh; }
-  
-    .p5-controls{ left:14px; right:14px; flex-wrap:wrap; row-gap:8px; padding:12px 12px; }  
-    .p5-btn{ padding:10px 12px; min-width:42px; min-height:42px; border-radius:12px; font-size:16px; }  
-    .p5-progress{ flex: 1 1 100%; height:8px; }  
-    .p5-progress::-webkit-slider-thumb{ width:18px; height:18px; }  
-    .p5-time{ min-width:auto; }  
-  }  
-    .joker,
-    .sumire{
-      z-index: 2;
-    }
+    max-height:85vh;
+  }
+
+  .enkidu-left{ left:-120px; }
+  .enkidu-right{ right:-120px; }
+
+  .p5-controls{ left:14px; right:14px; flex-wrap:wrap; row-gap:8px; padding:12px 12px; }
+  .p5-btn{ padding:10px 12px; min-width:42px; min-height:42px; border-radius:12px; font-size:16px; }
+  .p5-progress{ flex: 1 1 100%; height:8px; }
+  .p5-progress::-webkit-slider-thumb{ width:18px; height:18px; }
+  .p5-time{ min-width:auto; }
+}
+
+.enkidu-left,
+.enkidu-right{
+  z-index:2;
+}
  /* ==========================================================
    ✅ MOBILE HERO MUSIC BAR + EDITOR VARS
    ========================================================== */
@@ -1597,8 +1602,8 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
 </div>
 
   <section class="hero">  
-  <img src="Enkidu1.png" class="character Enkidu" alt="Enkdiu">  
-  <img src="Enkidu2.png" class="character Enkidu" alt="Enkidu">    <h1 class="title">VALIE</h1>  
+ <img src="Enkidu1.png" class="character enkidu-left" alt="Enkidu left">
+ <img src="Enkidu2.png" class="character enkidu-right" alt="Enkidu right">    <h1 class="title">VALIE</h1>  
   <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>  
   <a href="#portfolio" class="button" data-cursor="link">Watch My Work</a>  
   <a href="#contact" class="button" style="margin-top:16px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.16);box-shadow:0 0 24px rgba(0,201,122,0.18);" data-cursor="link">Contact Me</a>  
@@ -3375,22 +3380,20 @@ window.addEventListener("load", () => {
 
     /* 🔥 RANDOM MOBILE CHARACTER */
 window.addEventListener("load", () => {
-
   if (window.innerWidth > 768) return;
 
-  const joker  = document.querySelector(".character.joker");
-  const sumire = document.querySelector(".character.sumire");
-  if (!joker || !sumire) return;
+  const leftChar = document.querySelector(".character.enkidu-left");
+  const rightChar = document.querySelector(".character.enkidu-right");
+  if (!leftChar || !rightChar) return;
 
-  joker.style.display = "none";
-  sumire.style.display = "none";
+  leftChar.style.display = "none";
+  rightChar.style.display = "none";
 
   if (Math.random() < 0.5) {
-    joker.style.display = "block";
+    leftChar.style.display = "block";
   } else {
-    sumire.style.display = "block";
+    rightChar.style.display = "block";
   }
-
 });
 
     
