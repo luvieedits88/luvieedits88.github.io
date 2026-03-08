@@ -1697,6 +1697,153 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
     letter-spacing:2px;
   }
 }
+    /* =========================
+   RARE MODE — HERO BAR VISUAL STATE
+   activates when .p5-music-hero has .rare-active
+   ========================= */
+
+.p5-music-hero.rare-active .p5-music-frame{
+  border-color: rgba(127,255,212,0.26);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,0.65),
+    0 0 45px rgba(0,201,122,0.16),
+    0 0 95px rgba(0,201,122,0.34),
+    0 0 145px rgba(127,255,212,0.20);
+}
+
+/* cover border + pulse */
+.p5-music-hero.rare-active .p5-cover-wrap{
+  border-color: rgba(127,255,212,0.98);
+  box-shadow:
+    0 0 24px rgba(127,255,212,0.42),
+    0 0 56px rgba(0,201,122,0.30);
+  animation: rareCoverPulse 3.4s ease-in-out infinite;
+}
+
+/* boost the cover glow too */
+.p5-music-hero.rare-active .p5-cover-glow{
+  opacity: 0.62;
+}
+
+/* title brighter mint */
+.p5-music-hero.rare-active .p5-track-title{
+  color: #aaffdf;
+  text-shadow:
+    0 0 10px rgba(127,255,212,0.32),
+    0 0 26px rgba(0,201,122,0.18);
+}
+    
+ .p5-music-hero.rare-active .p5-track-kicker{
+  color: rgba(170,255,223,0.96);
+  text-shadow: 0 0 12px rgba(127,255,212,0.22);
+}
+
+/* optional: artist gets a tiny lift too */
+.p5-music-hero.rare-active .p5-track-artist{
+  color: rgba(235,255,248,0.90);
+}
+
+/* subtle aura for shuffle / loop / mute */
+.p5-music-hero.rare-active .p5-top-right .p5-mbtn,
+.p5-music-hero.rare-active .p5-top-right .p5-vol-btn{
+  border-color: rgba(127,255,212,0.34);
+  box-shadow:
+    0 0 14px rgba(0,201,122,0.12),
+    0 0 28px rgba(127,255,212,0.10);
+}
+
+/* keep hover stronger while rare is active */
+.p5-music-hero.rare-active .p5-top-right .p5-mbtn:hover,
+.p5-music-hero.rare-active .p5-top-right .p5-vol-btn:hover{
+  border-color: rgba(127,255,212,0.60);
+  box-shadow:
+    0 0 18px rgba(0,201,122,0.20),
+    0 0 40px rgba(127,255,212,0.15);
+}
+
+/* active states also look stronger */
+.p5-music-hero.rare-active .p5-top-right .p5-mbtn.active{
+  border-color: rgba(127,255,212,0.92);
+  box-shadow:
+    0 0 18px rgba(127,255,212,0.26),
+    0 0 40px rgba(0,201,122,0.22);
+}
+
+/* play button can glow a little more too */
+.p5-music-hero.rare-active .p5-playhero{
+  box-shadow:
+    0 0 46px rgba(0,201,122,0.34),
+    0 0 78px rgba(127,255,212,0.12);
+  border-color: rgba(127,255,212,0.34);
+}
+
+/* seek bar / volume bar get a rare tint */
+.p5-music-hero.rare-active .p5-vol-slider,
+.p5-music-hero.rare-active .p5-seek{
+  background: rgba(127,255,212,0.22);
+}
+
+.p5-music-hero.rare-active .p5-vol-slider::-webkit-slider-thumb{
+  background: #eafff8;
+  box-shadow:
+    0 0 22px rgba(127,255,212,0.34),
+    0 0 30px rgba(0,201,122,0.22);
+}
+
+.p5-music-hero.rare-active .p5-seek::-webkit-slider-thumb{
+  background: #7fffd4;
+  box-shadow:
+    0 0 22px rgba(127,255,212,0.55),
+    0 0 30px rgba(0,201,122,0.32);
+}
+
+/* slow cover pulse */
+@keyframes rareCoverPulse{
+  0%,100%{
+    transform: scale(1);
+    box-shadow:
+      0 0 24px rgba(127,255,212,0.42),
+      0 0 56px rgba(0,201,122,0.30);
+  }
+  50%{
+    transform: scale(1.035);
+    box-shadow:
+      0 0 30px rgba(127,255,212,0.60),
+      0 0 76px rgba(0,201,122,0.42);
+  }
+}
+
+/* =========================
+   MOBILE TUNING
+   ========================= */
+@media (max-width: 820px){
+  .p5-music-hero.rare-active .p5-music-frame{
+    box-shadow:
+      0 18px 45px rgba(0,0,0,0.52),
+      0 0 28px rgba(0,201,122,0.20),
+      0 0 60px rgba(127,255,212,0.16);
+  }
+
+  .p5-music-hero.rare-active .p5-cover-wrap{
+    box-shadow:
+      0 0 16px rgba(127,255,212,0.34),
+      0 0 30px rgba(0,201,122,0.24);
+  }
+
+  .p5-music-hero.rare-active .p5-track-title{
+    text-shadow:
+      0 0 8px rgba(127,255,212,0.24),
+      0 0 16px rgba(0,201,122,0.14);
+  }
+
+  .p5-music-hero.rare-active .p5-top-right .p5-mbtn,
+  .p5-music-hero.rare-active .p5-top-right .p5-vol-btn{
+    box-shadow:
+      0 0 10px rgba(0,201,122,0.10),
+      0 0 18px rgba(127,255,212,0.08);
+  }
+}
+    
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
     <div class="p5-music-left">  
@@ -2799,6 +2946,16 @@ const rareTrackFx = document.getElementById("rareTrackFx");
 let rareFxTimer = null;
 let allowRareFx = false;
 
+function setRareVisualState(isRare){
+  if(!heroPlayer) return;
+  heroPlayer.classList.toggle("rare-active", !!isRare);
+}
+
+function syncRareVisualState(){
+  setRareVisualState(currentIndex === RARE_TRACK_INDEX);
+}
+
+
 function triggerRareTrackFx(){
   if(!rareTrackFx) return;
 
@@ -2907,7 +3064,7 @@ function setMuteIcon(){
     heroPlayer.classList.remove("show");  
   }  
   
-  function setTrack(i){
+ function setTrack(i){
   currentIndex = (i + TRACKS.length) % TRACKS.length;
   const t = TRACKS[currentIndex];
 
@@ -2923,11 +3080,14 @@ function setMuteIcon(){
   curEl.textContent = "0:00";
   durEl.textContent = "0:00";
 
+  /* turn rare bar visuals on/off depending on current track */
+  syncRareVisualState();
+
   if(allowRareFx && currentIndex === RARE_TRACK_INDEX){
     triggerRareTrackFx();
   }
 }
-  
+    
 function pickRandomNormal(excludeIndex = -1) {
   const pool = NORMAL_TRACKS.filter(i => i !== excludeIndex);
   return pool[Math.floor(Math.random() * pool.length)];
