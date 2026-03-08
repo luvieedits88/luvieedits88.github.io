@@ -2763,14 +2763,6 @@ function setMuteIcon(){
   durEl.textContent = "0:00";
 }
   
-  const RARE_TRACK_INDEX = 3;   // PROVANT
-const NORMAL_TRACKS = [0, 1, 2];
-const RARE_CHANCE = 0.01;     // 1%
-
-function rollRareTrack() {
-  return Math.random() < RARE_CHANCE;
-}
-
 function pickRandomNormal(excludeIndex = -1) {
   const pool = NORMAL_TRACKS.filter(i => i !== excludeIndex);
   return pool[Math.floor(Math.random() * pool.length)];
@@ -2807,7 +2799,13 @@ function pickPrevIndex() {
   async function unlockAudioFromGesture(){  
     if(musicUnlocked) return true;  
     try{  
-      if(!music.src) setTrack(0);  
+     if(!music.src){
+  if (rollRareTrack()) {
+    setTrack(RARE_TRACK_INDEX);
+  } else {
+    setTrack(NORMAL_TRACKS[Math.floor(Math.random() * NORMAL_TRACKS.length)]);
+  }
+}
       await music.play();  
       music.pause();  
       music.currentTime = 0;  
