@@ -1843,6 +1843,42 @@ details:not([open]) .ae-twisty{ transform: rotate(-90deg); }
       0 0 18px rgba(127,255,212,0.08);
   }
 }
+
+    /* =========================
+   CURSOR CLICK PARTICLES
+   ========================= */
+.cursor-particle{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 2147483647;
+
+  background: #7fffd4;
+  box-shadow:
+    0 0 6px rgba(127,255,212,0.95),
+    0 0 14px rgba(0,201,122,0.55);
+
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: cursorParticleBurst 700ms cubic-bezier(.18,.72,.24,1) forwards;
+}
+
+@keyframes cursorParticleBurst{
+  0%{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100%{
+    opacity: 0;
+    transform:
+      translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+      scale(0.25);
+  }
+}
     
 </style>  </head>  <body oncontextmenu="return false;">  <!-- ✅ BIG P5 HERO MUSIC PLAYER (MOVED TO TOP OF BODY) -->  <div id="p5MusicHero" class="p5-music-hero" data-cursor="normal" aria-live="polite">  
   <div class="p5-music-frame">  
@@ -2747,6 +2783,35 @@ function rollRareTrack() {
   gifCursor.style.transform =
     `translate3d(${mouseX + baseX - hotspot.x}px, ${mouseY + baseY - hotspot.y}px, 0)`;
 }
+
+    function spawnCursorParticles(x, y){
+  const rare = heroPlayer && heroPlayer.classList.contains("rare-active");
+  const count = rare ? 16 : 10;
+
+  for(let i = 0; i < count; i++){
+    const p = document.createElement("div");
+    p.className = "cursor-particle";
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = (rare ? 24 : 18) + Math.random() * (rare ? 46 : 34);
+
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance;
+
+    p.style.left = x + "px";
+    p.style.top = y + "px";
+    p.style.width = rare ? "7px" : "6px";
+    p.style.height = rare ? "7px" : "6px";
+    p.style.setProperty("--dx", dx + "px");
+    p.style.setProperty("--dy", dy + "px");
+
+    document.body.appendChild(p);
+
+    setTimeout(() => {
+      p.remove();
+    }, 700);
+  }
+}
   
   document.addEventListener("mousemove", (e)=>{  
     if(!CAN_HOVER) return;  
@@ -2817,8 +2882,20 @@ function rollRareTrack() {
   
   document.addEventListener("mouseover", (e)=>{ if(CAN_HOVER) setCursor(computeCursorFromTarget(e.target)); }, {passive:true});  
   document.addEventListener("mousemove", (e)=>{ if(CAN_HOVER) setCursor(computeCursorFromTarget(e.target)); }, {passive:true});  
-  document.addEventListener("mousedown", (e)=>{ if(CAN_HOVER) setCursor(computeCursorFromTarget(e.target)); });  
-  document.addEventListener("mouseup", (e)=>{ if(CAN_HOVER) setCursor(computeCursorFromTarget(e.target)); });  
+  document.addEventListener("mousedown", (e)=>{
+  if(CAN_HOVER) setCursor(computeCursorFromTarget(e.target));
+  spawnCursorParticles(e.clientX, e.clientY);
+});
+
+document.addEventListener("mouseup", (e)=>{
+  if(CAN_HOVER) setCursor(computeCursorFromTarget(e.target));
+});
+
+    document.addEventListener("touchstart", (e)=>{
+  const t = e.touches && e.touches[0];
+  if(!t) return;
+  spawnCursorParticles(t.clientX, t.clientY);
+}, { passive: true });
   
   function attachBusyCursorToVideos(){  
     document.querySelectorAll("video").forEach(v=>{  
@@ -2828,6 +2905,7 @@ function rollRareTrack() {
       v.addEventListener("pause", ()=> { if(CAN_HOVER) setCursor("precision"); });  
       v.addEventListener("canplay", ()=> { if(CAN_HOVER) setCursor("precision"); });  
     });  
+
   }  
   attachBusyCursorToVideos();  
   
