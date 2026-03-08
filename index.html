@@ -1244,8 +1244,28 @@
   color:#fff;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
-body.p5-layout-edit .p5-layout-panel{ display:block; }
-  /* Hide editor while intro is active */
+body.p5-layout-edit #p5LayoutPanel{ display:block; }
+body.p5-layout-edit-desktop #p5LayoutPanelDesktop{ display:block; }
+
+/* =========================================
+   DEVICE PANEL CONTROL
+   ========================================= */
+
+/* Mobile devices: hide desktop editor panel */
+@media (max-width: 820px){
+  #p5LayoutPanelDesktop{
+    display:none !important;
+  }
+}
+
+/* Desktop devices: hide mobile editor panel */
+@media (min-width: 821px){
+  #p5LayoutPanel{
+    display:none !important;
+  }
+}
+
+/* Hide editor while intro is active */
 body.intro-active #p5EditorToggle,
 body.intro-active #p5LayoutPanel,
 body.intro-active #p5EditorToggleDesktop,
@@ -1395,9 +1415,8 @@ body.intro-active #p5LayoutPanelDesktop{
   .p5-editor-toggle-desktop{ display:none; }
 }
 
-body.p5-layout-edit-desktop #p5LayoutPanelDesktop{
-  display:block;
-}
+body.p5-layout-edit #p5LayoutPanel{ display:block; }
+body.p5-layout-edit-desktop #p5LayoutPanelDesktop{ display:block; }
 
 
 .p5-layout-panel h3{ margin:0 0 10px; font-size:14px; font-weight:900; }
@@ -2058,6 +2077,32 @@ footer{
 .p5-editor-toggle,
 .p5-editor-toggle-desktop{ z-index: 2147483647; }
 
+/* =========================================
+   EDITOR BUTTON DEVICE CONTROL
+   ========================================= */
+
+/* MOBILE button */
+@media (max-width:820px){
+  .p5-editor-toggle{
+    display:block;
+  }
+
+  .p5-editor-toggle-desktop{
+    display:none !important;
+  }
+}
+
+/* DESKTOP button */
+@media (min-width:821px){
+  .p5-editor-toggle{
+    display:none !important;
+  }
+
+  .p5-editor-toggle-desktop{
+    display:block;
+  }
+}
+
 @media (max-width: 820px){
 
   .ambient-particles::before,
@@ -2480,248 +2525,9 @@ footer{
      ========================= -->
 
 <div class="p5-layout-panel" id="p5LayoutPanel">
-  <h3>AE Mobile Hero Editor</h3>
-
-  <!-- =========================
-       BASIC SIZES (like AE "Transform > Scale")
-       ========================= -->
-  <div class="ae-group">
-    <div class="ae-group-title">Sizes</div>
-
-    <div class="ae-row">
-      <div class="ae-label">Bar Height</div>
-      <div class="ae-fields">
-        <input data-var="--m-frame-h" type="number" value="60" aria-label="Bar Height">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Cover Size</div>
-      <div class="ae-fields">
-        <input data-var="--m-cover" type="number" value="54" aria-label="Cover Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Icon Size</div>
-      <div class="ae-fields">
-        <input data-var="--m-icon" type="number" value="10" aria-label="Icon Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Play Button</div>
-      <div class="ae-fields">
-        <input data-var="--m-play" type="number" value="35" aria-label="Play Button Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Title</div>
-      <div class="ae-fields">
-        <input data-var="--m-title" type="number" value="11" aria-label="Title Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Artist</div>
-      <div class="ae-fields">
-        <input data-var="--m-artist" type="number" value="9" aria-label="Artist Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Volume Width</div>
-      <div class="ae-fields">
-        <input data-var="--m-vol-w" type="number" value="88" aria-label="Volume Width">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Seek Width</div>
-      <div class="ae-fields">
-        <input data-var="--m-seek-w" data-unit="%" type="number" value="75" aria-label="Seek Width Percent">
-        <span class="ae-unit">%</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- =========================
-       AE POSITION GROUPS
-       Each block = Position X / Y (like AE Transform > Position)
-       ========================= -->
+  <h3>AE Mobile Character Editor</h3>
 
   <div class="ae-group">
-    <div class="ae-group-title">Position</div>
-
-    <!-- Frame -->
-    <details class="ae-block" open>
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Frame</span>
-      </summary>
-
-      <div class="ae-xy">
-        <div class="ae-xy-label">Position</div>
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--m-frame-x" type="number" value="0" aria-label="Frame Position X">
-            <span class="ae-unit">px</span>
-          </div>
-
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--m-frame-y" type="number" value="0" aria-label="Frame Position Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Cover -->
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Cover</span>
-      </summary>
-
-      <div class="ae-xy">
-        <div class="ae-xy-label">Position</div>
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--m-cover-x" type="number" value="0" aria-label="Cover Position X">
-            <span class="ae-unit">px</span>
-          </div>
-
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--m-cover-y" type="number" value="0" aria-label="Cover Position Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Meta -->
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Meta (Title/Artist)</span>
-      </summary>
-
-      <div class="ae-xy">
-        <div class="ae-xy-label">Position</div>
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--m-meta-x" type="number" value="0" aria-label="Meta Position X">
-            <span class="ae-unit">px</span>
-          </div>
-
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--m-meta-y" type="number" value="0" aria-label="Meta Position Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Actions -->
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Actions (Shuffle/Loop/Mute/Vol)</span>
-      </summary>
-
-      <div class="ae-xy">
-        <div class="ae-xy-label">Position</div>
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--m-actions-x" type="number" value="0" aria-label="Actions Position X">
-            <span class="ae-unit">px</span>
-          </div>
-
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--m-actions-y" type="number" value="0" aria-label="Actions Position Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Mid -->
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Mid (Prev/Play/Next)</span>
-      </summary>
-
-      <div class="ae-xy">
-        <div class="ae-xy-label">Position</div>
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--m-mid-x" type="number" value="0" aria-label="Mid Position X">
-            <span class="ae-unit">px</span>
-          </div>
-
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--m-mid-y" type="number" value="0" aria-label="Mid Position Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Bottom -->
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Bottom (Time/Seek)</span>
-      </summary>
-
-      <div class="ae-xy">
-        <div class="ae-xy-label">Position</div>
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--m-bottom-x" type="number" value="0" aria-label="Bottom Position X">
-            <span class="ae-unit">px</span>
-          </div>
-
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--m-bottom-y" type="number" value="0" aria-label="Bottom Position Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-  </div>
-
-  <!-- =========================
-       ACTION BUTTONS
-       ========================= -->
-  <div class="p5-layout-actions">
-    <button type="button" id="p5CopyMobileCSS">Copy Permanent CSS</button>
-    <button type="button" class="secondary" id="p5ResetMobileCSS">Reset</button>
-  </div>
-</div>
-
-    <div class="ae-group">
     <div class="ae-group-title">Mobile Character</div>
 
     <div class="ae-row">
@@ -2765,172 +2571,29 @@ footer{
     </div>
   </div>
 
+  <div class="p5-layout-actions">
+    <button type="button" id="p5CopyMobileCSS">Copy Permanent CSS</button>
+    <button type="button" class="secondary" id="p5ResetMobileCSS">Reset</button>
+  </div>
+</div>
+
+  <!-- =========================
+       ACTION BUTTONS
+       ========================= -->
+  <div class="p5-layout-actions">
+    <button type="button" id="p5CopyMobileCSS">Copy Permanent CSS</button>
+    <button type="button" class="secondary" id="p5ResetMobileCSS">Reset</button>
+  </div>
+</div>
+
+
   <!-- =========================
      ✅ AE-STYLE DESKTOP HERO EDITOR
      ========================= -->
 <div class="p5-layout-panel" id="p5LayoutPanelDesktop">
-  <h3>AE Desktop Hero Editor</h3>
+  <h3>AE Desktop Character Editor</h3>
 
   <div class="ae-group">
-    <div class="ae-group-title">Sizes</div>
-
-    <div class="ae-row">
-      <div class="ae-label">Bar Height</div>
-      <div class="ae-fields">
-        <input data-var="--d-frame-h" type="number" value="154" aria-label="Bar Height">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Cover Size</div>
-      <div class="ae-fields">
-        <input data-var="--d-cover" type="number" value="122" aria-label="Cover Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Title Size</div>
-      <div class="ae-fields">
-        <input data-var="--d-title" type="number" value="16" aria-label="Title Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Artist Size</div>
-      <div class="ae-fields">
-        <input data-var="--d-artist" type="number" value="12" aria-label="Artist Size">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-
-    <div class="ae-row">
-      <div class="ae-label">Volume Width</div>
-      <div class="ae-fields">
-        <input data-var="--d-vol-w" type="number" value="150" aria-label="Volume Width">
-        <span class="ae-unit">px</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="ae-group">
-    <div class="ae-group-title">Position</div>
-
-    <details class="ae-block" open>
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Frame</span>
-      </summary>
-      <div class="ae-xy">
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--d-frame-x" type="number" value="0" aria-label="Frame X">
-            <span class="ae-unit">px</span>
-          </div>
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--d-frame-y" type="number" value="0" aria-label="Frame Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Cover</span>
-      </summary>
-      <div class="ae-xy">
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--d-cover-x" type="number" value="0" aria-label="Cover X">
-            <span class="ae-unit">px</span>
-          </div>
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--d-cover-y" type="number" value="0" aria-label="Cover Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Actions</span>
-      </summary>
-      <div class="ae-xy">
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--d-actions-x" type="number" value="0" aria-label="Actions X">
-            <span class="ae-unit">px</span>
-          </div>
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--d-actions-y" type="number" value="0" aria-label="Actions Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Mid</span>
-      </summary>
-      <div class="ae-xy">
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--d-mid-x" type="number" value="0" aria-label="Mid X">
-            <span class="ae-unit">px</span>
-          </div>
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--d-mid-y" type="number" value="0" aria-label="Mid Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <details class="ae-block">
-      <summary class="ae-summary">
-        <span class="ae-twisty">▾</span>
-        <span class="ae-name">Bottom</span>
-      </summary>
-      <div class="ae-xy">
-        <div class="ae-xy-fields">
-          <div class="ae-field">
-            <span class="ae-axis">X</span>
-            <input data-var="--d-bottom-x" type="number" value="0" aria-label="Bottom X">
-            <span class="ae-unit">px</span>
-          </div>
-          <div class="ae-field">
-            <span class="ae-axis">Y</span>
-            <input data-var="--d-bottom-y" type="number" value="0" aria-label="Bottom Y">
-            <span class="ae-unit">px</span>
-          </div>
-        </div>
-      </div>
-    </details>
-  </div>
-
-  <div class="p5-layout-actions">
-    <button type="button" id="p5CopyDesktopCSS">Copy Permanent CSS</button>
-    <button type="button" class="secondary" id="p5ResetDesktopCSS">Reset</button>
-  </div>
-</div>
-
-    <div class="ae-group">
     <div class="ae-group-title">Left Character</div>
 
     <div class="ae-row">
@@ -3017,6 +2680,12 @@ footer{
       </div>
     </div>
   </div>
+
+  <div class="p5-layout-actions">
+    <button type="button" id="p5CopyDesktopCSS">Copy Permanent CSS</button>
+    <button type="button" class="secondary" id="p5ResetDesktopCSS">Reset</button>
+  </div>
+</div>
 
 <div id="rareTrackFx" class="rare-track-fx" aria-hidden="true">
   <div class="rare-track-flash"></div>
