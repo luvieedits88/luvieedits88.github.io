@@ -3245,7 +3245,7 @@ function setRareVisualState(isRare){
 function syncRareVisualState(){
   const isRare = currentIndex === RARE_TRACK_INDEX;
   setRareVisualState(isRare);
-  document.body.classList.toggle("rare-ambient", isRare);
+  syncAmbientMode();
 }
 
 
@@ -3375,7 +3375,6 @@ function setMuteIcon(){
 
   /* turn rare bar visuals on/off depending on current track */
   syncRareVisualState();
-  buildAmbientParticles();
    
   if(allowRareFx && currentIndex === RARE_TRACK_INDEX){
     triggerRareTrackFx();
