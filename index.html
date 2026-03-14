@@ -3732,33 +3732,35 @@ window.addEventListener("load", () => {
   return /iPhone/i.test(navigator.userAgent);
 }
 
+function isIPhone() {
+  return /iPhone/i.test(navigator.userAgent);
+}
+
 async function togglePlayerFullscreen(){
   setActive(player);
 
   const fsEl = getFsEl();
 
   try {
-    // Exit standard fullscreen first
     if (fsEl) {
       await exitFs();
       return;
     }
 
-    // iPhone: fullscreen must target the <video> element itself
+    // iPhone only: use native video fullscreen
     if (isIPhone() && typeof video.webkitEnterFullscreen === "function") {
       video.webkitEnterFullscreen();
       return;
     }
 
-    // Standard fullscreen path for desktop / Android / newer supported browsers
-    if (video.requestFullscreen) {
-      await video.requestFullscreen();
-    } else if (player.requestFullscreen) {
+    // Desktop / Mac: fullscreen the custom wrapper first
+    if (player.requestFullscreen) {
       await player.requestFullscreen();
     } else if (player.webkitRequestFullscreen) {
       await player.webkitRequestFullscreen();
+    } else if (video.requestFullscreen) {
+      await video.requestFullscreen();
     } else if (typeof video.webkitEnterFullscreen === "function") {
-      // fallback for older WebKit video fullscreen
       video.webkitEnterFullscreen();
     }
   } catch (e) {
@@ -3840,7 +3842,7 @@ video.addEventListener("webkitbeginfullscreen", () => {
 video.addEventListener("webkitendfullscreen", () => {
   updateFsIcon();
   if (CAN_HOVER) ensureGifCursorInRightPlace();
-});;  
+});
   
     video.addEventListener("ended", ()=>{  
       if(userWantsMusic && musicUnlocked){  
