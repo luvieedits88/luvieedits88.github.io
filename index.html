@@ -2262,8 +2262,8 @@ footer{
   <h2 class="section-title">Portfolio</h2>    <div class="video-grid">  
     <!-- CARD 1 -->  
 <div class="video-card">    <div class="p5-player" data-cursor="precision">  
-    <video class="p5-video" preload="metadata" playsinline>  
-      <source src="video1.mp4" type="video/mp4">  
+<video class="p5-video" preload="metadata" playsinline webkit-playsinline>
+  <source src="video1.mp4" type="video/mp4">  
     </video>  <div class="p5-gestures" aria-hidden="true">  
   <button class="p5-zone p5-left" type="button"></button>  
   <button class="p5-zone p5-mid" type="button"></button>  
@@ -2321,7 +2321,7 @@ footer{
   </div>  </div> <!-- CLOSE .video-card -->  <!-- CARD 2 -->
 
    <div class="video-card">    <div class="p5-player" data-cursor="precision">  
-    <video class="p5-video" preload="metadata" playsinline>  
+    <video class="p5-video" preload="metadata" playsinline webkit-playsinline>  
       <source src="video2.mp4" type="video/mp4">  
     </video>  <div class="p5-gestures" aria-hidden="true">  
   <button class="p5-zone p5-left" type="button"></button>  
@@ -2380,7 +2380,7 @@ footer{
   </div>  </div> <!-- CLOSE .video-card -->  
     <!-- CARD 3 -->  
    <div class="video-card">    <div class="p5-player" data-cursor="precision">  
-    <video class="p5-video" preload="metadata" playsinline>  
+    <video class="p5-video" preload="metadata" playsinline webkit-playsinline>  
       <source src="video3.mp4" type="video/mp4">  
     </video>  <div class="p5-gestures" aria-hidden="true">  
   <button class="p5-zone p5-left" type="button"></button>  
@@ -2440,7 +2440,7 @@ footer{
 <div class="video-card">
 
   <div class="p5-player" data-cursor="precision">  
-    <video class="p5-video" preload="metadata" playsinline>  
+    <video class="p5-video" preload="metadata" playsinline webkit-playsinline>  
       <source src="video4.mp4" type="video/mp4">  
     </video>  <div class="p5-gestures" aria-hidden="true">  
   <button class="p5-zone p5-left" type="button"></button>  
@@ -3728,17 +3728,45 @@ window.addEventListener("load", () => {
       showHint(player, `Vol ${Math.round(video.volume * 100)}%`);  
     }  
   
-    async function togglePlayerFullscreen(){  
-      setActive(player);  
-      const fsEl = getFsEl();  
-      if(fsEl){ await exitFs(); return; }  
-      try{  
-        if(player.requestFullscreen) await player.requestFullscreen();  
-        else if(player.webkitRequestFullscreen) await player.webkitRequestFullscreen();  
-        else if(video.requestFullscreen) await video.requestFullscreen();  
-      }catch(e){}  
-      setTimeout(ensureGifCursorInRightPlace, 50);  
-    }  
+   function isIPhone() {
+  return /iPhone/i.test(navigator.userAgent);
+}
+
+async function togglePlayerFullscreen(){
+  setActive(player);
+
+  const fsEl = getFsEl();
+
+  try {
+    // Exit standard fullscreen first
+    if (fsEl) {
+      await exitFs();
+      return;
+    }
+
+    // iPhone: fullscreen must target the <video> element itself
+    if (isIPhone() && typeof video.webkitEnterFullscreen === "function") {
+      video.webkitEnterFullscreen();
+      return;
+    }
+
+    // Standard fullscreen path for desktop / Android / newer supported browsers
+    if (video.requestFullscreen) {
+      await video.requestFullscreen();
+    } else if (player.requestFullscreen) {
+      await player.requestFullscreen();
+    } else if (player.webkitRequestFullscreen) {
+      await player.webkitRequestFullscreen();
+    } else if (typeof video.webkitEnterFullscreen === "function") {
+      // fallback for older WebKit video fullscreen
+      video.webkitEnterFullscreen();
+    }
+  } catch (e) {
+    console.warn("Fullscreen failed:", e);
+  }
+
+  setTimeout(ensureGifCursorInRightPlace, 50);
+}
   
     player.addEventListener("pointerdown", ()=> setActive(player));  
     bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });  
@@ -3775,35 +3803,44 @@ window.addEventListener("load", () => {
   
     fullBtn.addEventListener("click", togglePlayerFullscreen);  
   
-   function updateFsIcon(){  
-  const fs = !!getFsEl();  
-  const icon = fullBtn.querySelector(".p5-full-icon");  
+  function updateFsIcon(){  
+  const standardFs = !!getFsEl();
+  const videoFs = !!video.webkitDisplayingFullscreen;
+  const fs = standardFs || videoFs;
+
+  const icon = fullBtn.querySelector(".p5-full-icon");
+
   if(icon){  
-    icon.src = fs ? "expand-arrows-two-icon.png" : "expand-icon.png";  
-    icon.alt = fs ? "Exit fullscreen" : "Fullscreen";  
-  }  
-  fullBtn.setAttribute("aria-label", fs ? "Exit fullscreen" : "Fullscreen");  
-}  
-    player._updateFsIcon = updateFsIcon;  
-    updateFsIcon();  
-  
-    // ✅ pause bg music when video plays, resume after pause/ended (only if user enabled music)  
-    video.addEventListener("play", ()=>{  
-      setActive(player);  
-      if(musicUnlocked && userWantsMusic){  
-        safePause(); // ✅ also hides top music bar while video is playing  
-      }  
-      setPlayUI();  
-      if(CAN_HOVER) setCursor("precision");  
-    });  
-  
-    video.addEventListener("pause", ()=>{  
-      if(userWantsMusic && musicUnlocked){  
-        safePlay(); // ✅ shows bar again when bg music resumes  
-      }  
-      setPlayUI();  
-      if(CAN_HOVER) setCursor("precision");  
-    });  
+    icon.src = fs
+      ? "expand-arrows-two-icon.png"
+      : "expand-icon.png";
+
+    icon.alt = fs
+      ? "Exit fullscreen"
+      : "Fullscreen";
+  }
+
+  fullBtn.setAttribute(
+    "aria-label",
+    fs ? "Exit fullscreen" : "Fullscreen"
+  );
+}
+
+player._updateFsIcon = updateFsIcon;
+updateFsIcon();
+
+
+/* ✅ iPhone fullscreen detection */
+
+video.addEventListener("webkitbeginfullscreen", () => {
+  updateFsIcon();
+  if (CAN_HOVER) ensureGifCursorInRightPlace();
+});
+
+video.addEventListener("webkitendfullscreen", () => {
+  updateFsIcon();
+  if (CAN_HOVER) ensureGifCursorInRightPlace();
+});;  
   
     video.addEventListener("ended", ()=>{  
       if(userWantsMusic && musicUnlocked){  
