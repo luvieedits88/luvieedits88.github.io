@@ -3769,6 +3769,9 @@ async function togglePlayerFullscreen(){
     player.addEventListener("pointerdown", ()=> setActive(player));  
     bigPlay.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.play(); });  
     playBtn.addEventListener("click", async ()=> { setActive(player); await ensureUnlocked(); video.paused ? video.play() : video.pause(); });  
+    video.addEventListener("play", setPlayUI);
+    video.addEventListener("pause", setPlayUI);
+    video.addEventListener("waiting", setPlayUI);
   
     video.addEventListener("timeupdate", ()=>{  
       cur.textContent = fmtTime(video.currentTime);  
