@@ -1668,40 +1668,52 @@
   mix-blend-mode:screen;
   opacity:0;
   transform:
-    translate3d(var(--lx, 0px), var(--ly, 0px), 0)
+    translate3d(var(--lx, 0px), calc(var(--ly, 0px) + 12px), 0)
     rotate(var(--lr, 0deg))
-    scale(var(--ls, 1));
+    scale(var(--ls, 0.985));
   transition:
-    opacity .9s cubic-bezier(.2,.8,.2,1),
+    opacity .95s cubic-bezier(.22,.82,.2,1),
     transform 1.15s cubic-bezier(.18,.84,.22,1),
-    filter .8s ease;
-  will-change:opacity, transform, filter;
+    filter .95s ease;
+  will-change: opacity, transform, filter;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .rare-lyric-line.current{
   font-size:clamp(28px, 5.5vw, 88px);
-  opacity:0;
 }
 
 .rare-lyric-line.next{
   font-size:clamp(16px, 2.4vw, 34px);
-  color:rgba(235,255,248,0.08);
-  opacity:0;
+  color:rgba(235,255,248,0.075);
 }
 
-.rare-lyrics-layer.show .rare-lyric-line.current.is-visible{
+.rare-lyric-line.current.is-visible{
   opacity:1;
   filter:blur(0px);
+  transform:
+    translate3d(var(--lx, 0px), var(--ly, 0px), 0)
+    rotate(var(--lr, 0deg))
+    scale(var(--ls, 1));
 }
 
-.rare-lyrics-layer.show .rare-lyric-line.next.is-visible{
-  opacity:.65;
-  filter:blur(.2px);
+.rare-lyric-line.next.is-visible{
+  opacity:.52;
+  filter:blur(.15px);
+  transform:
+    translate3d(var(--lx, 0px), calc(var(--ly, 0px) + 34px), 0)
+    rotate(var(--lr, 0deg))
+    scale(calc(var(--ls, 1) * .985));
 }
 
 .rare-lyric-line.is-exiting{
   opacity:0 !important;
-  filter:blur(1.2px);
+  filter:blur(1.1px);
+  transform:
+    translate3d(var(--lx, 0px), calc(var(--ly, 0px) - 18px), 0)
+    rotate(var(--lr, 0deg))
+    scale(calc(var(--ls, 1) * 1.02)) !important;
 }
 
 .hero .title,
@@ -1774,8 +1786,8 @@
     text-shadow:none;
     filter:none;
     transition:
-      opacity .55s ease,
-      transform .7s ease;
+      opacity .62s ease,
+      transform .78s cubic-bezier(.22,.82,.2,1);
   }
 
   .rare-lyric-line.current{
@@ -1790,6 +1802,27 @@
     letter-spacing:.08em;
   }
 
+  .rare-lyric-line.current.is-visible{
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg)
+      scale(1);
+  }
+
+  .rare-lyric-line.next.is-visible{
+    transform:
+      translate3d(0, 22px, 0)
+      rotate(0deg)
+      scale(.985);
+  }
+
+  .rare-lyric-line.is-exiting{
+    transform:
+      translate3d(0, -10px, 0)
+      rotate(0deg)
+      scale(1.01) !important;
+  }
+
   .rare-lyric-line[data-pos="upper-left"],
   .rare-lyric-line[data-pos="upper-right"],
   .rare-lyric-line[data-pos="lower-left"],
@@ -1800,7 +1833,7 @@
       scale(1);
   }
 }
-
+    
 /* accessibility */
 @media (prefers-reduced-motion: reduce){
   .rare-lyric-line{
@@ -3012,19 +3045,24 @@ function isMobileLyricsMode(){
 function randomFloat(min, max){
   return min + Math.random() * (max - min);
 }
-
+    
+function seededOffset(index, min, max){
+  const x = Math.sin(index * 12.9898) * 43758.5453;
+  const frac = x - Math.floor(x);
+  return min + (max - min) * frac;
+}
 function stylizeLyricLine(el, index, mode){
   const mobile = isMobileLyricsMode();
   const pos = mobile ? "center" : lyricPositionsDesktop[index % lyricPositionsDesktop.length];
 
   el.dataset.pos = pos;
 
-  const driftX = mobile ? 0 : randomFloat(-12, 12);
-  const driftY = mobile ? 0 : randomFloat(-10, 10);
-  const rot = mobile ? 0 : randomFloat(-3.5, 3.5);
+  const driftX = mobile ? 0 : seededOffset(index + (mode === "next" ? 10 : 0), -10, 10);
+  const driftY = mobile ? 0 : seededOffset(index + (mode === "next" ? 20 : 0), -8, 8);
+  const rot = mobile ? 0 : seededOffset(index + (mode === "next" ? 30 : 0), -2.8, 2.8);
   const scale = mode === "next"
-    ? (mobile ? 1 : randomFloat(0.96, 1.02))
-    : (mobile ? 1 : randomFloat(0.98, 1.04));
+    ? (mobile ? 1 : seededOffset(index + 40, 0.975, 1.01))
+    : (mobile ? 1 : seededOffset(index + 50, 0.995, 1.03));
 
   el.style.setProperty("--lx", driftX + "px");
   el.style.setProperty("--ly", driftY + "px");
@@ -3061,23 +3099,45 @@ function showRareLyricsAt(index){
   if(index < 0 || index >= rareLyricsData.length) return;
   if(index === activeRareLyricIndex) return;
 
+  const previousIndex = activeRareLyricIndex;
   activeRareLyricIndex = index;
 
   const currentLine = rareLyricsData[index];
   const nextLine = rareLyricsData[index + 1];
 
-  rareLyricsCurrent.classList.remove("is-visible", "is-exiting");
-  rareLyricsNext.classList.remove("is-visible", "is-exiting");
+  if(previousIndex !== -1){
+    rareLyricsCurrent.classList.add("is-exiting");
+    rareLyricsCurrent.classList.remove("is-visible");
+  }
+
+  const promoteText = rareLyricsNext.textContent && rareLyricsNext.textContent.trim().length
+    ? rareLyricsNext.textContent
+    : (currentLine?.text || " ");
+
+  const shouldPromote =
+    previousIndex !== -1 &&
+    rareLyricsData[previousIndex + 1] &&
+    rareLyricsData[previousIndex + 1].text === currentLine?.text;
+
+  if(shouldPromote){
+    rareLyricsCurrent.textContent = promoteText;
+  } else {
+    rareLyricsCurrent.textContent = currentLine?.text || " ";
+  }
 
   stylizeLyricLine(rareLyricsCurrent, index, "current");
+
+  rareLyricsNext.classList.remove("is-visible", "is-exiting");
+  rareLyricsNext.textContent = nextLine?.text || " ";
   stylizeLyricLine(rareLyricsNext, index + 1, "next");
 
-  rareLyricsCurrent.textContent = currentLine?.text || " ";
-  rareLyricsNext.textContent = nextLine?.text || " ";
-
   requestAnimationFrame(() => {
+    rareLyricsCurrent.classList.remove("is-exiting");
     rareLyricsCurrent.classList.add("is-visible");
-    if(nextLine) rareLyricsNext.classList.add("is-visible");
+
+    if(nextLine){
+      rareLyricsNext.classList.add("is-visible");
+    }
   });
 }
 
@@ -3099,7 +3159,7 @@ function tickRareLyrics(){
   setRareLyricsVisible(true);
 
   const t = music.currentTime || 0;
-  const lyricIndex = findLyricIndexAtTime(t);
+  const lyricIndex = findLyricIndexAtTime(t + 0.18);
 
   if(lyricIndex !== -1){
     showRareLyricsAt(lyricIndex);
