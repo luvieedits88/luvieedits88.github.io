@@ -2248,21 +2248,6 @@ footer{
 
 /* hero load animation */
 .hero-load{
-  opacity: 0;
-  transform: translateY(30px);
-  animation: heroReveal 1s ease forwards;
-}
-
-.hero-load-delay-1{ animation-delay: 0.15s; }
-.hero-load-delay-2{ animation-delay: 0.3s; }
-.hero-load-delay-3{ animation-delay: 0.45s; }
-
-@keyframes heroReveal{
-  to{
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* contact buttons feel smoother */
 .contact-btn,
@@ -3163,6 +3148,14 @@ document.addEventListener("mouseup", (e)=>{
   introVideo.addEventListener("loadedmetadata", () => {  
     try{ introVideo.currentTime = 0; }catch(e){}  
   });  
+
+    function triggerHeroIntro(){
+  document.querySelectorAll(".hero-load").forEach((el) => {
+    el.classList.remove("show");
+    void el.offsetWidth; // restart animation safely
+    el.classList.add("show");
+  });
+}
     
   // =========================  
   // ✅ P5 HERO MUSIC PLAYER LOGIC  
@@ -3702,36 +3695,37 @@ if (rollRareTrack()) {
   // INTRO END / SKIP  
   // =========================  
   let introHiding = false;  
-  function hideIntro(){  
-    if(introHiding) return;  
-    introHiding = true;  
-  
-    try{ introVideo.pause(); }catch(e){}  
-    introOverlay.classList.add("outro");  
-  
-    setTimeout(()=>{  
-      introOverlay.classList.add("hide");  
-      tapOverlay.classList.add("hide");  
-      tapOverlay.classList.remove("show");  
-  
-      heroPlayer.classList.add("show");  
-      heroPlayer.classList.remove("hide");  
-  
-      setTimeout(()=>{  
-        introOverlay.style.display="none";  
-        if(tapOverlay && tapOverlay.parentNode) tapOverlay.remove();  
-      }, 560);  
-    }, 820);  
-  
-    document.body.style.overflow = "";  
-  
-    showHero();  
-  
-    // ✅ Fix: make sure play icon doesn't look "stuck"  
-    setPlayIcon(musicUnlocked && !music.paused);
+function hideIntro(){  
+  if(introHiding) return;  
+  introHiding = true;  
 
-    document.body.classList.remove("intro-active");
-  }  
+  try{ introVideo.pause(); }catch(e){}  
+  introOverlay.classList.add("outro");  
+
+  setTimeout(()=>{  
+    introOverlay.classList.add("hide");  
+    tapOverlay.classList.add("hide");  
+    tapOverlay.classList.remove("show");  
+
+    heroPlayer.classList.add("show");  
+    heroPlayer.classList.remove("hide");
+
+    triggerHeroIntro(); // ✅ trigger VALIE/subtitle/buttons here
+
+    setTimeout(()=>{  
+      introOverlay.style.display="none";  
+      if(tapOverlay && tapOverlay.parentNode) tapOverlay.remove();  
+    }, 560);  
+  }, 820);  
+
+  document.body.style.overflow = "";  
+
+  showHero();  
+
+  setPlayIcon(musicUnlocked && !music.paused);
+
+  document.body.classList.remove("intro-active");
+}
   introVideo.addEventListener("ended", hideIntro);  
   skipIntroBtn.addEventListener("click", async () => { await unlockAudioFromGesture(); hideIntro(); });  
   
