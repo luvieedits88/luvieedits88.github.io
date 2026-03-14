@@ -380,15 +380,14 @@
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));  
     gap:56px;  
   }  
-  .video-card{  
-    border-radius:18px;  
-    overflow:hidden;  
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));  
-    border: 1px solid rgba(255,255,255,0.10);  
-    box-shadow: 0 18px 50px rgba(0,0,0,0.65);  
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;  
-    position:relative;  
-  }  
+  .video-card{
+  border-radius:18px;
+  overflow:hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.55));
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.65);
+  position:relative;
+}
   .video-card:hover{  
     transform: translateY(-8px);  
     border-color: rgba(0,201,122,0.35);  
@@ -2184,23 +2183,110 @@ footer{
     /* =========================
    SCROLL REVEAL ANIMATIONS
    ========================= */
-
 .reveal{
   opacity: 0;
   transform: translateY(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+  will-change: opacity, transform;
 }
 
 .reveal.show{
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-/* stagger for video cards */
-.video-card.reveal:nth-child(1).show{ transition-delay: 0.1s; }
-.video-card.reveal:nth-child(2).show{ transition-delay: 0.2s; }
-.video-card.reveal:nth-child(3).show{ transition-delay: 0.3s; }
-.video-card.reveal:nth-child(4).show{ transition-delay: 0.4s; }
+.reveal-left{
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.reveal-left.show{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right{
+  opacity: 0;
+  transform: translateX(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.reveal-right.show{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* stagger cards */
+.video-card{
+  opacity: 0;
+  transform: translateY(45px) scale(0.98);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.video-card.show{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* nicer hover */
+.video-card:hover{
+  transform: translateY(-8px) scale(1.01);
+}
+
+/* hero load animation */
+.hero-load{
+  opacity: 0;
+  transform: translateY(30px);
+  animation: heroReveal 1s ease forwards;
+}
+
+.hero-load-delay-1{ animation-delay: 0.15s; }
+.hero-load-delay-2{ animation-delay: 0.3s; }
+.hero-load-delay-3{ animation-delay: 0.45s; }
+
+@keyframes heroReveal{
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* contact buttons feel smoother */
+.contact-btn,
+.button{
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    background .25s ease,
+    border-color .25s ease;
+}
+
+/* accessibility */
+@media (prefers-reduced-motion: reduce){
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .video-card,
+  .hero-load{
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
     
 </style>  </head>  <body oncontextmenu="return false;">
   <div id="ambientParticles" class="ambient-particles" aria-hidden="true"></div>
@@ -2286,10 +2372,10 @@ footer{
 
   <section class="hero">  
  <img src="Enkidu1.png" class="character enkidu-left" alt="Enkidu left">
- <img src="Enkidu2.png" class="character enkidu-right" alt="Enkidu right">    <h1 class="title">VALIE</h1>  
-  <p class="subtitle">The Editor That Makes Your Vision Come To Life</p>  
-  <a href="#portfolio" class="button" data-cursor="link">Watch My Work</a>  
-  <a href="#contact" class="button" style="margin-top:16px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.16);box-shadow:0 0 24px rgba(0,201,122,0.18);" data-cursor="link">Contact Me</a>  
+ <img src="Enkidu2.png" class="character enkidu-right" alt="Enkidu right">    <h1 class="title hero-load">VALIE</h1>  
+  <p class="subtitle hero-load hero-load-delay-1">The Editor That Makes Your Vision Come To Life</p>  
+  <a href="#portfolio" class="button hero-load hero-load-delay-2" data-cursor="link">Watch My Work</a>  
+  <a href="#contact" class="button hero-load hero-load-delay-3" style="margin-top:16px;background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.16);box-shadow:0 0 24px rgba(0,201,122,0.18);" data-cursor="link">Contact Me</a>  
 </section>  <section id="portfolio" class="portfolio">  
   <h2 class="section-title reveal">Portfolio</h2>    <div class="video-grid">  
     <!-- CARD 1 -->  
@@ -2530,13 +2616,13 @@ footer{
     Long Form Video Edit<span>
   </div>  </div> <!-- CLOSE .video-card -->  </div> <!-- CLOSE .video-grid -->  
 </section> <!-- CLOSE #portfolio -->  <section id="contact" class="contact reveal">  
-  <div class="contact-wrap">  
-    <div class="contact-inner">  
+<div class="contact-wrap reveal">
+  <div class="contact-inner">  
       <div class="contact-kicker">Business / Commissions</div>  
       <h2 class="contact-title">Let’s make something insane</h2>  
       <p class="contact-sub">Fastest response on Discord. Email is always open for brands, long-term work, and serious inquiries.</p>  <div class="contact-row">  
-    <div class="contact-profile">  
-      <div class="pfp-ring" data-cursor="link" title="Valie">  
+<div class="contact-profile reveal-left">
+  <div class="pfp-ring" data-cursor="link" title="Valie">  
         <img src="Profilepic.jpg" class="pfp-img" alt="Valie Profile">  
       </div>  
       <div>  
@@ -2545,8 +2631,8 @@ footer{
       </div>  
     </div>  
 
-    <div class="contact-actions">  
-      <a class="contact-btn" href="https://discord.com/users/1461961683110072431" target="_blank" rel="noopener" data-cursor="link">  
+<div class="contact-actions reveal-right">
+  <a class="contact-btn" href="https://discord.com/users/1461961683110072431" target="_blank" rel="noopener" data-cursor="link">  
         <img class="btn-ico" src="Discord.png" alt="">  
         Discord  
       </a>  
@@ -4240,6 +4326,52 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll(".reveal").forEach((el) => {
   revealObserver.observe(el);
+});
+
+  /* =========================
+   SCROLL REVEAL ENGINE
+   ========================= */
+const revealEls = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.12,
+  rootMargin: "0px 0px -40px 0px"
+});
+
+revealEls.forEach((el) => {
+  revealObserver.observe(el);
+});
+
+/* stagger video cards */
+const videoCards = document.querySelectorAll(".video-card");
+
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if(entry.isIntersecting){
+      videoCards.forEach((card, index) => {
+        if(card === entry.target){
+          setTimeout(() => {
+            card.classList.add("show");
+          }, index * 140);
+        }
+      });
+      cardObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: "0px 0px -30px 0px"
+});
+
+videoCards.forEach((card) => {
+  cardObserver.observe(card);
 });
     
 </script>  
