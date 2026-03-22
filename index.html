@@ -70,7 +70,68 @@
   --m-right-rot: 0deg;
   --m-right-max-h: 85vh;
 }
-  
+
+    /* Characters base style */
+.Rover-left, .Rover-right {
+  position: absolute;
+  z-index: 2;
+  opacity: 0; /* start invisible */
+  pointer-events: none;
+  transform-origin: bottom center;
+}
+
+/* Desktop left character */
+.Rover-left {
+  left: 30%; 
+  bottom: var(--char-left-y);
+  max-height: var(--char-left-max-h);
+  transform: rotate(var(--char-left-rot)) scale(var(--char-left-scale));
+  filter: drop-shadow(0 0 30px rgba(255,215,0,0.6))
+          drop-shadow(0 0 70px rgba(255,223,120,0.3));
+}
+
+/* Desktop right character */
+.Rover-right {
+  left: 70%; 
+  bottom: var(--char-right-y);
+  max-height: var(--char-right-max-h);
+  transform: rotate(var(--char-right-rot)) scale(var(--char-right-scale));
+  filter: drop-shadow(0 0 30px rgba(255,215,0,0.6))
+          drop-shadow(0 0 70px rgba(255,223,120,0.3));
+}
+
+/* Slide-in keyframes */
+@keyframes slideInLeft {
+  0% { bottom: var(--char-left-y); left: -300px; opacity: 0; }
+  100% { bottom: 0; left: 30%; opacity: 1; }
+}
+
+@keyframes slideInRight {
+  0% { bottom: var(--char-right-y); left: 120%; opacity: 0; }
+  100% { bottom: 0; left: 70%; opacity: 1; }
+}
+
+/* Animate when triggered */
+.Rover-left.animate {
+  animation: slideInLeft 1.2s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.Rover-right.animate {
+  animation: slideInRight 1.2s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .Rover-left, .Rover-right {
+    left: 50% !important;
+    transform: translateX(-50%) scale(1) !important;
+    bottom: 0 !important;
+    display: block !important;
+    max-height: 50vh !important;
+  }
+}
   /* Hide system cursor ONLY on non-touch devices */  
   @media (hover:hover) and (pointer:fine){
   html,
@@ -3651,6 +3712,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setInterval(updateBackground, 60000);
 });
 
+<script>
 const intro = document.querySelector('.intro');
 const skipBtn = document.querySelector('.intro-skip');
 const leftChar = document.querySelector('.Rover-left');
@@ -3661,17 +3723,18 @@ function showCharacters() {
   rightChar.classList.add('animate');
 }
 
-// Skip button triggers animation
+// Trigger after skip
 skipBtn.addEventListener('click', () => {
-  intro.classList.add('hide'); // hide intro video
+  intro.classList.add('hide');
   showCharacters();
 });
 
-// Video ends triggers animation
+// Trigger after intro video ends
 document.getElementById('introVideo').addEventListener('ended', () => {
-  intro.classList.add('hide'); // hide intro video
+  intro.classList.add('hide');
   showCharacters();
 });
+</script>
 
 </script>  
 </body>  
