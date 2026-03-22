@@ -3602,7 +3602,6 @@ videoCards.forEach((card) => {
   cardObserver.observe(card);
 });
 
-<script>
 function updateBackground() {
   const hour = new Date().getHours();
   const body = document.body;
@@ -3617,12 +3616,10 @@ function updateBackground() {
   body.style.backgroundAttachment = 'fixed';
 }
 
-// Run once on page load
-updateBackground();
-
-// Update every 60 seconds
-setInterval(updateBackground, 60000);
-</script>
+window.addEventListener("DOMContentLoaded", () => {
+  updateBackground();
+  setInterval(updateBackground, 60000);
+});
   
 </script>  
 </body>  
