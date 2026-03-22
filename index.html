@@ -8,19 +8,20 @@
   <style>  
   html{scroll-behavior:smooth;}  
   
-  body{  
+ body{  
     margin:0;  
     font-family:'Montserrat',sans-serif;  
     color:#fff;  
     text-align:center;  
     background-image:  
-      linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),  
-      url("Background.jpg");  
+    linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),  
+    url("Morning.jpg"); /* Changed from Background.jpg */
     background-size:cover;  
     background-position:center;  
     background-repeat:no-repeat;  
-    background-attachment:fixed;  
-  }  
+    background-attachment:fixed;
+    transition: background-image 1.5s ease-in-out; /* Adds a smooth fade */
+  }
   @supports (-webkit-touch-callout: none) {  
     body { background-attachment: scroll; }  
   }  
@@ -2343,7 +2344,38 @@ footer{
 </section>  <audio id="bgMusic" preload="auto"></audio>
 
 <footer>© 2026 Valie</footer>  
+  
+  <script>
+  function applyTimeBasedBackground() {
+    const hour = new Date().getHours();
+    const body = document.body;
+    let selectedImage = "";
 
+    // LOGIC:
+    // Morning: 5:00 AM - 11:59 AM
+    // Noon: 12:00 PM - 5:59 PM
+    // Night: 6:00 PM - 4:59 AM
+    if (hour >= 5 && hour < 12) {
+      selectedImage = "Morning.jpg";
+    } else if (hour >= 12 && hour < 18) {
+      selectedImage = "Noon.jpg";
+    } else {
+      selectedImage = "Night.jpg";
+    }
+
+    // This line actually swaps the image while keeping your dark overlay
+    body.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("${selectedImage}")`;
+    
+    console.log("Current Hour: " + hour + " | Background set to: " + selectedImage);
+  }
+
+  // Run immediately when page loads
+  applyTimeBasedBackground();
+
+  // Check every 5 minutes in case the user stays on the site while time passes
+  setInterval(applyTimeBasedBackground, 300000);
+</script>  
+  
 <div id="rareTrackFx" class="rare-track-fx" aria-hidden="true">
   <div class="rare-track-flash"></div>
   <div class="rare-track-ring"></div>
